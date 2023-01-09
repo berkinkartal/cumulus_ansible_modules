@@ -1,6 +1,7 @@
 - hosts: cumulus-nodes
   name: startup
-  become: yes
+  become: true
+  user: cumulus
   gather_facts: no
   tasks:
     - name: clean startup.yaml
