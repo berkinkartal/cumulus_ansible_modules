@@ -1,0 +1,35 @@
+- hosts: cumulus-nodes
+  name: startup
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: clean startup.yaml
+      copy:
+        src: cleanup/{{ inventory_hostname }}.yaml
+        dest: /etc/nvue.d/startup.yaml
+    # aktivieren
+    - name: activate changes for all cumulus nodes
+      shell:  nv config apply startup -y
+      
+    - name: Remove symlinks
+      file:
+        path: "/etc/nginx/sites-{available,enabled}/nvue.conf"
+        state: absent
+      
+- hosts: host
+  name: clean www
+  become: yes
+  gather_facts: no     
+  tasks:
+    - name: check if nginx is there
+      command: systemctl cat nginx
+      check_mode: no
+      register: nginx_exists
+      changed_when: False
+      failed_when: nginx_exists.rc not in [0,1]
+  
+    - name: stop it
+      systemd:
+        name: nginx
+        state: stopped
+      when: nginx_exists.rc == 0
