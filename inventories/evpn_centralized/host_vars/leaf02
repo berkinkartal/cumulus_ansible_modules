@@ -1,0 +1,7 @@
+---
+id: 2
+vxlan_anycast_id: 12
+eth0_id: 12
+sysmac: AA
+mlag_priority: secondary
+mlag_neighbor: leaf01

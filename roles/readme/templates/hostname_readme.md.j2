@@ -1,0 +1,18 @@
+
+### Hostname Role
+Set the hostname of the device
+
+Variable | Choices | Type
+--- | --- | ---
+hostname|"{{ inventory_hostname }}"|String
+
+## Examples
+{% for inventory in list_of_inventories.stdout.split('\n') %}
+<details><summary markdown="span">{{ inventory }}</summary>
+{%   for switch in hosts_per_inventory.results|selectattr('item', 'defined')|map(attribute='stdout_lines')|first %}
+{{ switch }}
+<pre><code>hostname: {{ hostvars[inventory_hostname][inventory + '_' + switch]["hostname"]|default(hostvars[inventory_hostname][inventory + '_' + switch]["inventory_hostname"])|to_nice_yaml( width=50 )|trim }}
+</code></pre>
+{%   endfor %}
+</details>
+{% endfor %}

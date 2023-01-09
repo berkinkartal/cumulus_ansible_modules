@@ -1,0 +1,12 @@
+---
+- name: Configure syslog
+  template:
+    src: 11-remotesyslog.conf.j2
+    dest: /etc/rsyslog.d/11-remotesyslog.conf
+    mode: 0644
+  notify:
+    - restart syslog
+  when: syslog.servers is defined
+
+- name: Force all notified handlers to run at this point, not waiting for normal sync points
+  meta: flush_handlers

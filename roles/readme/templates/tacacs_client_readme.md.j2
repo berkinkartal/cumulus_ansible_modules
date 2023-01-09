@@ -1,0 +1,25 @@
+
+# Cumulus TACACS+ Client Role
+
+Configure TACACS+ Client
+
+Variable | Choices | Type
+--- | --- | ---
+tacacs.server_ips|list of tacacs servers.|List of Strings
+tacacs.vrf|vrf to source TACACS+ packets from.|String
+tacacs.secret|tacacs secrect key.|String
+
+## Examples
+{% for inventory in list_of_inventories.stdout.split('\n') %}
+<details><summary markdown="span">{{ inventory }}</summary>
+{%   for switch in hosts_per_inventory.results|selectattr('item', 'defined')|map(attribute='stdout_lines')|first %}
+{{ switch }}
+<pre><code>tacacs.server_ips:
+{{ hostvars[inventory_hostname][inventory + '_' + switch]['tacacs']['server_ips']|default('N/A')|to_nice_yaml( width=50 )|trim|indent(2, indentfirst=True) }}
+tacacs.vrf: {{ hostvars[inventory_hostname][inventory + '_' + switch]['tacacs']['vrf']|default('N/A')|to_nice_yaml( width=50 )|trim }}
+tacacs.secret: {{ hostvars[inventory_hostname][inventory + '_' + switch]['tacacs']['secret']|default('N/A')|to_nice_yaml( width=50 )|trim }}
+</code></pre>
+{%   endfor %}
+</details>
+{% endfor %}
+

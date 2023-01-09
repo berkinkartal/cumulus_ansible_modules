@@ -1,0 +1,5 @@
+---
+- name: reload switchd
+  systemd:
+    name: switchd
+    state: reloaded

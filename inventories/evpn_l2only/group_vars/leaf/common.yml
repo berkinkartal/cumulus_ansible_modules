@@ -1,0 +1,85 @@
+---
+mlag_priority: primary
+loopback:
+  ips:
+    - "{{ vxlan_local_loopback }}"
+  vxlan_local_tunnel_ip: "{{ vxlan_local_loopback | ipaddr('address') }}"
+  clag_vxlan_anycast_ip: "{{ vxlan_anycast_loopback | ipaddr('address') }}"
+eth0:
+  ips:
+    - "{{ eth0_ip }}"
+interfaces:
+  - name: swp51
+    options: "{{ leaf_spine_interface }}"
+  - name: swp52
+    options: "{{ leaf_spine_interface }}"
+  - name: swp53
+    options: "{{ leaf_spine_interface }}"
+  - name: swp54
+    options: "{{ leaf_spine_interface }}"
+bonds:
+  - name: bond1
+    ports: [swp1]
+    clag_id: 1
+    bridge:
+      access: 10
+    options:
+      mtu: 9000
+      extras:
+        - bond-lacp-bypass-allow yes
+        - mstpctl-bpduguard yes
+        - mstpctl-portadminedge yes
+  - name: bond2
+    ports: [swp2]
+    clag_id: 2
+    bridge:
+      access: 20
+    options:
+      mtu: 9000
+      extras:
+        - bond-lacp-bypass-allow yes
+        - mstpctl-bpduguard yes
+        - mstpctl-portadminedge yes
+vrfs:
+  - "{{ vrf_mgmt }}"
+vnis:
+  - "{{ vni10 }}"
+  - "{{ vni20 }}"
+bridge:
+  ports:
+    - "{{ vni10.name }}"
+    - "{{ vni20.name }}"
+    - "peerlink"
+    - "bond1"
+    - "bond2"
+  vids:
+    - 10
+    - 20
+mlag:
+  sysmac: "{{ mlag_sysmac_prefix }}:{{ sysmac }}"
+  priority: "{{ mlag_priority }}"
+  peerlinks: [swp49, swp50]
+  backup: "{{ hostvars[ mlag_neighbor ].loopback.vxlan_local_tunnel_ip | ipaddr('address') }}"
+  init_delay: 10
+vlans:
+  - "{{ vlan10 }}"
+  - "{{ vlan20 }}"
+bgp:
+  asn: "{{ bgp_asn_prefix }}0{{ id }}"
+  router_id: "{{ vxlan_local_loopback | ipaddr('address') }}"
+  peergroups:
+    - {name: underlay, remote_as: external}
+  neighbors:
+    - {interface: peerlink.4094, unnumbered: true, peergroup: underlay}
+    - {interface: swp51, unnumbered: true, peergroup: underlay}
+    - {interface: swp52, unnumbered: true, peergroup: underlay}
+    - {interface: swp53, unnumbered: true, peergroup: underlay}
+    - {interface: swp54, unnumbered: true, peergroup: underlay}
+  address_family:
+    - name: ipv4_unicast
+      redistribute:
+        - {type: connected}
+    - name: l2vpn_evpn
+      neighbors:
+        - {interface: underlay, activate: true}
+      advertise_all_vni: true

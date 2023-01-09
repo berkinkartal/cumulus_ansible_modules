@@ -1,0 +1,1 @@
+This role sets up grafana and the netq-dashboard plugin for support/use on AIR. This role is specific to setting up a grafana server on the oob-mgmt-server in a standard CITC/cldemo2 reference topology to work with the NetQ cloud instance for NVIDIA AIR.

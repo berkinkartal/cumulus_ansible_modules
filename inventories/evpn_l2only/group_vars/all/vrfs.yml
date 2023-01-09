@@ -1,0 +1,7 @@
+vrf_mgmt:
+  name: mgmt
+  routes:
+    - 0.0.0.0/0 192.168.200.1
+  extras:
+    - "address 127.0.0.1/8"
+    - "address ::1/128"

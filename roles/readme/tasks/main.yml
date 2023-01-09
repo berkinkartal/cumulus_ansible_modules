@@ -1,0 +1,54 @@
+---
+- name: get list of inventories
+  command: "ls {{ lookup('env', 'PWD') + '/inventories/' }}"
+  changed_when: false
+  register: list_of_inventories
+
+- name: get list of roles
+  command: "ls {{ lookup('env', 'PWD') + '/roles/' }}"
+  changed_when: false
+  register: list_of_roles
+
+- name: set list of hosts per inventory
+  command: "ls {{ lookup('env', 'PWD') + '/inventories/' + item + '/config/' }}"
+  loop: "{{ list_of_inventories.stdout.split('\n') }}"
+  changed_when: false
+  register: hosts_per_inventory
+
+- name: include vars from each device
+  include_vars:
+    file: "{{ lookup('env', 'PWD') + '/inventories/' + item.0.item + '/config/' + item.1 + '/ansible_vars' }}"
+    name: "{{ item.0.item }}_{{ item.1 }}"
+  loop: "{{ hosts_per_inventory.results|subelements('stdout_lines') }}"
+
+- name: template role readmes
+  template:
+    src: "{{ item }}_readme.md.j2"
+    dest: "{{ lookup('env', 'PWD') + '/roles/' + item + '/README.md' }}"
+    mode: "0644"
+  loop:
+    - repo
+    - dns
+    - hostname
+    - motd
+    - ntp
+    - ptm
+    - snmp
+    - ssh
+    - syslog
+    - tacacs_client
+    - tacacs_server
+    - interfaces
+    - frr
+    - readme
+
+- name: template inventory readmes
+  template:
+    src: "{{ item }}_readme.md.j2"
+    dest: "{{ lookup('env', 'PWD') + '/inventories/' + item + '/README.md' }}"
+    mode: "0644"
+  loop:
+    - evpn_symmetric
+    - evpn_centralized
+    - evpn_l2only
+    - evpn_mh

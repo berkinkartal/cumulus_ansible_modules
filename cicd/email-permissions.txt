@@ -1,0 +1,3 @@
+example1@example.com
+other-example-email@example.net
+more-examples@example.org

@@ -1,0 +1,19 @@
+{% if comments|default(False) %}
+###############
+# SWPs
+###############
+{{ interfaces | default() | to_nice_yaml | comment(prefix='# interfaces:', postfix='') -}}
+{% endif %}
+{% for interface in interfaces %}
+auto {{ interface.name }}
+iface {{ interface.name }}
+{%   if interface.options is defined %}
+{%     if interface.options.mtu is defined %}
+    mtu {{ interface.options.mtu }}
+{%     endif %}
+{%   for extra in interface.options.extras|default() %}
+    {{ extra }}
+{%   endfor %}
+{% endif %}
+
+{% endfor %}

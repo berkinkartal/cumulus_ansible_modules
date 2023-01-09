@@ -1,0 +1,31 @@
+---
+vni10:
+  name: vni10
+  type: "l2"
+  bridge:
+    access: 10
+  vxlan_id: 10
+vni20:
+  name: vni20
+  type: "l2"
+  bridge:
+    access: 20
+  vxlan_id: 20
+vni30:
+  name: vni30
+  type: "l2"
+  bridge:
+    access: 30
+  vxlan_id: 30
+vniRED:
+  name: vniRED
+  type: "l3"
+  bridge:
+    access: 4001
+  vxlan_id: 4001
+vniBLUE:
+  name: vniBLUE
+  type: "l3"
+  bridge:
+    access: 4002
+  vxlan_id: 4002

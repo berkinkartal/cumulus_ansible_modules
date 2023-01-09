@@ -1,0 +1,15 @@
+---
+fabric_name: evpn_mh
+bgp_asn_prefix: 651
+id: 9999
+vxlan_local_loopback: "10.10.10.{{ id }}/32"
+evpn_mh_sysmac_prefix: 44:38:39:BE:EF
+eth0_subnet: 192.168.200.0/24
+eth0_ip: "{{ eth0_subnet | nthhost( eth0_id | default( id ) ) }}/{{ eth0_subnet | ipaddr('prefix') }}"
+
+pim:
+  source: "{{ bgp.router_id|default() }}"
+  ecmp: true
+  keep_alive: 3600
+  rp_mcast_range: 239.1.1.0/24
+  rpaddr: 10.10.100.100/32

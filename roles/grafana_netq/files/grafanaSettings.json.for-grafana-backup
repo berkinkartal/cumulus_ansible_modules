@@ -1,0 +1,17 @@
+{
+  "general": {
+    "debug": true,
+    "verify_ssl": false,
+    "backup_dir": "_OUTPUT_",
+    "backup_file_format": "%Y%m%d%H%M",
+    "pretty_print": false
+  },
+  "grafana": {
+    "url": "https://localhost:3000",
+    "token": "eyJrIjoiN0hzYWoyNThyZ2lZYlhFSTJSYUVONVhuS3RzM3JBWjQiLCJuIjoiYmFja3VwLXJlc3RvcmUiLCJpZCI6MX0=",
+    "search_api_limit": 5000,
+    "default_password": "CumulusLinux!",
+    "admin_account": "admin",
+    "admin_password": "CumulusLinux!"
+  }
+}

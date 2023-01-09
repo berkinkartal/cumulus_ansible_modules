@@ -1,0 +1,11 @@
+---
+vni10:
+  name: vni10
+  bridge:
+    access: 10
+  vxlan_id: 10
+vni20:
+  name: vni20
+  bridge:
+    access: 20
+  vxlan_id: 20

@@ -1,0 +1,222 @@
+---
+backup:
+    files:
+    - /etc/network/interfaces
+    - /etc/frr/frr.conf
+    - /etc/frr/daemons
+    path: ../inventories/evpn_l2only/config/server05
+bgp_asn_prefix: 651
+devices:
+    server01:
+        bond:
+            ip: 10.1.10.101/24
+            route:
+                dest: 10.0.0.0/8
+                nexthop: 10.1.10.1
+            vlan: 10
+    server02:
+        bond:
+            ip: 10.1.20.102/24
+            route:
+                dest: 10.0.0.0/8
+                nexthop: 10.1.20.1
+            vlan: 20
+    server04:
+        bond:
+            ip: 10.1.10.104/24
+            route:
+                dest: 10.0.0.0/8
+                nexthop: 10.1.10.1
+            vlan: 10
+    server05:
+        bond:
+            ip: 10.1.20.105/24
+            route:
+                dest: 10.0.0.0/8
+                nexthop: 10.1.20.1
+            vlan: 20
+discovered_interpreter_python: /usr/bin/python
+dns:
+    domain: cumulusnetworks.com
+    search_domain:
+    - cumulusnetworks.com
+    servers:
+        ipv4:
+        - 1.1.1.1
+        - 8.8.8.8
+        vrf: mgmt
+eth0_ip: False/24
+eth0_subnet: 192.168.200.0/24
+fabric_name: evpn_l2only
+group_names:
+- pod1
+- server
+groups:
+    all:
+    - netq-ts
+    - fw1
+    - leaf01
+    - leaf02
+    - leaf03
+    - leaf04
+    - spine01
+    - spine02
+    - spine03
+    - spine04
+    - border01
+    - border02
+    - server01
+    - server02
+    - server04
+    - server05
+    border:
+    - border01
+    - border02
+    fw:
+    - fw1
+    leaf:
+    - leaf01
+    - leaf02
+    - leaf03
+    - leaf04
+    netq:
+    - netq-ts
+    pod1:
+    - fw1
+    - leaf01
+    - leaf02
+    - leaf03
+    - leaf04
+    - spine01
+    - spine02
+    - spine03
+    - spine04
+    - border01
+    - border02
+    - server01
+    - server02
+    - server04
+    - server05
+    server:
+    - server01
+    - server02
+    - server04
+    - server05
+    spine:
+    - spine01
+    - spine02
+    - spine03
+    - spine04
+    ungrouped: []
+id: 9999
+inventory_dir: /home/cumulus/cumulus_ansible_modules/inventories/evpn_l2only
+inventory_file: /home/cumulus/cumulus_ansible_modules/inventories/evpn_l2only/hosts
+inventory_hostname: server05
+inventory_hostname_short: server05
+leaf_spine_interface:
+    extras:
+    - alias to spine
+mlagBondProfileA:
+    bridge_access: 10
+    extras:
+    - bond-lacp-bypass-allow yes
+    - mstpctl-bpduguard yes
+    - mstpctl-portadminedge yes
+mlagBondProfileB:
+    bridge_access: 20
+    extras:
+    - bond-lacp-bypass-allow yes
+    - mstpctl-bpduguard yes
+    - mstpctl-portadminedge yes
+mlagBondProfileFW:
+    bridge_vids:
+    - 10
+    - 20
+mlag_sysmac_prefix: 44:38:39:BE:EF
+netq:
+    agent_server: 192.168.200.250
+    cli_access_key: long-key-0987654321
+    cli_port: 443
+    cli_premises: CITC
+    cli_secret_key: long-key-1234567890
+    cli_server: api.air.netq.cumulusnetworks.com
+    version: latest
+ntp:
+    server_ips:
+    - 0.cumulusnetworks.pool.ntp.org
+    - 1.cumulusnetworks.pool.ntp.org
+    - 2.cumulusnetworks.pool.ntp.org
+    - 3.cumulusnetworks.pool.ntp.org
+    timezone: America/Los_Angeles
+playbook_dir: /home/cumulus/cumulus_ansible_modules/playbooks
+snmp:
+    addresses:
+    - False@mgmt
+    - udp6:[::1]:161@mgmt
+    rocommunity:
+    - public
+    - private
+spine_leaf_interface:
+    extras:
+    - alias to leaf
+ssh:
+    banner: |-
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        Authorized Users Only!
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    motd: |-
+        #########################################################
+        Successfully logged in to: server05
+        #########################################################
+syslog:
+    servers:
+    - 192.168.200.1
+tacacs:
+    groups:
+    -   name: admins
+        priv_level: 15
+    -   name: basics
+        priv_level: 1
+    secret: tacacskey
+    server_ips:
+    - 192.168.200.1
+    users:
+    -   group: basics
+        name: basicuser
+        password: password
+    -   group: admins
+        name: adminuser
+        password: password
+    vrf: mgmt
+vlan10:
+    extras:
+    - ip-forward off
+    - ip6-forward off
+    id: 10
+    name: vlan10
+vlan20:
+    extras:
+    - ip-forward off
+    - ip6-forward off
+    id: 20
+    name: vlan20
+vni10:
+    bridge:
+        access: 10
+    name: vni10
+    vxlan_id: 10
+vni20:
+    bridge:
+        access: 20
+    name: vni20
+    vxlan_id: 20
+vrf_mgmt:
+    extras:
+    - address 127.0.0.1/8
+    - address ::1/128
+    name: mgmt
+    routes:
+    - 0.0.0.0/0 192.168.200.1
+vxlan_anycast_loopback: 10.0.1.9999/32
+vxlan_local_loopback: 10.10.10.9999/32
+...

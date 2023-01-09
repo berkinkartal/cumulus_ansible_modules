@@ -1,0 +1,12 @@
+---
+- name: Configure breakouts and optics
+  template:
+    src: "ports.conf.j2"
+    dest: "/etc/cumulus/ports.conf"
+    validate: /usr/cumulus/bin/validate-ports -f %s
+    mode: 0644
+  notify: reload switchd
+  when: ports|default()
+
+- name: Force all notified handlers to run at this point, not waiting for normal sync points
+  meta: flush_handlers

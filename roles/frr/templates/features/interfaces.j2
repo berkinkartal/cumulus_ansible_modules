@@ -1,0 +1,21 @@
+interface lo
+{% if loopback.igmp is defined %}
+  ip igmp
+{% endif %}
+{% if loopback.pim is defined %}
+  ip pim
+{%   if loopback.pim.source is defined %}
+  ip pim use-source {{ loopback.pim.source }}
+{%   endif %}
+{% endif %}
+{% for interface in interfaces|default() %}
+interface {{ interface.name }}
+{%   if interface.options is defined %}
+{%     if interface.options.evpn_mh_uplink is defined %}
+  evpn mh uplink
+{%     endif %}
+{%     if interface.options.pim is defined %}
+  ip pim
+{%     endif %}
+{%   endif %}
+{% endfor %}

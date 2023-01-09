@@ -1,0 +1,14 @@
+---
+- name: dump user defined vars
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: create dictionary of all vars without ansible_
+      set_fact:
+        user_vars: "{{ user_vars|default({})|combine( { item.key: item.value }, recursive=True ) }}"
+      loop: "{{ hostvars[inventory_hostname]|dict2items }}"
+      when: item.key[:8]|default('') != 'ansible_'
+
+    - name: print user variables
+      debug:
+        msg: "{{ user_vars|to_nice_yaml( width=50, explicit_start=True, explicit_end=True) }}"

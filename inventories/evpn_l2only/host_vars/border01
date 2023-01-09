@@ -1,0 +1,6 @@
+---
+id: 63
+vxlan_anycast_id: 255
+eth0_id: 63
+sysmac: FF
+mlag_neighbor: border02

@@ -1,0 +1,102 @@
+---
+image: python:3.7
+
+cache:
+  paths:
+    - .cache/pip
+
+stages:
+  - build
+  - provision
+  - test
+  - pre-cleanup # This stage can go away after DAG (needs:) supports same stage ordering https://gitlab.com/gitlab-org/gitlab/-/issues/30632
+  - cleanup
+
+# duplicate sim, update name and push runner reg commands in same job
+# these things all need to happen in very close time with each other
+duplicate snapshot:
+  stage: build
+  before_script:
+    - python3 -m pip install jinja2
+    - python3 -m pip install requests
+    - python3 -m pip install git+https://gitlab.com/cumulus-consulting/air/cumulus_air_sdk.git
+  script:
+    - python3 cicd/scripts/duplicate_snapshot.py {{ site }} {{ parent_pipeline_id }}
+    - python3 cicd/scripts/push_runner_commands.py {{ site }} {{ parent_pipeline_id }}
+  artifacts:
+    expire_in: 1 week
+    untracked: true
+  when: delayed
+  start_in: {{ range(10, 60) | random }} seconds
+
+# this job might show 'stuck' until the sim comes up and the air-agent executes the commands to register the runner.
+provision:
+  stage: provision
+  retry: 2
+  before_script:
+    - sleep 60 # just to make sure sim is completely loaded
+  script:
+    - ansible-playbook playbooks/deploy.yml -i inventories/{{ site }}/hosts
+    - ansible all -a 'netq config restart agent' -i inventories/{{ site }}/hosts
+  after_script:
+    - sleep 60
+  tags:
+    - {{ site }}:{{ parent_pipeline_id }}:oob-mgmt-server
+  dependencies: []
+
+test from oob-mgmt:
+  stage: test
+  retry: 2
+  before_script:
+    - SCRIPT="cicd/tests/{{ site }}/oob-server-tests.sh"
+    - if [ -f "$SCRIPT" ]; then echo "SS script good"; else SCRIPT="cicd/tests/default/oob-server-tests.sh"; fi 
+  script:
+    - bash $SCRIPT   
+  tags:
+    - {{ site }}:{{ parent_pipeline_id }}:oob-mgmt-server
+  dependencies: []
+
+test from netq-ts:
+  stage: test    
+  retry: 2
+  before_script:
+    - SCRIPT="cicd/tests/{{ site }}/netq-ts-tests.sh"
+    - if [ -f "$SCRIPT" ]; then echo "SS script good"; else SCRIPT="cicd/tests/default/netq-ts-tests.sh"; fi
+  script:
+    - sleep 30
+    - bash $SCRIPT
+  tags:
+    - {{ site }}:{{ parent_pipeline_id }}:netq-ts
+  dependencies: []
+
+netq runner delete:
+  stage: pre-cleanup
+  script:
+    - sudo gitlab-runner unregister --all-runners
+  tags:
+    - {{ site }}:{{ parent_pipeline_id }}:netq-ts 
+  needs:
+    - test from netq-ts
+
+oob-mgmt runner delete:
+  stage: pre-cleanup
+  script:
+    - sudo gitlab-runner unregister --all-runners
+  tags:
+    - {{ site }}:{{ parent_pipeline_id }}:oob-mgmt-server
+  needs:
+    - test from oob-mgmt
+
+# delete the test simulation
+cleanup and report:
+  stage: cleanup
+  before_script:
+    - python3 -m pip install requests
+    - python3 -m pip install python-gitlab
+    - python3 -m pip install git+https://gitlab.com/cumulus-consulting/air/cumulus_air_sdk.git
+  script:
+    - python3 cicd/scripts/cleanup-runners.py {{ site }}
+    - python3 cicd/scripts/cleanup_test_sim.py
+  artifacts:
+    expire_in: 1 week
+    untracked: true

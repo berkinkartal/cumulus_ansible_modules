@@ -1,0 +1,16 @@
+---
+- name: apply interface changes
+  become: true
+  command: ifreload -a
+
+- name: restart switchd
+  become: true
+  service:
+    name: switchd
+    state: restarted
+
+- name: reload switchd
+  become: true
+  systemd:
+    name: switchd
+    state: reloaded

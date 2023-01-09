@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# this is a jinja2 template of a bash script
+# This script will get run after VM boots
+# for now, only purpose is to make the gitlab-runner register to project
+# This is rendered by push_runner_commands.py
+#
+passwd -x 99999 gitlab-runner
+echo 'gitlab-runner:CumulusLinux!' | chpasswd
+gitlab-runner register --non-interactive --url {{ ci_server_url }} --registration-token {{ runner_reg_token }} --description {{ simulation_node_name }}:{{ site }}:{{ parent_pipeline_id }} --tag-list {{ site }}:{{ parent_pipeline_id }}:{{ simulation_node_name }} --executor shell

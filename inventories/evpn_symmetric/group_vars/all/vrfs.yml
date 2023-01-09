@@ -1,0 +1,31 @@
+---
+vrf_mgmt:
+  name: mgmt
+  routes:
+    - 0.0.0.0/0 192.168.200.1
+  extras:
+    - "address 127.0.0.1/8"
+    - "address ::1/128"
+vrf_RED:
+  name: RED
+  vxlan_id: 4001
+vrf_RED_border:
+  name: RED
+  vxlan_id: 4001
+  routes:
+    - 10.1.30.0/24 10.1.101.4
+vrf_BLUE:
+  name: BLUE
+  vxlan_id: 4002
+vrf_BLUE_border:
+  name: BLUE
+  vxlan_id: 4002
+  routes:
+    - 10.1.10.0/24 10.1.102.4
+    - 10.1.20.0/24 10.1.102.4
+vrf_default_FW:
+  name: default
+  routes:
+    - 10.1.10.0/24 10.1.101.1
+    - 10.1.20.0/24 10.1.101.1
+    - 10.1.30.0/24 10.1.102.1

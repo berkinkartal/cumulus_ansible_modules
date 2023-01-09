@@ -1,0 +1,52 @@
+---
+- hosts: spine leaf border fw
+  become: true
+  user: cumulus
+  gather_facts: false
+  roles:
+    - {role: repo, tags: ["repo"]}
+    - {role: ports, tags: ["ports"]}
+    - {role: interfaces, tags: ["interfaces"]}
+    - {role: frr, tags: ["frr"]}
+    - {role: backup, tags: ["backup"]}
+    - {role: hostname, tags: ["hostname"]}
+    - {role: motd, tags: ["motd"]}
+    - {role: dns, tags: ["dns"]}
+    - {role: ssh, tags: ["ssh"]}
+    - {role: ptm, tags: ["ptm"]}
+    - {role: snmp, tags: ["snmp"]}
+    - {role: syslog, tags: ["syslog"]}
+    - {role: ntp, tags: ["ntp"]}
+    - {role: tacacs_client, tags: ["tacacs_client"]}
+#    - {role: netq_switch, tags: ['netq_switch']}
+
+- hosts: server
+  become: true
+  gather_facts: false
+  roles:
+    - {role: servers, tags: ["servers"]}
+    - {role: backup, tags: ["backup"]}
+#    - {role: netq_servers, tags: ['netq_servers']}
+
+- hosts: localhost
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Remove apps3 http source
+      ansible.builtin.apt_repository:
+        repo: deb http://apps3.cumulusnetworks.com/repos/deb bionic netq-latest
+        state: absent
+        filename: apps3_cumulusnetworks_com_repos_deb
+
+    - name: Add apps3 https source
+      ansible.builtin.apt_repository:
+        repo: deb https://apps3.cumulusnetworks.com/repos/deb CumulusLinux-4 netq-latest
+        state: present
+        filename: apps3_cumulusnetworks_com_repos_deb
+
+- hosts: localhost
+  become: true
+  gather_facts: false
+  roles:
+    - {role: tacacs_server, tags: ["tacacs_server"]}
+#    - {role: netq_servers, tags: ['netq_servers']}

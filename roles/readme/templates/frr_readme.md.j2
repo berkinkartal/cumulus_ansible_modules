@@ -1,0 +1,37 @@
+
+# Cumulus FRR Role
+
+Ansible template module for `/etc/frr/frr.conf` and `/etc/frr/daemons` on Cumulus Linux using FRR.
+
+{% set frr_vars = ['bgp', 'bonds', 'evpn_mh', 'interfaces', 'loopback', 'mlag', 'msdp', 'pim', 'vrfs'] %}
+Variable | Choices | Type
+--- | --- | ---
+bgp|bgp variables.|dictionary
+bonds|list of all bonds (non-mlag/multi-homing)|list of dictionaries
+evpn_mh||dictionary
+interfaces|list of all interfaces (non-bonds/bridges/svis/vnis/etc).|list of dictionaries
+loopback|loopback interface options.|dictionary
+mlag|all mlag related variables.|dictionary
+vlans|list of all SVIs.|list of dictionaries
+vnis|list of all vnis.|list of dictionaries
+vrfs|list of all vrf loopback interfaces.|list of dictionaries
+
+### Tasks
+* Copy module to set `/etc/frr/daemons` then restart frr daemon `systemctl restart frr` if  `/etc/frr/daemons` has changed.
+* Template `/etc/frr/frr.conf` (FRR config file)
+* Reload FRR using `systemctl reload frr` after verifying the newly pushed FRR config with `vtysh -f /etc/frr/frr.conf --dryrun`
+
+## Examples
+{% for inventory in list_of_inventories.stdout.split('\n') %}
+<details><summary markdown="span">{{ inventory }}</summary>
+{%   for switch in hosts_per_inventory.results|selectattr('item', 'defined')|map(attribute='stdout_lines')|first %}
+{{ switch }}
+<pre><code>
+{%     for current_var in frr_vars %}
+{{ current_var }}:
+{{ hostvars[inventory_hostname][inventory + '_' + switch][current_var]|default('N/A')|to_nice_yaml( width=50 )|trim|indent(2, indentfirst=True) }}
+{%     endfor %}
+</code></pre>
+{%   endfor %}
+</details>
+{% endfor %}

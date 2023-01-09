@@ -1,0 +1,96 @@
+---
+es_df_pref: 1
+loopback:
+  ips:
+    - "{{ vxlan_local_loopback }}"
+    - "{{ pim.rpaddr }}"
+  vxlan_local_tunnel_ip: "{{ vxlan_local_loopback | ipaddr('address') }}"
+  pim:
+    source: "{{ pim.source }}"
+  igmp: true
+eth0:
+  ips:
+    - "{{ eth0_ip }}"
+interfaces:
+  - {name: swp51, options: "{{ leaf_spine_interface }}"}
+  - {name: swp52, options: "{{ leaf_spine_interface }}"}
+  - {name: swp53, options: "{{ leaf_spine_interface }}"}
+  - {name: swp54, options: "{{ leaf_spine_interface }}"}
+bonds:
+  - name: "bond1"
+    ports: ["swp3"]
+    es_id: 1
+    es_df_pref: "{{ es_df_pref | default( 1 ) }}"
+    bridge:
+      vids: [101, 102]
+    options:
+      mtu: 9000
+vnis:
+  - "{{ vni101 }}"
+  - "{{ vni102 }}"
+  - "{{ vniRED }}"
+  - "{{ vniBLUE }}"
+bridge:
+  ports:
+    - "{{ vni101.name }}"
+    - "{{ vni102.name }}"
+    - "{{ vniRED.name }}"
+    - "{{ vniBLUE.name }}"
+    - "bond1"
+  vids:
+    - 101
+    - 102
+msdp:
+  mesh:
+    - border01
+    - border02
+  source: "{{ vxlan_local_loopback | ipaddr('address') }}"
+evpn_mh:
+  rp: true
+  sysmac: "{{ evpn_mh_sysmac_prefix }}:{{ sysmac }}"
+vlans:
+  - "{{ vlan101 }}"
+  - "{{ vlan102 }}"
+  - "{{ vlan4001 }}"
+  - "{{ vlan4002 }}"
+vrfs:
+  - "{{ vrf_mgmt }}"
+  - "{{ vrf_RED_border }}"
+  - "{{ vrf_BLUE_border }}"
+bgp:
+  asn: "{{ bgp_asn_prefix }}{{ id }}"
+  router_id: "{{ vxlan_local_loopback | ipaddr('address') }}"
+  peergroups:
+    - {name: underlay, remote_as: external}
+  neighbors:
+    - {interface: swp51, unnumbered: true, peergroup: underlay}
+    - {interface: swp52, unnumbered: true, peergroup: underlay}
+    - {interface: swp53, unnumbered: true, peergroup: underlay}
+    - {interface: swp54, unnumbered: true, peergroup: underlay}
+  address_family:
+    - name: ipv4_unicast
+      redistribute:
+        - {type: connected}
+    - name: l2vpn_evpn
+      neighbors:
+        - {interface: underlay, activate: true}
+      advertise_all_vni: true
+  vrfs:
+    - name: RED
+      router_id: "{{ vxlan_local_loopback | ipaddr('address') }}"
+      address_family:
+        - name: ipv4_unicast
+          redistribute:
+            - {type: static}
+        - name: l2vpn_evpn
+          extras:
+            - "advertise ipv4 unicast"
+    - name: BLUE
+      router_id: "{{ vxlan_local_loopback | ipaddr('address') }}"
+      address_family:
+        - name: ipv4_unicast
+          redistribute:
+            - {type: static}
+        - name: l2vpn_evpn
+          extras:
+            - "advertise ipv4 unicast"

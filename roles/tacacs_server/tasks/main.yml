@@ -1,0 +1,14 @@
+- name: install tacacs+ service
+  apt:
+    name: tacacs+
+    state: present
+    update_cache: true
+    force_apt_get: true
+
+- name: apply configuration
+  template:
+    src: tac_plus.conf.j2
+    dest: /etc/tacacs+/tac_plus.conf
+    mode: 0644
+  notify:
+    - restart tacacs

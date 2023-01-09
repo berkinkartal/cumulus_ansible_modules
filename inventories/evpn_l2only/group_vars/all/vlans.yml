@@ -1,0 +1,13 @@
+---
+vlan10:
+  name: vlan10
+  id: 10
+  extras:
+    - "ip-forward off"
+    - "ip6-forward off"
+vlan20:
+  name: vlan20
+  id: 20
+  extras:
+    - "ip-forward off"
+    - "ip6-forward off"

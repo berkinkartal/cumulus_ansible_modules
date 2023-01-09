@@ -1,0 +1,384 @@
+---
+backup:
+    files:
+    - /etc/network/interfaces
+    - /etc/frr/frr.conf
+    - /etc/frr/daemons
+    path: ../inventories/evpn_mh/config/spine01
+bgp:
+    address_family:
+    -   name: ipv4_unicast
+        redistribute:
+        -   type: connected
+    -   name: l2vpn_evpn
+        neighbors:
+        -   activate: true
+            interface: underlay
+    asn: '65100'
+    neighbors:
+    -   interface: swp1
+        peergroup: underlay
+        unnumbered: true
+    -   interface: swp2
+        peergroup: underlay
+        unnumbered: true
+    -   interface: swp3
+        peergroup: underlay
+        unnumbered: true
+    -   interface: swp4
+        peergroup: underlay
+        unnumbered: true
+    -   interface: swp5
+        peergroup: underlay
+        unnumbered: true
+    -   interface: swp6
+        peergroup: underlay
+        unnumbered: true
+    peergroups:
+    -   name: underlay
+        remote_as: external
+    router_id: 10.10.10.101
+bgp_asn_prefix: 651
+discovered_interpreter_python: /usr/bin/python
+dns:
+    domain: cumulusnetworks.com
+    search_domain:
+    - cumulusnetworks.com
+    servers:
+        ipv4:
+        - 1.1.1.1
+        - 8.8.8.8
+        vrf: mgmt
+eth0:
+    ips:
+    - 192.168.200.21/24
+eth0_id: 21
+eth0_ip: 192.168.200.21/24
+eth0_subnet: 192.168.200.0/24
+evpn_mh: true
+evpn_mh_sysmac_prefix: 44:38:39:BE:EF
+fabric_name: evpn_mh
+group_names:
+- pod1
+- spine
+groups:
+    all:
+    - netq-ts
+    - fw1
+    - leaf01
+    - leaf02
+    - leaf03
+    - leaf04
+    - spine01
+    - spine02
+    - spine03
+    - spine04
+    - border01
+    - border02
+    - server01
+    - server02
+    - server03
+    - server04
+    - server05
+    - server06
+    border:
+    - border01
+    - border02
+    fw:
+    - fw1
+    leaf:
+    - leaf01
+    - leaf02
+    - leaf03
+    - leaf04
+    netq:
+    - netq-ts
+    pod1:
+    - fw1
+    - leaf01
+    - leaf02
+    - leaf03
+    - leaf04
+    - spine01
+    - spine02
+    - spine03
+    - spine04
+    - border01
+    - border02
+    - server01
+    - server02
+    - server03
+    - server04
+    - server05
+    - server06
+    server:
+    - server01
+    - server02
+    - server03
+    - server04
+    - server05
+    - server06
+    spine:
+    - spine01
+    - spine02
+    - spine03
+    - spine04
+    ungrouped: []
+id: 101
+interfaces:
+-   name: swp1
+    options:
+        extras:
+        - alias to leaf
+        pim: true
+-   name: swp2
+    options:
+        extras:
+        - alias to leaf
+        pim: true
+-   name: swp3
+    options:
+        extras:
+        - alias to leaf
+        pim: true
+-   name: swp4
+    options:
+        extras:
+        - alias to leaf
+        pim: true
+-   name: swp5
+    options:
+        extras:
+        - alias to leaf
+        pim: true
+-   name: swp6
+    options:
+        extras:
+        - alias to leaf
+        pim: true
+inventory_dir: /home/cumulus/cumulus_ansible_modules/inventories/evpn_mh
+inventory_file: /home/cumulus/cumulus_ansible_modules/inventories/evpn_mh/hosts
+inventory_hostname: spine01
+inventory_hostname_short: spine01
+leaf_spine_interface:
+    evpn_mh_uplink: true
+    extras:
+    - alias to spine
+    pim: true
+loopback:
+    igmp: true
+    ips:
+    - 10.10.10.101/32
+    pim:
+        source: 10.10.10.101
+mac_prefix: 00:00:00:00:00
+netq:
+    agent_server: 192.168.200.250
+    cli_access_key: long-key-0987654321
+    cli_port: 443
+    cli_premises: CITC
+    cli_secret_key: long-key-1234567890
+    cli_server: api.air.netq.cumulusnetworks.com
+    version: latest
+ntp:
+    server_ips:
+    - 0.cumulusnetworks.pool.ntp.org
+    - 1.cumulusnetworks.pool.ntp.org
+    - 2.cumulusnetworks.pool.ntp.org
+    - 3.cumulusnetworks.pool.ntp.org
+    timezone: America/Los_Angeles
+pim:
+    ecmp: true
+    keep_alive: 3600
+    rp_mcast_range: 239.1.1.0/24
+    rpaddr: 10.10.100.100/32
+    source: 10.10.10.101
+playbook_dir: /home/cumulus/cumulus_ansible_modules/playbooks
+snmp:
+    addresses:
+    - 192.168.200.21@mgmt
+    - udp6:[::1]:161@mgmt
+    rocommunity:
+    - public
+    - private
+spine_leaf_interface:
+    extras:
+    - alias to leaf
+    pim: true
+ssh:
+    banner: |-
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        Authorized Users Only!
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    motd: |-
+        #########################################################
+        Successfully logged in to: spine01
+        #########################################################
+syslog:
+    servers:
+    - 192.168.200.1
+tacacs:
+    groups:
+    -   name: admins
+        priv_level: 15
+    -   name: basics
+        priv_level: 1
+    secret: tacacskey
+    server_ips:
+    - 192.168.200.1
+    users:
+    -   group: basics
+        name: basicuser
+        password: password
+    -   group: admins
+        name: adminuser
+        password: password
+    vrf: mgmt
+vlan10:
+    address:
+    - 10.1.10.102/24
+    address_virtual:
+    - 00:00:00:00:00:10 10.1.10.1/24
+    id: 10
+    name: vlan10
+    vrf: RED
+vlan101:
+    address:
+    - 10.1.101.102/24
+    address_virtual:
+    - 00:00:00:00:00:01 10.1.101.1/24
+    id: 101
+    name: vlan101
+    vrf: RED
+vlan101_subnet: 10.1.101.0/24
+vlan102:
+    address:
+    - 10.1.102.102/24
+    address_virtual:
+    - 00:00:00:00:00:02 10.1.102.1/24
+    id: 102
+    name: vlan102
+    vrf: BLUE
+vlan102_subnet: 10.1.102.0/24
+vlan10_subnet: 10.1.10.0/24
+vlan20:
+    address:
+    - 10.1.20.102/24
+    address_virtual:
+    - 00:00:00:00:00:20 10.1.20.1/24
+    id: 20
+    name: vlan20
+    vrf: RED
+vlan20_subnet: 10.1.20.0/24
+vlan30:
+    address:
+    - 10.1.30.102/24
+    address_virtual:
+    - 00:00:00:00:00:30 10.1.30.1/24
+    id: 30
+    name: vlan30
+    vrf: BLUE
+vlan30_subnet: 10.1.30.0/24
+vlan4001:
+    address_virtual:
+    - ''
+    id: 4001
+    name: vlan4001
+    vrf: RED
+vlan4002:
+    address_virtual:
+    - ''
+    id: 4002
+    name: vlan4002
+    vrf: BLUE
+vni10:
+    bridge:
+        access: 10
+    extras:
+    - vxlan-mcastgrp 239.1.1.10
+    name: vni10
+    type: l2
+    vxlan_id: 10
+vni101:
+    bridge:
+        access: 101
+    extras:
+    - vxlan-mcastgrp 239.1.1.101
+    name: vni101
+    type: l2
+    vxlan_id: 101
+vni102:
+    bridge:
+        access: 102
+    extras:
+    - vxlan-mcastgrp 239.1.1.102
+    name: vni102
+    type: l2
+    vxlan_id: 102
+vni20:
+    bridge:
+        access: 20
+    extras:
+    - vxlan-mcastgrp 239.1.1.20
+    name: vni20
+    type: l2
+    vxlan_id: 20
+vni30:
+    bridge:
+        access: 30
+    extras:
+    - vxlan-mcastgrp 239.1.1.30
+    name: vni30
+    type: l2
+    vxlan_id: 30
+vniBLUE:
+    bridge:
+        access: 4002
+    name: vniBLUE
+    type: l3
+    vxlan_id: 4002
+vniRED:
+    bridge:
+        access: 4001
+    name: vniRED
+    type: l3
+    vxlan_id: 4001
+vrf_BLUE:
+    name: BLUE
+    vxlan_id: 4002
+vrf_BLUE_border:
+    name: BLUE
+    routes:
+    - 10.1.10.0/24 10.1.102.4
+    - 10.1.20.0/24 10.1.102.4
+    vxlan_id: 4002
+vrf_RED:
+    name: RED
+    vxlan_id: 4001
+vrf_RED_border:
+    name: RED
+    routes:
+    - 10.1.30.0/24 10.1.101.4
+    vxlan_id: 4001
+vrf_default_FW:
+    name: default
+    routes:
+    - 10.1.10.0/24 10.1.101.1
+    - 10.1.20.0/24 10.1.101.1
+    - 10.1.30.0/24 10.1.102.1
+vrf_mgmt:
+    extras:
+    - address 127.0.0.1/8
+    - address ::1/128
+    name: mgmt
+    routes:
+    - 0.0.0.0/0 192.168.200.1
+vrfs:
+-   extras:
+    - address 127.0.0.1/8
+    - address ::1/128
+    name: mgmt
+    routes:
+    - 0.0.0.0/0 192.168.200.1
+vxlan_local_loopback: 10.10.10.101/32
+...

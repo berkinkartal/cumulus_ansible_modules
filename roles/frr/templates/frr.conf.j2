@@ -1,0 +1,25 @@
+{{ ansible_managed }}
+frr defaults datacenter
+hostname {{ inventory_hostname }}
+log syslog informational
+zebra nexthop proto only
+service integrated-vtysh-config
+!
+{% if pim is defined %}
+{%   include './features/pim.j2' %}
+{% endif %}
+{% if interfaces is defined %}
+{%   include './features/interfaces.j2' %}
+{% endif %}
+{% if bonds is defined %}
+{%   include './features/bonds.j2' %}
+{% endif %}
+{% if vrfs is defined %}
+{%   include './features/vrfs.j2' %}
+{% endif %}
+{% if bgp is defined %}
+{%   include './features/bgp.j2' %}
+{% endif %}
+!
+line vty
+!

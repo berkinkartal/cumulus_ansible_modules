@@ -1,0 +1,16 @@
+---
+- name: Gather interface facts
+  ansible.builtin.setup:
+    gather_subset: interfaces
+
+- name: Setup snmpd server
+  template:
+    src: snmpd.conf.j2
+    dest: /etc/snmp/snmpd.conf
+    mode: 0644
+  notify:
+    - stop snmpd in default vrf
+    - restart snmpd in mgmt vrf
+
+- name: Force all notified handlers to run at this point, not waiting for normal sync points
+  meta: flush_handlers

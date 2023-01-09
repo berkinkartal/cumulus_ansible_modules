@@ -1,0 +1,59 @@
+---
+vlan10_subnet: "10.1.10.0/24"
+vlan20_subnet: "10.1.20.0/24"
+vlan30_subnet: "10.1.30.0/24"
+vlan101_subnet: "10.1.101.0/24"
+vlan102_subnet: "10.1.102.0/24"
+mac_prefix: 00:00:00:00:00
+vlan10:
+  name: vlan10
+  id: 10
+  vrf: RED
+  address:
+    - "{{ vlan10_subnet|nthhost( id+1 ) }}/{{ vlan10_subnet|ipaddr( 'prefix' ) }}"
+  address_virtual:
+    - "{{ mac_prefix }}:10 {{ vlan10_subnet|nthhost( 1 ) }}/{{ vlan10_subnet|ipaddr( 'prefix' ) }}"
+vlan20:
+  name: vlan20
+  id: 20
+  vrf: RED
+  address:
+    - "{{ vlan20_subnet|nthhost( id+1 ) }}/{{ vlan20_subnet|ipaddr( 'prefix' ) }}"
+  address_virtual:
+    - "{{ mac_prefix }}:20 {{ vlan20_subnet|nthhost( 1 ) }}/{{ vlan20_subnet|ipaddr( 'prefix' ) }}"
+vlan30:
+  name: vlan30
+  id: 30
+  vrf: BLUE
+  address:
+    - "{{ vlan30_subnet|nthhost( id+1 ) }}/{{ vlan30_subnet|ipaddr( 'prefix' ) }}"
+  address_virtual:
+    - "{{ mac_prefix }}:30 {{ vlan30_subnet|nthhost( 1 ) }}/{{ vlan30_subnet|ipaddr( 'prefix' ) }}"
+vlan101:
+  name: vlan101
+  id: 101
+  vrf: RED
+  address:
+    - "{{ vlan101_subnet|nthhost( id+1 ) }}/{{ vlan101_subnet|ipaddr( 'prefix' ) }}"
+  address_virtual:
+    - "{{ mac_prefix }}:01 {{ vlan101_subnet|nthhost( 1 ) }}/{{ vlan101_subnet|ipaddr( 'prefix' ) }}"
+vlan102:
+  name: vlan102
+  id: 102
+  vrf: BLUE
+  address:
+    - "{{ vlan102_subnet|nthhost( id+1 ) }}/{{ vlan102_subnet|ipaddr( 'prefix' ) }}"
+  address_virtual:
+    - "{{ mac_prefix }}:02 {{ vlan102_subnet|nthhost( 1 ) }}/{{ vlan102_subnet|ipaddr( 'prefix' ) }}"
+vlan4001:
+  name: vlan4001
+  id: 4001
+  vrf: RED
+  address_virtual:
+    - "{{ evpn_mh.sysmac|default() }}"
+vlan4002:
+  name: vlan4002
+  id: 4002
+  vrf: BLUE
+  address_virtual:
+    - "{{ evpn_mh.sysmac|default() }}"

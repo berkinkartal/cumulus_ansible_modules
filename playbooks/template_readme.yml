@@ -1,0 +1,6 @@
+---
+- name: dump user defined vars
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - readme

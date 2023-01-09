@@ -1,0 +1,44 @@
+{% if comments|default( False ) %}
+###############
+# Bonds
+###############
+{{ bonds|to_nice_yaml|comment( prefix='# bonds:', postfix='' ) -}}
+{% endif %}
+{% for bond in bonds %}
+{%   for port in bond.ports %}
+auto {{ port }}
+iface {{ port }}
+    alias bond member of {{ bond.name }}
+{%   endfor %}
+auto {{ bond.name }}
+iface {{ bond.name }}
+    bond-slaves {% for port in bond.ports %}{{ port }} {% endfor %}
+
+{%   if bond.es_id is defined %}
+    es-sys-mac {{ evpn_mh.sysmac }}
+{%   endif %}
+{%   if bond.clag_id is defined %}
+    clag-id {{ bond.clag_id }}
+{%   endif %}
+{%   if bond.bridge is defined %}
+{%     if bond.bridge.access is defined %}
+    bridge-access {{ bond.bridge.access }}
+{%     endif %}
+{%     if bond.bridge.vids is defined %}
+    bridge-vids {{ bond.bridge.vids|join(' ') }}
+{%     endif -%}
+{%     if bond.bridge.pvid is defined %}
+    bridge-pvid {{ bond.bridge.pvid }}
+{%     endif %}
+{%   endif %}
+{%   if bond.options is defined %}
+{%     if bond.options.mtu is defined %}
+    mtu {{ bond.options.mtu }}
+{%     endif %}
+{%     for extra in bond.options.extras|default() %}
+    {{ extra }}
+{%     endfor %}
+{%   endif %}
+
+{% endfor %}
+

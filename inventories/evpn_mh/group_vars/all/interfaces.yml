@@ -1,0 +1,10 @@
+---
+leaf_spine_interface:
+  evpn_mh_uplink: true
+  pim: true
+  extras:
+    - "alias to spine"
+spine_leaf_interface:
+  pim: true
+  extras:
+    - "alias to leaf"

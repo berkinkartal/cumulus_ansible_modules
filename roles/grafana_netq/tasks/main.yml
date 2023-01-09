@@ -1,0 +1,108 @@
+---
+- name: Install a list of packages for Grafana
+  apt:
+    pkg:
+      - apt-transport-https
+      - software-properties-common
+      - wget
+      - adduser
+      - libfontconfig1
+
+- name: Check if Grafana server already installed
+  command: dpkg-query -W grafana
+  register: grafana_server_already_installed
+  changed_when: grafana_server_already_installed.rc == 1
+  failed_when: grafana_server_already_installed.rc > 1
+
+- name: Check if Grafana server deb already download
+  stat:
+    path: /tmp/{{ grafana_filename }}
+  register: grafana_server_deb_exists
+  when: grafana_server_already_installed.changed
+
+- name: Download Grafana server deb file
+  get_url:
+    url: https://dl.grafana.com/enterprise/release/{{ grafana_filename }}
+    dest: /tmp
+    mode: '0440'
+  when: grafana_server_already_installed.changed
+  register: grafana_server_deb
+
+- name: Install Grafana server
+  apt:
+    deb: /tmp/{{ grafana_filename }}
+  register: grafana_installed
+  when: grafana_server_already_installed.changed
+
+## Install Grafana Plugin
+- name: Install NetQ-Dashbaord Grafana Plugin using grafana-cli  # noqa no-changed-when
+  command: grafana-cli --pluginUrl https://netq-grafana-dsrc.s3-us-west-2.amazonaws.com/{{ netq_plugin_filename }} plugins install netq-dashboard
+
+# Copy in config file in the grafana.ini
+- name: Copy Grafana Config
+  copy:
+    src: grafana.ini
+    dest: /etc/grafana
+    mode: 0644
+
+# Copy in keys
+- name: Copy Grafana Cert
+  copy:
+    src: grafana.crt
+    dest: /etc/grafana
+    mode: 0644
+
+# copy cert for key
+- name: Copy Grafana Key
+  copy:
+    src: grafana.key
+    dest: /etc/grafana
+    mode: 0444
+
+- name: Copy Grafana DB
+  copy:
+    src: grafana.db
+    dest: /var/lib/grafana/grafana.db
+    mode: 0640
+    owner: grafana
+    group: grafana
+
+- name: Start Grafana service
+  become: true
+  systemd:
+    daemon_reload: true
+    name: grafana-server
+    state: restarted
+    enabled: true
+
+- name: Pause for 3 seconds to allow grafana to start
+  pause:
+    seconds: 3
+
+#### steps up until here get us a working/blank grafana install
+#### with the netq-dashboard plugin installed and visible (unsigned)
+
+### these steps below attempt to restore all the settings to setup the datasource
+### and dashboard
+
+- name: Install grafana-backup-tool
+  pip:
+    name: grafana-backup
+
+- name: Copy grafana backup to tmp
+  copy:
+    src: backup_8.1.2.tar.gz
+    dest: /tmp/backup.tar.gz
+    mode: 04444
+
+# File should be in home dir of user executing
+# become: yes so it goes into /root
+- name: Copy grafana-backup settings to home dir
+  copy:
+    src: grafanaSettings.json.for-grafana-backup
+    dest: /root/.grafana-backup.json
+    mode: 04444
+
+# run the restore
+- name: Restore Grafana backup using  # noqa no-changed-when
+  command: grafana-backup restore /tmp/backup.tar.gz

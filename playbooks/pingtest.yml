@@ -1,0 +1,32 @@
+---
+- name: ping
+  hosts: server
+  become: true
+  gather_facts: false
+  tasks:
+    - name: create list of ips to ping
+      set_fact:
+        dst_ips: "{{ dst_ips |default([]) + [ item.value.bond.ip |ipaddr('address') ] }}"
+      loop: "{{ lookup('dict', devices) }}"
+
+    - name: add gateways
+      set_fact:
+        dst_ips: "{{ dst_ips |default([]) + [ devices[inventory_hostname].bond.route.nexthop |ipaddr('address') ] }}"
+
+    - name: ping hosts
+      wait_for:
+        host: "{{ item }}"
+        port: 22
+        timeout: 3
+        state: started
+      loop: "{{ dst_ips }}"
+      register: result
+      retries: 3
+      until: result is success
+
+# - name: debugging
+#   debug:
+#     msg: "{{ item.item.value.bond.ip | to_nice_json }}"
+#   loop: "{{ result.results }}"
+#   loop_control:
+#     label: "failed to ping {{ item.item.value.bond.ip | to_nice_json }}"

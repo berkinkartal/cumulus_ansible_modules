@@ -1,0 +1,21 @@
+
+# Cumulus MOTD Role
+
+Configure Message of the Day and Banner for SSH connections
+
+Variable | Choices/Defaults | Type
+--- | --- | ---
+ssh.motd|motd shown before login.|String
+ssh.banner|motd show after login.|String
+
+## Examples
+{% for inventory in list_of_inventories.stdout.split('\n') %}
+<details><summary markdown="span">{{ inventory }}</summary>
+{%   for switch in hosts_per_inventory.results|selectattr('item', 'defined')|map(attribute='stdout_lines')|first %}
+{{ switch }}
+<pre><code>ssh:
+{{ hostvars[inventory_hostname][inventory + '_' + switch]["ssh"]|to_nice_yaml( width=50 )|trim|indent(2)|indent(2, indentfirst=True) }}
+</code></pre>
+{%   endfor %}
+</details>
+{% endfor %}

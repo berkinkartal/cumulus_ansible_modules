@@ -1,0 +1,19 @@
+{% if pim.rpaddr is defined %}
+ip pim rp {{ pim.rpaddr|ipaddr('address') }} {{ pim.rp_mcast_range }}
+{% endif %}
+{% if pim.ecmp is defined %}
+{%   if pim.ecmp %}
+ip pim ecmp
+{%   endif %}
+{% endif %}
+{% if pim.keep_alive is defined %}
+ip pim keep-alive-timer {{ pim.keep_alive }}
+{% endif %}
+{% if msdp is defined %}
+ip msdp mesh-group rpmesh source {{ msdp.source }}
+{%   for neighbor in msdp.mesh %}
+{%     if neighbor != inventory_hostname %}
+ip msdp mesh-group rpmesh member {{ hostvars[neighbor].msdp.source }}
+{%     endif %}
+{%   endfor %}
+{% endif %}

@@ -1,0 +1,9 @@
+netq-cli:
+  port: {{ netq.cli_port }}
+  premises: {{ netq.cli_premises }}
+  server: {{ netq.cli_server }}
+  vrf: mgmt
+netq-agent:
+  port: 31980
+  server: {{ netq.agent_server }}
+  vrf: mgmt

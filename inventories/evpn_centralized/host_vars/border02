@@ -1,0 +1,7 @@
+---
+id: 64
+vxlan_anycast_id: 255
+eth0_id: 64
+sysmac: FF
+mlag_neighbor: border01
+mlag_priority: secondary

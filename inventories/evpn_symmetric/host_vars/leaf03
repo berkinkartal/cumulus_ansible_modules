@@ -1,0 +1,6 @@
+---
+id: 3
+vxlan_anycast_id: 34
+eth0_id: 13
+sysmac: BB
+mlag_neighbor: leaf04

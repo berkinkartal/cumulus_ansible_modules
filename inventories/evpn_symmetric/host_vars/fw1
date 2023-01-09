@@ -1,0 +1,29 @@
+eth0_id: 61
+eth0:
+  ips:
+    - "192.168.200.61/24"
+bridge:
+  ports:
+    - "borderBond"
+  vids:
+    - 101
+    - 102
+vlans:
+  - name: vlanRED
+    id: 101
+    address:
+      - "10.1.101.4/24"
+  - name: vlanBLUE
+    id: 102
+    address:
+      - "10.1.102.4/24"
+bonds:
+  - name: borderBond
+    ports: [ swp1, swp2 ]
+    bridge:
+      vids: [ 101, 102 ]
+    options:
+      mtu: 9000
+vrfs:
+  - "{{ vrf_mgmt }}"
+  - "{{ vrf_default_FW }}"

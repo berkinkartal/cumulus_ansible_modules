@@ -1,0 +1,10 @@
+---
+- hosts: spine leaf border fw
+  become: true
+  roles:
+    - role: netq_switch
+
+- hosts: server localhost
+  become: true
+  roles:
+    - role: netq_servers

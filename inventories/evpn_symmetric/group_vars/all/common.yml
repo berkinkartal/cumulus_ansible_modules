@@ -1,0 +1,9 @@
+---
+fabric_name: evpn_symmetric
+bgp_asn_prefix: 651
+id: 9999
+vxlan_local_loopback: "10.10.10.{{ id }}/32"
+vxlan_anycast_loopback: "10.0.1.{{ vxlan_anycast_id | default( id ) }}/32"
+mlag_sysmac_prefix: 44:38:39:BE:EF
+eth0_subnet: 192.168.200.0/24
+eth0_ip: "{{ eth0_subnet | nthhost( eth0_id | default( id ) ) }}/{{ eth0_subnet | ipaddr('prefix') }}"
