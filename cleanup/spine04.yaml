@@ -1,4 +1,4 @@
 - set:
     system:
-      hostname: leaf2
+      hostname: spine04
       

@@ -1,5 +1,5 @@
 - set:
     system:
-      hostname: spine4
+      hostname: spine04
       
       

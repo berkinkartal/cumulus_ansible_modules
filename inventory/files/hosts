@@ -16,10 +16,10 @@ spine03 ansible_host=192.168.200.23
 spine04 ansible_host=192.168.200.24
 
 [host]
-host1 ansible_host=192.168.200.31
-host2 ansible_host=192.168.200.32
-host3 ansible_host=192.168.200.33
-host4 ansible_host=192.168.200.34
+server01 ansible_host=192.168.200.31
+server02 ansible_host=192.168.200.32
+server03 ansible_host=192.168.200.33
+server04 ansible_host=192.168.200.34
 
 [cumulus-nodes:children]
 leaf
