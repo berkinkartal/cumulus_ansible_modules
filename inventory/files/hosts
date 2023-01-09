@@ -1,21 +1,25 @@
 # die Python syntax sieht anders aus...
 
 [oob-switch]
-oob-mgmt-switch ansible_host=192.168.200.10
+oob-mgmt-switch ansible_host=192.168.200.251
 
 [leaf]
-leaf1 ansible_host=192.168.200.2
-leaf2 ansible_host=192.168.200.3
+leaf01 ansible_host=192.168.200.11
+leaf02 ansible_host=192.168.200.12
+leaf03 ansible_host=192.168.200.13
+leaf04 ansible_host=192.168.200.14
 
 [spine]
-spine3 ansible_host=192.168.200.4
-spine4 ansible_host=192.168.200.5
+spine01 ansible_host=192.168.200.21
+spine02 ansible_host=192.168.200.22
+spine03 ansible_host=192.168.200.23
+spine04 ansible_host=192.168.200.24
 
 [host]
-host1 ansible_host=192.168.200.6
-host2 ansible_host=192.168.200.7
-host3 ansible_host=192.168.200.8
-host4 ansible_host=192.168.200.9
+host1 ansible_host=192.168.200.31
+host2 ansible_host=192.168.200.32
+host3 ansible_host=192.168.200.33
+host4 ansible_host=192.168.200.34
 
 [cumulus-nodes:children]
 leaf
@@ -27,6 +31,6 @@ host
 
 [all:vars]
 ansible_user=cumulus
-ansible_become_pass=Academy123
-ansible_ssh_pass=Academy123
+ansible_become_pass=CumulusLinux!
+ansible_ssh_pass=CumulusLinux!
 test_var=test
