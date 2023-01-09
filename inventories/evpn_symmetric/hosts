@@ -6,9 +6,9 @@ ansible_ssh_pass=CumulusLinux!
 ansible_user=ubuntu
 ansible_ssh_pass=nvidia
 
-[fw:vars]
-ansible_user=ubuntu
-ansible_ssh_pass=nvidia
+#[fw:vars]
+#ansible_user=ubuntu
+#ansible_ssh_pass=nvidia
 
 [border]
 border01
