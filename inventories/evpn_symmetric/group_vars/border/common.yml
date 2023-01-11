@@ -1,5 +1,6 @@
 ---
 mlag_priority: primary
+global_anycast_mac: "{{ mlag_sysmac_prefix }}:{{ sysmac }}"
 loopback:
   ips:
     - "{{ vxlan_local_loopback }}"
@@ -8,31 +9,40 @@ loopback:
 eth0:
   ips:
     - "{{ eth0_ip }}"
+netq_agent_fa:
+  latency: "{{ netq_agent_conf.latency }}"
+  buffer_occ: "{{ netq_agent_conf.buffer_occ }}"
 interfaces:
+  - {name: swp1, options: }
+  - {name: swp2, options: }
+  - {name: swp3, options: }
+  - {name: swp4, options: }
   - {name: swp51, options: "{{ leaf_spine_interface }}"}
   - {name: swp52, options: "{{ leaf_spine_interface }}"}
   - {name: swp53, options: "{{ leaf_spine_interface }}"}
   - {name: swp54, options: "{{ leaf_spine_interface }}"}
-bonds:
-  - name: "bond1"
-    ports: ["swp3"]
-    clag_id: 1
-    bridge:
-      vids: [101, 102]
-    options:
-      mtu: 9000
-vnis:
+#bonds:
+#  - name: bond1
+#    ports: [swp3]
+#    clag_id: 1
+#    bridge:
+#      vids: 
+#        - 101
+#        - 102
+#    options:
+#      mtu: 9000
+vnis_vrr:
   - "{{ vniRED }}"
   - "{{ vniBLUE }}"
 bridge:
   ports:
     - "peerlink"
-    - "bond1"
+#    - "bond1"
     - "{{ vniRED.name }}"
     - "{{ vniBLUE.name }}"
-  vids:
-    - 101
-    - 102
+#  vids:
+#    - 101
+#    - 102
 mlag:
   sysmac: "{{ mlag_sysmac_prefix }}:{{ sysmac }}"
   priority: "{{ mlag_priority }}"
@@ -40,8 +50,8 @@ mlag:
   backup: "{{ hostvars[ mlag_neighbor ].loopback.vxlan_local_tunnel_ip | ipaddr('address') }}"
   init_delay: 10
 vlans:
-  - "{{ vlan101 }}"
-  - "{{ vlan102 }}"
+#  - "{{ vlan101 }}"
+#  - "{{ vlan102 }}"
   - "{{ vlan4001 }}"
   - "{{ vlan4002 }}"
 vrfs:
@@ -67,8 +77,10 @@ bgp:
       neighbors:
         - {interface: underlay, activate: true}
       advertise_all_vni: true
+      advertise_svi_ip: true
   vrfs:
     - name: RED
+      vxlan_id_nvue: 4001
       router_id: "{{ vxlan_local_loopback | ipaddr('address') }}"
       address_family:
         - name: ipv4_unicast
@@ -78,6 +90,7 @@ bgp:
           extras:
             - "advertise ipv4 unicast"
     - name: BLUE
+      vxlan_id_nvue: 4002
       router_id: "{{ vxlan_local_loopback | ipaddr('address') }}"
       address_family:
         - name: ipv4_unicast

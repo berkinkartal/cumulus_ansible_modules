@@ -1,29 +1,13 @@
 ---
 backup:
+    path: ../inventories/evpn_symmetric/config/fw1
+backup_host:
     files:
     - /etc/network/interfaces
-    - /etc/frr/frr.conf
-    - /etc/frr/daemons
-    path: ../inventories/evpn_symmetric/config/fw1
+backup_switch:
+    files:
+    - /etc/nvue.d/startup.yaml
 bgp_asn_prefix: 651
-bonds:
--   bridge:
-        vids:
-        - 101
-        - 102
-    name: borderBond
-    options:
-        mtu: 9000
-    ports:
-    - swp1
-    - swp2
-bridge:
-    ports:
-    - borderBond
-    vids:
-    - 101
-    - 102
-discovered_interpreter_python: /usr/bin/python
 dns:
     domain: cumulusnetworks.com
     search_domain:
@@ -33,11 +17,8 @@ dns:
         - 1.1.1.1
         - 8.8.8.8
         vrf: mgmt
-eth0:
-    ips:
-    - 192.168.200.61/24
-eth0_id: 61
-eth0_ip: 192.168.200.61/24
+eth0_ip: False/24
+eth0_ip_snmp: false
 eth0_subnet: 192.168.200.0/24
 fabric_name: evpn_symmetric
 group_names:
@@ -47,6 +28,7 @@ groups:
     all:
     - netq-ts
     - fw1
+    - fw2
     - leaf01
     - leaf02
     - leaf03
@@ -63,11 +45,14 @@ groups:
     - server04
     - server05
     - server06
+    - server07
+    - server08
     border:
     - border01
     - border02
     fw:
     - fw1
+    - fw2
     leaf:
     - leaf01
     - leaf02
@@ -77,6 +62,7 @@ groups:
     - netq-ts
     pod1:
     - fw1
+    - fw2
     - leaf01
     - leaf02
     - leaf03
@@ -93,6 +79,8 @@ groups:
     - server04
     - server05
     - server06
+    - server07
+    - server08
     server:
     - server01
     - server02
@@ -100,6 +88,8 @@ groups:
     - server04
     - server05
     - server06
+    - server07
+    - server08
     spine:
     - spine01
     - spine02
@@ -107,8 +97,8 @@ groups:
     - spine04
     ungrouped: []
 id: 9999
-inventory_dir: /home/cumulus/cumulus_ansible_modules/inventories/evpn_symmetric
-inventory_file: /home/cumulus/cumulus_ansible_modules/inventories/evpn_symmetric/hosts
+inventory_dir: /home/ubuntu/cumulus_ansible_modules-nvue/inventories/evpn_symmetric
+inventory_file: /home/ubuntu/cumulus_ansible_modules-nvue/inventories/evpn_symmetric/hosts
 inventory_hostname: fw1
 inventory_hostname_short: fw1
 leaf_spine_interface:
@@ -133,10 +123,6 @@ mlagBondProfileC:
     - bond-lacp-bypass-allow yes
     - mstpctl-bpduguard yes
     - mstpctl-portadminedge yes
-mlagBondProfileFW:
-    bridge_vids:
-    - 101
-    - 102
 mlag_sysmac_prefix: 44:38:39:BE:EF
 netq:
     agent_server: 192.168.200.250
@@ -152,26 +138,20 @@ ntp:
     - 1.cumulusnetworks.pool.ntp.org
     - 2.cumulusnetworks.pool.ntp.org
     - 3.cumulusnetworks.pool.ntp.org
-    timezone: America/Los_Angeles
-playbook_dir: /home/cumulus/cumulus_ansible_modules/playbooks
+    timezone: Etc/UTC
+playbook_dir: /home/ubuntu/cumulus_ansible_modules-nvue/playbooks
 snmp:
     addresses:
-    - 192.168.200.61@mgmt
-    - udp6:[::1]:161@mgmt
-    rocommunity:
-    - public
-    - private
+    - False@mgmt
+    - udp6:[::1]:161
+    rocommunity: public
 spine_leaf_interface:
     extras:
     - alias to leaf
 ssh:
-    banner: |-
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        Authorized Users Only!
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     motd: |-
         #########################################################
-        Successfully logged in to: fw1
+        #      You are successfully logged in to: fw1      #
         #########################################################
 syslog:
     servers:
@@ -198,33 +178,21 @@ vlan10:
     - False/24
     address_virtual:
     - 00:00:00:00:00:10 10.1.10.1/24
+    address_virtual_nvue:
+    -   ip: 10.1.10.1/24
+        mac: 00:00:00:00:00:10
     id: 10
     name: vlan10
     vrf: RED
-vlan101:
-    address:
-    - False/24
-    address_virtual:
-    - 00:00:00:00:00:01 10.1.101.1/24
-    id: 101
-    name: vlan101
-    vrf: RED
-vlan101_subnet: 10.1.101.0/24
-vlan102:
-    address:
-    - False/24
-    address_virtual:
-    - 00:00:00:00:00:02 10.1.102.1/24
-    id: 102
-    name: vlan102
-    vrf: BLUE
-vlan102_subnet: 10.1.102.0/24
 vlan10_subnet: 10.1.10.0/24
 vlan20:
     address:
     - False/24
     address_virtual:
     - 00:00:00:00:00:20 10.1.20.1/24
+    address_virtual_nvue:
+    -   ip: 10.1.20.1/24
+        mac: 00:00:00:00:00:20
     id: 20
     name: vlan20
     vrf: RED
@@ -234,31 +202,23 @@ vlan30:
     - False/24
     address_virtual:
     - 00:00:00:00:00:30 10.1.30.1/24
+    address_virtual_nvue:
+    -   ip: 10.1.30.1/24
+        mac: 00:00:00:00:00:30
     id: 30
     name: vlan30
     vrf: BLUE
 vlan30_subnet: 10.1.30.0/24
 vlan4001:
-    address_virtual:
-    - ''
+    hwaddress: ''
     id: 4001
     name: vlan4001
     vrf: RED
 vlan4002:
-    address_virtual:
-    - ''
+    hwaddress: ''
     id: 4002
     name: vlan4002
     vrf: BLUE
-vlans:
--   address:
-    - 10.1.101.4/24
-    id: 101
-    name: vlanRED
--   address:
-    - 10.1.102.4/24
-    id: 102
-    name: vlanBLUE
 vni10:
     bridge:
         access: 10
@@ -294,24 +254,13 @@ vrf_BLUE:
     vxlan_id: 4002
 vrf_BLUE_border:
     name: BLUE
-    routes:
-    - 10.1.10.0/24 10.1.102.4
-    - 10.1.20.0/24 10.1.102.4
     vxlan_id: 4002
 vrf_RED:
     name: RED
     vxlan_id: 4001
 vrf_RED_border:
     name: RED
-    routes:
-    - 10.1.30.0/24 10.1.101.4
     vxlan_id: 4001
-vrf_default_FW:
-    name: default
-    routes:
-    - 10.1.10.0/24 10.1.101.1
-    - 10.1.20.0/24 10.1.101.1
-    - 10.1.30.0/24 10.1.102.1
 vrf_mgmt:
     extras:
     - address 127.0.0.1/8
@@ -319,18 +268,10 @@ vrf_mgmt:
     name: mgmt
     routes:
     - 0.0.0.0/0 192.168.200.1
-vrfs:
--   extras:
-    - address 127.0.0.1/8
-    - address ::1/128
-    name: mgmt
-    routes:
-    - 0.0.0.0/0 192.168.200.1
--   name: default
-    routes:
-    - 10.1.10.0/24 10.1.101.1
-    - 10.1.20.0/24 10.1.101.1
-    - 10.1.30.0/24 10.1.102.1
+    routes_nvue:
+    -   prefix: 0.0.0.0/0
+        via: 192.168.200.1
+vx_version: 5.1
 vxlan_anycast_loopback: 10.0.1.9999/32
 vxlan_local_loopback: 10.10.10.9999/32
 ...

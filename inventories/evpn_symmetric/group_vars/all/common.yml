@@ -7,3 +7,5 @@ vxlan_anycast_loopback: "10.0.1.{{ vxlan_anycast_id | default( id ) }}/32"
 mlag_sysmac_prefix: 44:38:39:BE:EF
 eth0_subnet: 192.168.200.0/24
 eth0_ip: "{{ eth0_subnet | nthhost( eth0_id | default( id ) ) }}/{{ eth0_subnet | ipaddr('prefix') }}"
+eth0_ip_snmp: "{{ eth0_subnet | nthhost( eth0_id | default( id ) ) }}"
+vx_version: 5.1

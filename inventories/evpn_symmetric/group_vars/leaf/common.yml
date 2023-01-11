@@ -1,5 +1,6 @@
 ---
 mlag_priority: primary
+global_anycast_mac: "{{ mlag_sysmac_prefix }}:{{ vxlan_anycast_id }}"
 loopback:
   ips:
     - "{{ vxlan_local_loopback }}"
@@ -8,6 +9,9 @@ loopback:
 eth0:
   ips:
     - "{{ eth0_ip }}"
+netq_agent_fa:
+  latency: "{{ netq_agent_conf.latency }}"
+  buffer_occ: "{{ netq_agent_conf.buffer_occ }}"
 interfaces:
   - name: swp51
     options: "{{ leaf_spine_interface }}"
@@ -51,7 +55,7 @@ bonds:
         - bond-lacp-bypass-allow yes
         - mstpctl-bpduguard yes
         - mstpctl-portadminedge yes
-vnis:
+vnis_vrr:
   - "{{ vni10 }}"
   - "{{ vni20 }}"
   - "{{ vni30 }}"
@@ -107,8 +111,10 @@ bgp:
       neighbors:
         - {interface: underlay, activate: true}
       advertise_all_vni: true
+      advertise_svi_ip: true
   vrfs:
     - name: RED
+      vxlan_id_nvue: 4001
       router_id: "{{ vxlan_local_loopback | ipaddr('address') }}"
       address_family:
         - name: ipv4_unicast
@@ -118,6 +124,7 @@ bgp:
           extras:
             - "advertise ipv4 unicast"
     - name: BLUE
+      vxlan_id_nvue: 4002
       router_id: "{{ vxlan_local_loopback | ipaddr('address') }}"
       address_family:
         - name: ipv4_unicast

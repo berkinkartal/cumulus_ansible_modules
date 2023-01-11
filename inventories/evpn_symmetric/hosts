@@ -16,6 +16,7 @@ border02
 
 [fw]
 fw1
+fw2
 
 [leaf]
 leaf01
@@ -36,6 +37,8 @@ server03
 server04
 server05
 server06
+server07
+server08
 
 [pod1:children]
 fw

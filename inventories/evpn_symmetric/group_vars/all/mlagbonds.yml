@@ -17,5 +17,5 @@ mlagBondProfileC:
     - "bond-lacp-bypass-allow yes"
     - "mstpctl-bpduguard yes"
     - "mstpctl-portadminedge yes"
-mlagBondProfileFW:
-  bridge_vids: [101, 102]
+#mlagBondProfileFW:
+#  bridge_vids: [101, 102]
