@@ -1,4 +1,7 @@
 ---
 id: 2
-eth0_id: 12
+eth0_id: 7
 sysmac: AA
+netq_agent_conf:
+  latency: 599
+  buffer_occ: 0

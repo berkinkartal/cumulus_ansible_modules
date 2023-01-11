@@ -1,3 +1,6 @@
 ---
 id: 101
-eth0_id: 21
+eth0_id: 2
+netq_agent_conf:
+  latency: 592
+  buffer_occ: 80

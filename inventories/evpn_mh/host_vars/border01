@@ -1,5 +1,9 @@
 ---
 id: 63
-eth0_id: 63
+eth0_id: 16
 sysmac: FF
 es_df_pref: 50000
+msdp_member: border02
+netq_agent_conf:
+  latency: 632
+  buffer_occ: 10

@@ -2,12 +2,21 @@
 ansible_user=cumulus
 ansible_ssh_pass=CumulusLinux!
 
+[server:vars]
+ansible_user=ubuntu
+ansible_ssh_pass=nvidia
+
+[fw:vars]
+ansible_user=ubuntu
+ansible_ssh_pass=nvidia
+
 [border]
 border01
 border02
 
 [fw]
 fw1
+fw2
 
 [leaf]
 leaf01
@@ -24,8 +33,12 @@ spine04
 [server]
 server01
 server02
+server03
 server04
 server05
+server06
+server07
+server08
 
 [pod1:children]
 fw

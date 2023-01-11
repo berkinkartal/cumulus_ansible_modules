@@ -1,5 +1,0 @@
----
-grafana_version: 8.1.2
-arch: amd64
-grafana_filename: grafana-enterprise_{{ grafana_version }}_{{ arch }}.deb
-netq_plugin_filename: NetQ-DSplugin-3.3.1-plus.zip

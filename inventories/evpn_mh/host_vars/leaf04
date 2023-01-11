@@ -1,4 +1,7 @@
 ---
 id: 4
-eth0_id: 14
+eth0_id: 9
 sysmac: BB
+netq_agent_conf:
+  latency: 589
+  buffer_occ: 2

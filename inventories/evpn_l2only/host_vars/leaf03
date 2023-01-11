@@ -1,6 +1,9 @@
 ---
 id: 3
 vxlan_anycast_id: 34
-eth0_id: 13
+eth0_id: 8
 sysmac: BB
 mlag_neighbor: leaf04
+netq_agent_conf:
+  latency: 608
+  buffer_occ: 13

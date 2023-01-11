@@ -1,0 +1,35 @@
+      message:
+{% if inventory_hostname in groups['leaf'] %}
+        pre-login: "#####################################################################################
+                \n#  Welcome to NVIDIA Cumulus VX (TM) {{ vx_version }}                                            #
+                \n#  NVIDIA Cumulus VX (TM) is a community supported virtual appliance designed       #
+                \n#  for experiencing, testing and prototyping NVIDIA Cumulus' latest technology.     #
+                \n#  For any questions or technical support, visit our community site at:             #
+                \n#  https://www.nvidia.com/en-us/support                                             #
+                \n#####################################################################################"
+        post-login: "#####################################################################################
+                \n#                     You are successfully logged in to: {{ inventory_hostname }}                     #
+                \n#####################################################################################"
+{% elif inventory_hostname in groups['spine'] %}
+        pre-login: "######################################################################################
+                \n#  Welcome to NVIDIA Cumulus VX (TM) {{ vx_version }}                                             #
+                \n#  NVIDIA Cumulus VX (TM) is a community supported virtual appliance designed        #
+                \n#  for experiencing, testing and prototyping NVIDIA Cumulus' latest technology.      #
+                \n#  For any questions or technical support, visit our community site at:              #
+                \n#  https://www.nvidia.com/en-us/support                                              #
+                \n######################################################################################"
+        post-login: "######################################################################################
+                \n#                     You are successfully logged in to: {{ inventory_hostname }}                     #
+                \n######################################################################################"
+{% else %}
+        pre-login: "#######################################################################################
+                \n#  Welcome to NVIDIA Cumulus VX (TM) {{ vx_version }}                                              #
+                \n#  NVIDIA Cumulus VX (TM) is a community supported virtual appliance designed         #
+                \n#  for experiencing, testing and prototyping NVIDIA Cumulus' latest technology.       #
+                \n#  For any questions or technical support, visit our community site at:               #
+                \n#  https://www.nvidia.com/en-us/support                                               #
+                \n#######################################################################################"
+        post-login: "#######################################################################################
+                \n#                     You are successfully logged in to: {{ inventory_hostname }}                     #
+                \n#######################################################################################"
+{% endif %}       

@@ -1,0 +1,25 @@
+{% for interface in interfaces|default() %}
+      {{ interface.name }}:
+        link:
+          state:
+            up: {}
+        type: swp
+{% if interface.options == leaf_spine_interface and leaf_spine_interface.evpn_mh_uplink is defined %}
+        evpn:
+          multihoming:
+            uplink: on
+{% elif interface.options is not defined %}
+{% endif %}
+{% if interface.options == leaf_spine_interface and leaf_spine_interface.pim is defined %}
+        router:
+          pim:
+            enable: on            
+{% elif interface.options is not defined %}
+{% endif %}
+{% if interface.options == spine_leaf_interface and spine_leaf_interface.pim is defined %}
+        router:
+          pim:
+            enable: on  
+{% elif interface.options is not defined %}
+{% endif %}
+{%   endfor %}

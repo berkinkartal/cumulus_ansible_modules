@@ -1,5 +1,0 @@
----
-- name: reload ptmd
-  service:
-    name: ptmd
-    state: reloaded

@@ -1,6 +1,9 @@
 ---
 id: 63
 vxlan_anycast_id: 255
-eth0_id: 63
+eth0_id: 16
 sysmac: FF
 mlag_neighbor: border02
+netq_agent_conf:
+  latency: 632
+  buffer_occ: 10

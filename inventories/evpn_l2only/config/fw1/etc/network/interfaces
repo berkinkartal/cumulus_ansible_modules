@@ -1,46 +1,18 @@
-# Ansible Managed File
+# The loopback network interface
 auto lo
 iface lo inet loopback
-    address 127.0.0.1
 
+# The OOB network interface
 auto eth0
-iface eth0
-    vrf mgmt
-    address 192.168.200.61/24
+iface eth0 inet dhcp
 
-auto mgmt
-iface mgmt
-  vrf-table auto
-  address 127.0.0.1/8
-  address ::1/128
+# The data plane network interfaces
+auto eth1
+iface eth1
+  # Required for Vagrant
+  post-up ip link set promisc on dev eth1
 
-auto bridge
-iface bridge
-    bridge-ports borderBond 
-    bridge-vids 10 20  
-    bridge-vlan-aware yes
-
-auto vlan10
-iface vlan10
-    address 10.1.10.1/24
-    vlan-raw-device bridge
-    vlan-id 10
-
-auto vlan20
-iface vlan20
-    address 10.1.20.1/24
-    vlan-raw-device bridge
-    vlan-id 20
-
-auto swp1
-iface swp1
-    alias bond member of borderBond
-auto swp2
-iface swp2
-    alias bond member of borderBond
-auto borderBond
-iface borderBond
-    bond-slaves swp1 swp2 
-    bridge-vids 10 20
-    mtu 9000
-
+auto eth2
+iface eth2
+  # Required for Vagrant
+  post-up ip link set promisc on dev eth2

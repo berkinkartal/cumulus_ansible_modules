@@ -1,0 +1,170 @@
+- set:
+    system:
+      hostname: spine02
+      timezone: Etc/UTC
+      message:
+        pre-login: "######################################################################################
+                \n#  Welcome to NVIDIA Cumulus VX (TM) 5.1                                             #
+                \n#  NVIDIA Cumulus VX (TM) is a community supported virtual appliance designed        #
+                \n#  for experiencing, testing and prototyping NVIDIA Cumulus' latest technology.      #
+                \n#  For any questions or technical support, visit our community site at:              #
+                \n#  https://www.nvidia.com/en-us/support                                              #
+                \n######################################################################################"
+        post-login: "######################################################################################
+                \n#                     You are successfully logged in to: spine02                     #
+                \n######################################################################################"
+       
+    evpn:
+      enable: on
+    router:
+      bgp:
+        enable: on
+      pim:
+        enable: on
+        timers:
+          keep-alive: 3600
+    vrf:
+      default:
+        router:
+          bgp:
+            router-id: 10.10.10.102
+            autonomous-system: 65100
+            neighbor:
+              swp1:
+                peer-group: underlay
+                type: unnumbered
+              swp2:
+                peer-group: underlay
+                type: unnumbered
+              swp3:
+                peer-group: underlay
+                type: unnumbered
+              swp4:
+                peer-group: underlay
+                type: unnumbered
+              swp5:
+                peer-group: underlay
+                type: unnumbered
+              swp6:
+                peer-group: underlay
+                type: unnumbered
+            enable: on
+            peer-group:
+              underlay:
+                remote-as: external
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+            address-family:
+              ipv4-unicast:
+                redistribute:
+                  connected:
+                    enable: on
+                enable: on
+              l2vpn-evpn:
+                enable: on
+          pim:
+            address-family: 
+              ipv4-unicast:
+                rp:
+                  10.10.100.100:
+                    group-range:
+                      224.1.1.0/24: {}
+            ecmp:
+              enable: on
+            enable: on 
+      mgmt:
+        router:
+          static:
+            0.0.0.0/0:
+              via:
+                192.168.200.1:
+                  type: ipv4-address
+              address-family: ipv4-unicast
+    interface:
+      eth0:
+        ip:
+          vrf: mgmt
+          address:
+            192.168.200.3/24: {}
+        type: eth
+      lo:
+        ip:
+          address:
+            10.10.10.102/32: {}
+        router:
+          pim:
+            address-family:
+              ipv4-unicast:
+                use-source: 10.10.10.102
+            enable: on   
+        type: loopback
+      swp1:
+        link:
+          state:
+            up: {}
+        type: swp
+        router:
+          pim:
+            enable: on  
+      swp2:
+        link:
+          state:
+            up: {}
+        type: swp
+        router:
+          pim:
+            enable: on  
+      swp3:
+        link:
+          state:
+            up: {}
+        type: swp
+        router:
+          pim:
+            enable: on  
+      swp4:
+        link:
+          state:
+            up: {}
+        type: swp
+        router:
+          pim:
+            enable: on  
+      swp5:
+        link:
+          state:
+            up: {}
+        type: swp
+        router:
+          pim:
+            enable: on  
+      swp6:
+        link:
+          state:
+            up: {}
+        type: swp
+        router:
+          pim:
+            enable: on  
+    service:
+      dns:
+        mgmt:
+          server:
+            1.1.1.1: {}
+            8.8.8.8: {}
+      ntp:
+        mgmt:
+          server:
+            0.cumulusnetworks.pool.ntp.org:
+              iburst: on
+            1.cumulusnetworks.pool.ntp.org:
+              iburst: on
+            2.cumulusnetworks.pool.ntp.org:
+              iburst: on
+            3.cumulusnetworks.pool.ntp.org:
+              iburst: on
+      syslog:
+        mgmt:
+          server:
+            192.168.200.1: {}           

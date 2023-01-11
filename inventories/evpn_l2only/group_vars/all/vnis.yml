@@ -9,3 +9,8 @@ vni20:
   bridge:
     access: 20
   vxlan_id: 20
+vni30:
+  name: vni30
+  bridge:
+    access: 30
+  vxlan_id: 30

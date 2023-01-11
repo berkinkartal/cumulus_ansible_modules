@@ -1,33 +1,12 @@
 ---
-- name: Remove apps3 http source
-  ansible.builtin.apt_repository:
-    repo: deb http://apps3.cumulusnetworks.com/repos/deb bionic netq-latest
-    state: absent
-    filename: apps3_cumulusnetworks_com_repos_deb
-
-- name: Add apps3 https source
-  ansible.builtin.apt_repository:
-    repo: deb https://apps3.cumulusnetworks.com/repos/deb CumulusLinux-4 netq-latest
-    state: present
-    filename: apps3_cumulusnetworks_com_repos_deb
-
 - name: Package installs
   apt:
     pkg:
-      - ntp
       - lldpd
+      - ifupdown2
+      - chrony
+      - iperf
     state: present
-
-- name: Set time zone
-  timezone:
-    name: "{{ ntp.timezone }}"
-
-- name: Configure NTP service configuration
-  template:
-    src: ntp.j2
-    dest: /etc/ntp.conf
-    mode: 0644
-  notify: restart ntp
 
 - name: Force all notified handlers to run at this point, not waiting for normal sync points
   meta: flush_handlers
@@ -45,3 +24,15 @@
     dest: /etc/network/interfaces
     mode: 0644
   notify: restart networking
+  when: 
+    - inventory_hostname in groups["server"]
+    - inventory_hostname != 'server07'
+    - inventory_hostname != 'server08'
+    
+- name: Push interfaces config to unused servers
+  template:
+    src: interfaces_unused_srv.j2
+    dest: /etc/network/interfaces
+    mode: 0644
+  notify: restart networking
+  when: (inventory_hostname in groups["fw"]) or (inventory_hostname == 'server07') or (inventory_hostname == 'server08')

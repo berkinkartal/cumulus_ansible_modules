@@ -6,9 +6,13 @@ loopback:
   pim:
     source: "{{ pim.source }}"
   igmp: true
+global_anycast_mac: "{{ evpn_mh_sysmac_prefix }}:{{ sysmac }}"
 eth0:
   ips:
     - "{{ eth0_ip }}"
+netq_agent_fa:
+  latency: "{{ netq_agent_conf.latency }}"
+  buffer_occ: "{{ netq_agent_conf.buffer_occ }}"
 interfaces:
   - name: swp51
     options: "{{ leaf_spine_interface }}"
@@ -22,7 +26,7 @@ bonds:
   - name: bond1
     ports: [swp1]
     es_id: 1
-    es_df_pref: "{{ es_df_pref | default( 1 ) }}"
+    es_df_pref: "{{ es_df_pref | default() }}"
     bridge:
       access: 10
     options:
@@ -34,7 +38,7 @@ bonds:
   - name: bond2
     ports: [swp2]
     es_id: 2
-    es_df_pref: "{{ es_df_pref | default( 1 ) }}"
+    es_df_pref: "{{ es_df_pref | default() }}"
     bridge:
       access: 20
     options:
@@ -46,7 +50,7 @@ bonds:
   - name: bond3
     ports: [swp3]
     es_id: 3
-    es_df_pref: "{{ es_df_pref | default( 1 ) }}"
+    es_df_pref: "{{ es_df_pref | default() }}"
     bridge:
       access: 30
     options:
@@ -55,7 +59,7 @@ bonds:
         - bond-lacp-bypass-allow yes
         - mstpctl-bpduguard yes
         - mstpctl-portadminedge yes
-vnis:
+vnis_vrr:
   - "{{ vni10 }}"
   - "{{ vni20 }}"
   - "{{ vni30 }}"
@@ -106,9 +110,11 @@ bgp:
       neighbors:
         - {interface: underlay, activate: true}
       advertise_all_vni: true
+      advertise_svi_ip: true
   vrfs:
     - name: RED
       router_id: "{{ vxlan_local_loopback | ipaddr('address') }}"
+      vxlan_id_nvue: 4001
       address_family:
         - name: ipv4_unicast
           redistribute:
@@ -118,6 +124,7 @@ bgp:
             - "advertise ipv4 unicast"
     - name: BLUE
       router_id: "{{ vxlan_local_loopback | ipaddr('address') }}"
+      vxlan_id_nvue: 4002
       address_family:
         - name: ipv4_unicast
           redistribute:
@@ -125,3 +132,11 @@ bgp:
         - name: l2vpn_evpn
           extras:
             - "advertise ipv4 unicast"
+pim:
+  address_family:
+    - name: ipv4-unicast
+  source: "{{ bgp.router_id|default() }}"
+  ecmp: true
+  keep_alive: 3600
+  rp_mcast_range: 224.1.1.0/24
+  rpaddr: 10.10.100.100/32

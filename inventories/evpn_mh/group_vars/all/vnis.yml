@@ -5,40 +5,37 @@ vni10:
   bridge:
     access: 10
   vxlan_id: 10
-  extras:
-    - "vxlan-mcastgrp {{ pim.rp_mcast_range | nthhost( 10 ) }}"
+  extras: "{{ pim.rp_mcast_range | nthhost( 10 ) }}"
 vni20:
   name: vni20
   type: "l2"
   bridge:
     access: 20
   vxlan_id: 20
-  extras:
-    - "vxlan-mcastgrp {{ pim.rp_mcast_range | nthhost( 20 ) }}"
+  extras: "{{ pim.rp_mcast_range | nthhost( 20 ) }}"
 vni30:
   name: vni30
   type: "l2"
   bridge:
     access: 30
   vxlan_id: 30
-  extras:
-    - "vxlan-mcastgrp {{ pim.rp_mcast_range | nthhost( 30 ) }}"
-vni101:
-  name: vni101
-  type: "l2"
-  bridge:
-    access: 101
-  vxlan_id: 101
-  extras:
-    - "vxlan-mcastgrp {{ pim.rp_mcast_range | nthhost( 101 ) }}"
-vni102:
-  name: vni102
-  type: "l2"
-  bridge:
-    access: 102
-  vxlan_id: 102
-  extras:
-    - "vxlan-mcastgrp {{ pim.rp_mcast_range | nthhost( 102 ) }}"
+  extras: "{{ pim.rp_mcast_range | nthhost( 30 ) }}"
+#vni101:
+#  name: vni101
+#  type: "l2"
+#  bridge:
+#    access: 101
+#  vxlan_id: 101
+#  extras:
+#    - "vxlan-mcastgrp {{ pim.rp_mcast_range | nthhost( 101 ) }}"
+#vni102:
+#  name: vni102
+#  type: "l2"
+#  bridge:
+#    access: 102
+#  vxlan_id: 102
+#  extras:
+#    - "vxlan-mcastgrp {{ pim.rp_mcast_range | nthhost( 102 ) }}"
 vniRED:
   name: vniRED
   type: "l3"

@@ -1,0 +1,12 @@
+- set:
+    system:
+     config:
+       snippet:
+         tacacs-config:
+           file: "/etc/tacplus_servers"
+           content: |
+             secret={{ tacacs.secret }}
+{% for tac_server in tacacs.server_ips %}
+             server={{ tac_server }}
+{% endfor %}
+             vrf={{ tacacs.vrf|default("mgmt") }}

@@ -8,49 +8,56 @@ loopback:
   pim:
     source: "{{ pim.source }}"
   igmp: true
+global_anycast_mac: "{{ evpn_mh_sysmac_prefix }}:{{ sysmac }}"
 eth0:
   ips:
     - "{{ eth0_ip }}"
+netq_agent_fa:
+  latency: "{{ netq_agent_conf.latency }}"
+  buffer_occ: "{{ netq_agent_conf.buffer_occ }}"
 interfaces:
+  - {name: swp1, options: }
+  - {name: swp2, options: }
+  - {name: swp3, options: }
+  - {name: swp4, options: }
   - {name: swp51, options: "{{ leaf_spine_interface }}"}
   - {name: swp52, options: "{{ leaf_spine_interface }}"}
   - {name: swp53, options: "{{ leaf_spine_interface }}"}
   - {name: swp54, options: "{{ leaf_spine_interface }}"}
-bonds:
-  - name: "bond1"
-    ports: ["swp3"]
-    es_id: 1
-    es_df_pref: "{{ es_df_pref | default( 1 ) }}"
-    bridge:
-      vids: [101, 102]
-    options:
-      mtu: 9000
-vnis:
-  - "{{ vni101 }}"
-  - "{{ vni102 }}"
+#bonds:
+#  - name: "bond1"
+#    ports: ["swp3"]
+#    es_id: 1
+#    es_df_pref: "{{ es_df_pref | default( 1 ) }}"
+#    bridge:
+#      vids: [101, 102]
+#    options:
+#      mtu: 9000
+vnis_vrr:
+#  - "{{ vni101 }}"
+#  - "{{ vni102 }}"
   - "{{ vniRED }}"
   - "{{ vniBLUE }}"
 bridge:
   ports:
-    - "{{ vni101.name }}"
-    - "{{ vni102.name }}"
+#    - "{{ vni101.name }}"
+#    - "{{ vni102.name }}"
     - "{{ vniRED.name }}"
     - "{{ vniBLUE.name }}"
-    - "bond1"
-  vids:
-    - 101
-    - 102
+#    - "bond1"
+#  vids:
+#    - 101
+#    - 102
 msdp:
-  mesh:
-    - border01
-    - border02
+  mesh_group: rpmesh
   source: "{{ vxlan_local_loopback | ipaddr('address') }}"
 evpn_mh:
+  startup_delay: 10
   rp: true
   sysmac: "{{ evpn_mh_sysmac_prefix }}:{{ sysmac }}"
 vlans:
-  - "{{ vlan101 }}"
-  - "{{ vlan102 }}"
+#  - "{{ vlan101 }}"
+#  - "{{ vlan102 }}"
   - "{{ vlan4001 }}"
   - "{{ vlan4002 }}"
 vrfs:
@@ -75,9 +82,11 @@ bgp:
       neighbors:
         - {interface: underlay, activate: true}
       advertise_all_vni: true
+      advertise_svi_ip: true
   vrfs:
     - name: RED
       router_id: "{{ vxlan_local_loopback | ipaddr('address') }}"
+      vxlan_id_nvue: 4001
       address_family:
         - name: ipv4_unicast
           redistribute:
@@ -87,6 +96,7 @@ bgp:
             - "advertise ipv4 unicast"
     - name: BLUE
       router_id: "{{ vxlan_local_loopback | ipaddr('address') }}"
+      vxlan_id_nvue: 4002
       address_family:
         - name: ipv4_unicast
           redistribute:

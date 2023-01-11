@@ -1,10 +1,16 @@
-### Servers Role
+# Servers Role
 
-Configure Ubuntu Servers for testing
+Configures Ubuntu servers with the following settings:
+ - Chrony service for NTP 
+ - Uplink interface (bond) with:
+   - Access VLAN
+   - IP address 
+   - Default-gateway 
+ - iperf for traffic generation between servers (if needed for NetQ testing etc.)
 
-##### Example 
+## Example 
 
-```python
+```
 devices:
   server01:
     bond:
@@ -13,13 +19,5 @@ devices:
       route:
         dest: 10.0.0.0/8
         nexthop: 10.1.10.1
-ntp:
-  timezone: America/Los_Angeles
-  server_ips:
-    - 0.cumulusnetworks.pool.ntp.org
-    - 1.cumulusnetworks.pool.ntp.org
-    - 2.cumulusnetworks.pool.ntp.org
-    - 3.cumulusnetworks.pool.ntp.org
-
 ```
 

@@ -1,0 +1,355 @@
+- set:
+    system:
+      hostname: leaf02
+      global:
+        anycast-mac: 44:38:39:BE:EF:AA
+      timezone: Etc/UTC
+      message:
+        pre-login: "#####################################################################################
+                \n#  Welcome to NVIDIA Cumulus VX (TM) 5.1                                            #
+                \n#  NVIDIA Cumulus VX (TM) is a community supported virtual appliance designed       #
+                \n#  for experiencing, testing and prototyping NVIDIA Cumulus' latest technology.     #
+                \n#  For any questions or technical support, visit our community site at:             #
+                \n#  https://www.nvidia.com/en-us/support                                             #
+                \n#####################################################################################"
+        post-login: "#####################################################################################
+                \n#                     You are successfully logged in to: leaf02                     #
+                \n#####################################################################################"
+       
+    bridge: 
+      domain: 
+        br_default:
+          type: vlan-aware
+          vlan:
+           '10':
+             vni:
+               '10':
+                 flooding:
+                   enable: on
+                   multicast-group: 224.1.1.10
+           '20':
+             vni:
+               '20':
+                 flooding:
+                   enable: on
+                   multicast-group: 224.1.1.20
+           '30':
+             vni:
+               '30':
+                 flooding:
+                   enable: on
+                   multicast-group: 224.1.1.30
+    nve:
+      vxlan:
+        enable: on
+        source:
+          address: 10.10.10.2
+        arp-nd-suppress: on
+    evpn:
+      enable: on
+      route-advertise:
+        svi-ip: on
+      multihoming:
+        enable: on
+        startup-delay: 10
+    router:
+      bgp:
+        enable: on
+      pim:
+        enable: on
+        timers:
+          keep-alive: 3600
+    vrf:
+      default:
+        router:
+          bgp:
+            router-id: 10.10.10.2
+            autonomous-system: 65102
+            neighbor:
+              swp51:
+                peer-group: underlay
+                type: unnumbered
+              swp52:
+                peer-group: underlay
+                type: unnumbered
+              swp53:
+                peer-group: underlay
+                type: unnumbered
+              swp54:
+                peer-group: underlay
+                type: unnumbered
+            enable: on
+            peer-group:
+              underlay:
+                remote-as: external
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+            address-family:
+              ipv4-unicast:
+                redistribute:
+                  connected:
+                    enable: on
+                enable: on
+              l2vpn-evpn:
+                enable: on
+          pim:
+            address-family: 
+              ipv4-unicast:
+                rp:
+                  10.10.100.100:
+                    group-range:
+                      224.1.1.0/24: {}
+            ecmp:
+              enable: on
+            enable: on 
+      RED:
+        router:
+          bgp:
+            autonomous-system: 65102
+            enable: on
+            router-id: 10.10.10.2
+            address-family:
+              ipv4-unicast:
+                redistribute:
+                  connected:
+                    enable: on
+                enable: on
+              l2vpn-evpn:
+                enable: on
+        evpn:
+          vni:
+            '4001': {}
+          enable: on
+      BLUE:
+        router:
+          bgp:
+            autonomous-system: 65102
+            enable: on
+            router-id: 10.10.10.2
+            address-family:
+              ipv4-unicast:
+                redistribute:
+                  connected:
+                    enable: on
+                enable: on
+              l2vpn-evpn:
+                enable: on
+        evpn:
+          vni:
+            '4002': {}
+          enable: on
+      mgmt:
+        router:
+          static:
+            0.0.0.0/0:
+              via:
+                192.168.200.1:
+                  type: ipv4-address
+              address-family: ipv4-unicast
+    interface:
+      eth0:
+        ip:
+          vrf: mgmt
+          address:
+            192.168.200.7/24: {}
+        type: eth
+      lo:
+        ip:
+          address:
+            10.10.10.2/32: {}
+        router:
+          pim:
+            address-family:
+              ipv4-unicast:
+                use-source: 10.10.10.2
+            enable: on   
+        type: loopback
+      swp51:
+        link:
+          state:
+            up: {}
+        type: swp
+        evpn:
+          multihoming:
+            uplink: on
+        router:
+          pim:
+            enable: on            
+      swp52:
+        link:
+          state:
+            up: {}
+        type: swp
+        evpn:
+          multihoming:
+            uplink: on
+        router:
+          pim:
+            enable: on            
+      swp53:
+        link:
+          state:
+            up: {}
+        type: swp
+        evpn:
+          multihoming:
+            uplink: on
+        router:
+          pim:
+            enable: on            
+      swp54:
+        link:
+          state:
+            up: {}
+        type: swp
+        evpn:
+          multihoming:
+            uplink: on
+        router:
+          pim:
+            enable: on            
+      bond1:
+        bond:
+          mode: lacp
+          member:
+            swp1: {}
+          lacp-bypass: on
+        type: bond
+        bridge:
+          domain:
+            br_default:
+              access: 10
+              stp:
+                bpdu-guard: on
+                auto-edge: on
+                admin-edge: on
+        evpn:
+          multihoming:
+            segment:
+              enable: on
+              local-id: 1
+              mac-address: 44:38:39:BE:EF:AA
+        link:
+          mtu: 9000
+      bond2:
+        bond:
+          mode: lacp
+          member:
+            swp2: {}
+          lacp-bypass: on
+        type: bond
+        bridge:
+          domain:
+            br_default:
+              access: 20
+              stp:
+                bpdu-guard: on
+                auto-edge: on
+                admin-edge: on
+        evpn:
+          multihoming:
+            segment:
+              enable: on
+              local-id: 2
+              mac-address: 44:38:39:BE:EF:AA
+        link:
+          mtu: 9000
+      bond3:
+        bond:
+          mode: lacp
+          member:
+            swp3: {}
+          lacp-bypass: on
+        type: bond
+        bridge:
+          domain:
+            br_default:
+              access: 30
+              stp:
+                bpdu-guard: on
+                auto-edge: on
+                admin-edge: on
+        evpn:
+          multihoming:
+            segment:
+              enable: on
+              local-id: 3
+              mac-address: 44:38:39:BE:EF:AA
+        link:
+          mtu: 9000
+      vlan10:
+        ip:
+          address:
+            10.1.10.3/24: {}
+          igmp:
+            enable: on
+          vrr:
+            address:
+              10.1.10.1/24: {}
+            mac-address: 00:00:00:00:00:10
+            state:
+              up: {}
+          vrf: RED
+        router:
+          pim:
+            enable: on
+        vlan: 10
+        type: svi
+      vlan20:
+        ip:
+          address:
+            10.1.20.3/24: {}
+          igmp:
+            enable: on
+          vrr:
+            address:
+              10.1.20.1/24: {}
+            mac-address: 00:00:00:00:00:20
+            state:
+              up: {}
+          vrf: RED
+        router:
+          pim:
+            enable: on
+        vlan: 20
+        type: svi
+      vlan30:
+        ip:
+          address:
+            10.1.30.3/24: {}
+          igmp:
+            enable: on
+          vrr:
+            address:
+              10.1.30.1/24: {}
+            mac-address: 00:00:00:00:00:30
+            state:
+              up: {}
+          vrf: BLUE
+        router:
+          pim:
+            enable: on
+        vlan: 30
+        type: svi
+    service:
+      dns:
+        mgmt:
+          server:
+            1.1.1.1: {}
+            8.8.8.8: {}
+      ntp:
+        mgmt:
+          server:
+            0.cumulusnetworks.pool.ntp.org:
+              iburst: on
+            1.cumulusnetworks.pool.ntp.org:
+              iburst: on
+            2.cumulusnetworks.pool.ntp.org:
+              iburst: on
+            3.cumulusnetworks.pool.ntp.org:
+              iburst: on
+      syslog:
+        mgmt:
+          server:
+            192.168.200.1: {}           

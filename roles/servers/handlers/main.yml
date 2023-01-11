@@ -3,14 +3,14 @@
   become: true
   command: ifreload -a
 
-- name: restart ntp
-  service:
-    name: ntp
-    state: restarted
-    enabled: true
-
 - name: restart lldpd
   service:
     name: lldpd
+    state: restarted
+    enabled: true
+
+- name: restart chrony
+  service:
+    name: chrony
     state: restarted
     enabled: true

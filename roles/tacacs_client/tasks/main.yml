@@ -2,27 +2,23 @@
   apt:
     name: tacplus-client
     state: present
-    update_cache: true
+#    update_cache: true
 
-- name: Configure Authentication and Authorization
-  template:
-    src: tacplus_servers.j2
-    dest: /etc/tacplus_servers
-    mode: 0600
+# NVUE configuration snippet used for tacplus_servers file creation
+#- name: Configure Authentication and Authorization
+#  template:
+#    src: tacplus_servers.j2
+#    dest: /etc/tacplus_servers
+#    mode: 0600
 
 - name: Configure Accounting
   template:
     src: tacplus_accounting.j2
     dest: /etc/audisp/audisp-tac_plus.conf
     mode: 0644
-  notify: restart auditd
-
-- name: Setup NCLU to allow show for TACACS users
-  lineinfile:
-    path: /etc/netd.conf
-    regexp: "^groups_with_show"
-    line: "groups_with_show = netshow, tacacs"
-  notify: restart nclu
+  notify: 
+    - restart auditd
+    - restart nvue
 
 - name: Change Syslog Permissions so All Users can see Syslog
   lineinfile:

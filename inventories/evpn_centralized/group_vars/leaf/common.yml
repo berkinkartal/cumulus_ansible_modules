@@ -8,6 +8,9 @@ loopback:
 eth0:
   ips:
     - "{{ eth0_ip }}"
+netq_agent_fa:
+  latency: "{{ netq_agent_conf.latency }}"
+  buffer_occ: "{{ netq_agent_conf.buffer_occ }}"
 interfaces:
   - name: swp51
     options: "{{ leaf_spine_interface }}"
@@ -40,19 +43,34 @@ bonds:
         - bond-lacp-bypass-allow yes
         - mstpctl-bpduguard yes
         - mstpctl-portadminedge yes
+  - name: bond3
+    ports: [swp3]
+    clag_id: 3
+    bridge:
+      access: 30
+    options:
+      mtu: 9000
+      extras:
+        - bond-lacp-bypass-allow yes
+        - mstpctl-bpduguard yes
+        - mstpctl-portadminedge yes
 vnis:
   - "{{ vni10 }}"
   - "{{ vni20 }}"
+  - "{{ vni30 }}"
 bridge:
   ports:
     - "{{ vni10.name }}"
     - "{{ vni20.name }}"
+    - "{{ vni30.name }}"
     - "peerlink"
     - "bond1"
     - "bond2"
+    - "bond3"
   vids:
     - 10
     - 20
+    - 30
 mlag:
   sysmac: "{{ mlag_sysmac_prefix }}:{{ sysmac }}"
   priority: primary
@@ -62,6 +80,7 @@ mlag:
 vlans:
   - "{{ vlan10 }}"
   - "{{ vlan20 }}"
+  - "{{ vlan30 }}"
 vrfs:
   - "{{ vrf_mgmt }}"
 bgp:

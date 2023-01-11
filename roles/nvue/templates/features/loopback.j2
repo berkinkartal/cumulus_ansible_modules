@@ -1,0 +1,16 @@
+      lo:
+        ip:
+          address:
+{% for loopback in loopback.ips|default('127.0.0.1') %}
+            {{ loopback }}: {}
+{% endfor %}
+{% if pim is defined %}
+        router:
+          pim:
+            address-family:
+              ipv4-unicast:
+                use-source: {{ pim.source }}
+            enable: on
+{%- endif %}   
+        type: loopback
+

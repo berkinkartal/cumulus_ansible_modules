@@ -1,0 +1,75 @@
+- name: Drop the nvue yaml
+  template:
+    src: "nvue.j2"
+    dest: /etc/nvue.d/startup.yaml
+    owner: nvue
+    group: nvue
+    mode: 0644
+
+- name: nvue config replace
+  ansible.builtin.shell: nv config replace /etc/nvue.d/startup.yaml
+
+- name: create snmp snippet
+  template:
+    src: "snmp.j2"
+    dest: ./snmp.yaml
+    owner: nvue
+    group: nvue
+    mode: 0644    
+
+- name: apply snmp snippet
+  ansible.builtin.shell: nv config patch ./snmp.yaml
+
+- name: create tacacs_client snippet
+  template:
+    src: "tacplus.j2"
+    dest: ./tacacs.yaml
+    owner: nvue
+    group: nvue
+    mode: 0644    
+
+- name: apply tacacs_client snippet
+  ansible.builtin.shell: nv config patch ./tacacs.yaml
+
+- name: nvue config apply
+  ansible.builtin.shell: nv config apply -y
+
+- name: Update console banner 
+  lineinfile:
+    path: "{{ item }}"
+    regexp: 'Note'
+    state: absent
+  with_items:
+    - /etc/issue 
+
+- name: Update default creds in console banner
+  replace:
+    path: "{{ item }}"
+    regexp:  '# Password: cumulus                                                        #'
+    replace: "# Password: CumulusLinux!                                                  #"
+  with_items:
+    - /etc/issue 
+
+- name: cleanup of pre and post login banners
+  lineinfile:
+    path: "{{ item }}"
+    regexp: '(NVUE|md5sum|Note)'
+    line: '\1\2\3'
+    state: absent
+  with_items:
+    - /etc/motd
+    - /etc/issue.net
+  notify: restart sshd
+
+- name: update netq-agent config on leafs
+  lineinfile:
+    path: /etc/netq/netq.yml
+    insertafter: 'netq-agent:'
+    line: "{{ item }}"
+  with_items: 
+    - '  test_fa_latency: {{netq_agent_fa.latency}}'
+    - '  test_fa_occ: {{netq_agent_fa.buffer_occ}}'
+  notify: restart netq-agent
+
+- name: Force all notified handlers to run at this point, not waiting for normal syn$
+  meta: flush_handlers

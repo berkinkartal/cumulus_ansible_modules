@@ -1,0 +1,218 @@
+- set:
+    system:
+      hostname: leaf02
+      timezone: Etc/UTC
+      message:
+        pre-login: "#####################################################################################
+                \n#  Welcome to NVIDIA Cumulus VX (TM) 5.1                                            #
+                \n#  NVIDIA Cumulus VX (TM) is a community supported virtual appliance designed       #
+                \n#  for experiencing, testing and prototyping NVIDIA Cumulus' latest technology.     #
+                \n#  For any questions or technical support, visit our community site at:             #
+                \n#  https://www.nvidia.com/en-us/support                                             #
+                \n#####################################################################################"
+        post-login: "#####################################################################################
+                \n#                     You are successfully logged in to: leaf02                     #
+                \n#####################################################################################"
+       
+    bridge: 
+      domain: 
+        br_default:
+          type: vlan-aware
+          vlan:
+            '10':
+              vni:
+                '10': {}
+            '20':
+              vni:
+                '20': {}
+            '30':
+              vni:
+                '30': {}
+    nve:
+      vxlan:
+        enable: on
+        source:
+          address: 10.10.10.2
+        mlag:
+          shared-address: 10.0.1.12
+        arp-nd-suppress: on
+    evpn:
+      enable: on
+    router:
+      bgp:
+        enable: on
+    vrf:
+      default:
+        router:
+          bgp:
+            router-id: 10.10.10.2
+            autonomous-system: 65102
+            neighbor:
+              peerlink.4094:
+                peer-group: underlay
+                type: unnumbered
+              swp51:
+                peer-group: underlay
+                type: unnumbered
+              swp52:
+                peer-group: underlay
+                type: unnumbered
+              swp53:
+                peer-group: underlay
+                type: unnumbered
+              swp54:
+                peer-group: underlay
+                type: unnumbered
+            enable: on
+            peer-group:
+              underlay:
+                remote-as: external
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+            address-family:
+              ipv4-unicast:
+                redistribute:
+                  connected:
+                    enable: on
+                enable: on
+              l2vpn-evpn:
+                enable: on
+      mgmt:
+        router:
+          static:
+            0.0.0.0/0:
+              via:
+                192.168.200.1:
+                  type: ipv4-address
+              address-family: ipv4-unicast
+    interface:
+      eth0:
+        ip:
+          vrf: mgmt
+          address:
+            192.168.200.7/24: {}
+        type: eth
+      lo:
+        ip:
+          address:
+            10.10.10.2/32: {}
+        type: loopback
+      swp51:
+        link:
+          state:
+            up: {}
+        type: swp
+      swp52:
+        link:
+          state:
+            up: {}
+        type: swp
+      swp53:
+        link:
+          state:
+            up: {}
+        type: swp
+      swp54:
+        link:
+          state:
+            up: {}
+        type: swp
+      bond1:
+        bond:
+          mode: lacp
+          member:
+            swp1: {}
+          mlag:
+            id: 1
+          lacp-bypass: on
+        type: bond
+        bridge:
+          domain:
+            br_default:
+              access: 10
+              stp:
+                bpdu-guard: on
+                auto-edge: on
+                admin-edge: on
+        link:
+          mtu: 9000
+      bond2:
+        bond:
+          mode: lacp
+          member:
+            swp2: {}
+          mlag:
+            id: 2
+          lacp-bypass: on
+        type: bond
+        bridge:
+          domain:
+            br_default:
+              access: 20
+              stp:
+                bpdu-guard: on
+                auto-edge: on
+                admin-edge: on
+        link:
+          mtu: 9000
+      bond3:
+        bond:
+          mode: lacp
+          member:
+            swp3: {}
+          mlag:
+            id: 3
+          lacp-bypass: on
+        type: bond
+        bridge:
+          domain:
+            br_default:
+              access: 30
+              stp:
+                bpdu-guard: on
+                auto-edge: on
+                admin-edge: on
+        link:
+          mtu: 9000
+      peerlink:
+        bond:
+          member:
+            swp49: {}
+            swp50: {}
+        type: peerlink
+        bridge:
+          domain:
+            br_default: {}
+      peerlink.4094:
+        type: sub
+        base-interface: peerlink
+        vlan: 4094
+    service:
+      dns:
+        mgmt:
+          server:
+            1.1.1.1: {}
+            8.8.8.8: {}
+      ntp:
+        mgmt:
+          server:
+            0.cumulusnetworks.pool.ntp.org:
+              iburst: on
+            1.cumulusnetworks.pool.ntp.org:
+              iburst: on
+            2.cumulusnetworks.pool.ntp.org:
+              iburst: on
+            3.cumulusnetworks.pool.ntp.org:
+              iburst: on
+      syslog:
+        mgmt:
+          server:
+            192.168.200.1: {}           
+    mlag:
+      peer-ip: linklocal
+      priority: 1000
+      mac-address: 44:38:39:BE:EF:AA
+      backup:
+        10.10.10.1: {}
+      init-delay: 10

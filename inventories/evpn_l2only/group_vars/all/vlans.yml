@@ -11,3 +11,27 @@ vlan20:
   extras:
     - "ip-forward off"
     - "ip6-forward off"
+vlan30:
+  name: vlan30
+  id: 30
+  extras:
+    - "ip-forward off"
+    - "ip6-forward off"
+vlan10_border:
+  name: vlan10
+  id: 10
+  extras:
+    - "ip-forward off"
+    - "ip6-forward off"
+vlan20_border:
+  name: vlan20
+  id: 20
+  extras:
+    - "ip-forward off"
+    - "ip6-forward off"
+vlan30_border:
+  name: vlan30
+  id: 30
+  extras:
+    - "ip-forward off"
+    - "ip6-forward off"

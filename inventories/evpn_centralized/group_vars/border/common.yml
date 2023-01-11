@@ -8,33 +8,43 @@ loopback:
 eth0:
   ips:
     - "{{ eth0_ip }}"
+netq_agent_fa:
+  latency: "{{ netq_agent_conf.latency }}"
+  buffer_occ: "{{ netq_agent_conf.buffer_occ }}"
 interfaces:
+  - {name: swp1, options: }
+  - {name: swp2, options: }
+  - {name: swp3, options: }
+  - {name: swp4, options: }
   - {name: swp51, options: "{{ leaf_spine_interface }}"}
   - {name: swp52, options: "{{ leaf_spine_interface }}"}
   - {name: swp53, options: "{{ leaf_spine_interface }}"}
   - {name: swp54, options: "{{ leaf_spine_interface }}"}
-bonds:
-  - name: "bond1"
-    ports: ["swp3"]
-    clag_id: 1
-    bridge:
-      vids: [101, 102]
-    options:
-      mtu: 9000
-vnis:
+#bonds:
+#  - name: "bond1"
+#    ports: ["swp3"]
+#    clag_id: 1
+#    bridge:
+#      vids: [101, 102]
+#    options:
+#      mtu: 9000
+vnis_vrr:
   - "{{ vni10 }}"
   - "{{ vni20 }}"
+  - "{{ vni30 }}"
 bridge:
   ports:
     - "{{ vni10.name }}"
     - "{{ vni20.name }}"
+    - "{{ vni30.name }}"    
     - "peerlink"
-    - "bond1"
+#    - "bond1"
   vids:
     - 10
     - 20
-    - 101
-    - 102
+    - 30
+#    - 101
+#    - 102
 mlag:
   sysmac: "{{ mlag_sysmac_prefix }}:{{ sysmac }}"
   priority: "{{ mlag_priority }}"
@@ -44,8 +54,9 @@ mlag:
 vlans:
   - "{{ vlan10_border }}"
   - "{{ vlan20_border }}"
-  - "{{ vlan101 }}"
-  - "{{ vlan102 }}"
+  - "{{ vlan30_border }}"
+#  - "{{ vlan101 }}"
+#  - "{{ vlan102 }}"
 vrfs:
   - "{{ vrf_mgmt }}"
 bgp:
@@ -68,3 +79,4 @@ bgp:
         - {interface: underlay, activate: true}
       advertise_all_vni: true
       advertise_default_gw: true
+      advertise_svi_ip: true

@@ -1,10 +1,15 @@
 ---
 backup:
-  path: "../inventories/{{ fabric_name }}/config/{{ inventory_hostname }}"
+  path: "../inventories/{{ fabric_name }}/config/{{ inventory_hostname }}" 
+backup_switch:
+  files:
+    - "/etc/nvue.d/startup.yaml" #single startup-config file
+#    - "/etc/network/interfaces"
+#    - "/etc/frr/frr.conf"
+#    - "/etc/frr/daemons"
+backup_host:
   files:
     - "/etc/network/interfaces"
-    - "/etc/frr/frr.conf"
-    - "/etc/frr/daemons"
 dns:
   domain: cumulusnetworks.com
   search_domain:
@@ -16,16 +21,14 @@ dns:
     vrf: mgmt
 snmp:
   addresses:
-    - "{{ eth0_ip | ipaddr('address') }}@mgmt"
-    - "udp6:[::1]:161@mgmt"
-  rocommunity:
-    - public
-    - private
+    - "{{ eth0_ip_snmp }}@mgmt"
+    - "udp6:[::1]:161"
+  rocommunity: public
 syslog:
   servers:
     - 192.168.200.1
 ntp:
-  timezone: America/Los_Angeles
+  timezone: Etc/UTC
   server_ips:
     - 0.cumulusnetworks.pool.ntp.org
     - 1.cumulusnetworks.pool.ntp.org
@@ -34,12 +37,8 @@ ntp:
 ssh:
   motd: |
     #########################################################
-    Successfully logged in to: {{ inventory_hostname }}
+    #      You are successfully logged in to: {{ inventory_hostname }}      #
     #########################################################
-  banner: |
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    Authorized Users Only!
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 tacacs:
   vrf: mgmt
   secret: tacacskey

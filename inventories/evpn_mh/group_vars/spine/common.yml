@@ -8,6 +8,9 @@ loopback:
 eth0:
   ips:
     - "{{ eth0_ip }}"
+netq_agent_fa:
+  latency: "{{ netq_agent_conf.latency }}"
+  buffer_occ: "{{ netq_agent_conf.buffer_occ }}"
 interfaces:
   - {name: swp1, options: "{{ spine_leaf_interface }}"}
   - {name: swp2, options: "{{ spine_leaf_interface }}"}

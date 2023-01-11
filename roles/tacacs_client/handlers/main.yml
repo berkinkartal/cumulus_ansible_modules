@@ -4,9 +4,9 @@
     state: restarted
     enabled: true
 
-- name: restart nclu
+- name: restart nvue
   service:
-    name: netd
+    name: nvued
     state: restarted
     enabled: true
 

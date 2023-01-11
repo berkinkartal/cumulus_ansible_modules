@@ -1,5 +1,8 @@
 ---
 id: 3
-eth0_id: 13
+eth0_id: 8
 sysmac: BB
 es_df_pref: 50000
+netq_agent_conf:
+  latency: 608
+  buffer_occ: 13

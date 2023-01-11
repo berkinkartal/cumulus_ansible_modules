@@ -1,7 +1,10 @@
 ---
 id: 64
 vxlan_anycast_id: 255
-eth0_id: 64
+eth0_id: 17
 sysmac: FF
 mlag_priority: secondary
 mlag_neighbor: border01
+netq_agent_conf:
+  latency: 602
+  buffer_occ: 3

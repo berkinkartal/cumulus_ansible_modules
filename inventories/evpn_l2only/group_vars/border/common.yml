@@ -8,19 +8,26 @@ loopback:
 eth0:
   ips:
     - "{{ eth0_ip }}"
+netq_agent_fa:
+  latency: "{{ netq_agent_conf.latency }}"
+  buffer_occ: "{{ netq_agent_conf.buffer_occ }}"
 interfaces:
+  - {name: swp1, options: }
+  - {name: swp2, options: }
+  - {name: swp3, options: }
+  - {name: swp4, options: }
   - {name: swp51, options: "{{ leaf_spine_interface }}"}
   - {name: swp52, options: "{{ leaf_spine_interface }}"}
   - {name: swp53, options: "{{ leaf_spine_interface }}"}
   - {name: swp54, options: "{{ leaf_spine_interface }}"}
-bonds:
-  - name: "bond1"
-    ports: ["swp3"]
-    clag_id: 1
-    bridge:
-      vids: [10, 20]
-    options:
-      mtu: 9000
+#bonds:
+#  - name: "bond1"
+#    ports: ["swp3"]
+#    clag_id: 1
+#    bridge:
+#      vids: [101, 102]
+#    options:
+#      mtu: 9000
 vrfs:
   - "{{ vrf_mgmt }}"
 vnis:
@@ -31,10 +38,11 @@ bridge:
     - "{{ vni10.name }}"
     - "{{ vni20.name }}"
     - "peerlink"
-    - "bond1"
+#    - "bond1"
   vids:
     - 10
     - 20
+    - 30
 mlag:
   sysmac: "{{ mlag_sysmac_prefix }}:{{ sysmac }}"
   priority: "{{ mlag_priority }}"
@@ -44,6 +52,7 @@ mlag:
 vlans:
   - "{{ vlan10 }}"
   - "{{ vlan20 }}"
+  - "{{ vlan30 }}"
 bgp:
   asn: "{{ bgp_asn_prefix }}{{ id }}"
   router_id: "{{ vxlan_local_loopback | ipaddr('address') }}"

@@ -1,10 +1,12 @@
 ---
 backup:
+    path: ../inventories/evpn_l2only/config/border01
+backup_host:
     files:
     - /etc/network/interfaces
-    - /etc/frr/frr.conf
-    - /etc/frr/daemons
-    path: ../inventories/evpn_l2only/config/border01
+backup_switch:
+    files:
+    - /etc/nvue.d/startup.yaml
 bgp:
     address_family:
     -   name: ipv4_unicast
@@ -37,27 +39,15 @@ bgp:
         remote_as: external
     router_id: 10.10.10.63
 bgp_asn_prefix: 651
-bonds:
--   bridge:
-        vids:
-        - 10
-        - 20
-    clag_id: 1
-    name: bond1
-    options:
-        mtu: 9000
-    ports:
-    - swp3
 bridge:
     ports:
     - vni10
     - vni20
     - peerlink
-    - bond1
     vids:
     - 10
     - 20
-discovered_interpreter_python: /usr/bin/python
+    - 30
 dns:
     domain: cumulusnetworks.com
     search_domain:
@@ -69,9 +59,10 @@ dns:
         vrf: mgmt
 eth0:
     ips:
-    - 192.168.200.63/24
-eth0_id: 63
-eth0_ip: 192.168.200.63/24
+    - 192.168.200.16/24
+eth0_id: 16
+eth0_ip: 192.168.200.16/24
+eth0_ip_snmp: 192.168.200.16
 eth0_subnet: 192.168.200.0/24
 fabric_name: evpn_l2only
 group_names:
@@ -81,6 +72,7 @@ groups:
     all:
     - netq-ts
     - fw1
+    - fw2
     - leaf01
     - leaf02
     - leaf03
@@ -93,13 +85,18 @@ groups:
     - border02
     - server01
     - server02
+    - server03
     - server04
     - server05
+    - server06
+    - server07
+    - server08
     border:
     - border01
     - border02
     fw:
     - fw1
+    - fw2
     leaf:
     - leaf01
     - leaf02
@@ -109,6 +106,7 @@ groups:
     - netq-ts
     pod1:
     - fw1
+    - fw2
     - leaf01
     - leaf02
     - leaf03
@@ -121,13 +119,21 @@ groups:
     - border02
     - server01
     - server02
+    - server03
     - server04
     - server05
+    - server06
+    - server07
+    - server08
     server:
     - server01
     - server02
+    - server03
     - server04
     - server05
+    - server06
+    - server07
+    - server08
     spine:
     - spine01
     - spine02
@@ -136,6 +142,10 @@ groups:
     ungrouped: []
 id: 63
 interfaces:
+-   name: swp1
+-   name: swp2
+-   name: swp3
+-   name: swp4
 -   name: swp51
     options:
         extras:
@@ -152,8 +162,8 @@ interfaces:
     options:
         extras:
         - alias to spine
-inventory_dir: /home/cumulus/cumulus_ansible_modules/inventories/evpn_l2only
-inventory_file: /home/cumulus/cumulus_ansible_modules/inventories/evpn_l2only/hosts
+inventory_dir: /home/ubuntu/cumulus_ansible_modules/inventories/evpn_l2only
+inventory_file: /home/ubuntu/cumulus_ansible_modules/inventories/evpn_l2only/hosts
 inventory_hostname: border01
 inventory_hostname_short: border01
 leaf_spine_interface:
@@ -184,10 +194,12 @@ mlagBondProfileB:
     - bond-lacp-bypass-allow yes
     - mstpctl-bpduguard yes
     - mstpctl-portadminedge yes
-mlagBondProfileFW:
-    bridge_vids:
-    - 10
-    - 20
+mlagBondProfileC:
+    bridge_access: 30
+    extras:
+    - bond-lacp-bypass-allow yes
+    - mstpctl-bpduguard yes
+    - mstpctl-portadminedge yes
 mlag_neighbor: border02
 mlag_priority: primary
 mlag_sysmac_prefix: 44:38:39:BE:EF
@@ -199,32 +211,29 @@ netq:
     cli_secret_key: long-key-1234567890
     cli_server: api.air.netq.cumulusnetworks.com
     version: latest
+netq_agent_border:
+    buffer_occ: 43
+    latency: 609
 ntp:
     server_ips:
     - 0.cumulusnetworks.pool.ntp.org
     - 1.cumulusnetworks.pool.ntp.org
     - 2.cumulusnetworks.pool.ntp.org
     - 3.cumulusnetworks.pool.ntp.org
-    timezone: America/Los_Angeles
-playbook_dir: /home/cumulus/cumulus_ansible_modules/playbooks
+    timezone: Etc/UTC
+playbook_dir: /home/ubuntu/cumulus_ansible_modules/playbooks
 snmp:
     addresses:
-    - 192.168.200.63@mgmt
-    - udp6:[::1]:161@mgmt
-    rocommunity:
-    - public
-    - private
+    - 192.168.200.16@mgmt
+    - udp6:[::1]:161
+    rocommunity: public
 spine_leaf_interface:
     extras:
     - alias to leaf
 ssh:
-    banner: |-
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        Authorized Users Only!
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     motd: |-
         #########################################################
-        Successfully logged in to: border01
+        #      You are successfully logged in to: border01      #
         #########################################################
 syslog:
     servers:
@@ -259,6 +268,12 @@ vlan20:
     - ip6-forward off
     id: 20
     name: vlan20
+vlan30:
+    extras:
+    - ip-forward off
+    - ip6-forward off
+    id: 30
+    name: vlan30
 vlans:
 -   extras:
     - ip-forward off
@@ -270,6 +285,11 @@ vlans:
     - ip6-forward off
     id: 20
     name: vlan20
+-   extras:
+    - ip-forward off
+    - ip6-forward off
+    id: 30
+    name: vlan30
 vni10:
     bridge:
         access: 10
@@ -280,6 +300,11 @@ vni20:
         access: 20
     name: vni20
     vxlan_id: 20
+vni30:
+    bridge:
+        access: 30
+    name: vni30
+    vxlan_id: 30
 vnis:
 -   bridge:
         access: 10
@@ -294,15 +319,18 @@ vrf_mgmt:
     - address 127.0.0.1/8
     - address ::1/128
     name: mgmt
-    routes:
-    - 0.0.0.0/0 192.168.200.1
+    routes_nvue:
+    -   prefix: 0.0.0.0/0
+        via: 192.168.200.1
 vrfs:
 -   extras:
     - address 127.0.0.1/8
     - address ::1/128
     name: mgmt
-    routes:
-    - 0.0.0.0/0 192.168.200.1
+    routes_nvue:
+    -   prefix: 0.0.0.0/0
+        via: 192.168.200.1
+vx_version: 5.1
 vxlan_anycast_id: 255
 vxlan_anycast_loopback: 10.0.1.255/32
 vxlan_local_loopback: 10.10.10.63/32

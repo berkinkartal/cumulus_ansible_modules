@@ -1,6 +1,0 @@
----
-- name: restart netq agent
-  command: netq config restart agent
-
-- name: restart netq cli
-  command: netq config restart cli
