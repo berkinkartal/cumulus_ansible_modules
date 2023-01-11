@@ -37,11 +37,11 @@ server08 ansible_host=192.168.200.19
 leaf
 spine
 border
-fw
 
 [nodes:children]
 cumulus-nodes
 host
+fw
 
 [all:vars]
 ansible_user=cumulus
