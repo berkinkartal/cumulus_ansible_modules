@@ -1,0 +1,7 @@
+---
+- hosts: DCI
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Fetch startup.yaml
+      fetch: dest=save/{{inventory_hostname}}/startup.yaml src=/etc/nvue.d/startup.yaml flat=yes

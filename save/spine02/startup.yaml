@@ -1,0 +1,16 @@
+- header:
+    model: VX
+    nvue-api-version: nvue_v1
+    rev-id: 1.0
+    version: Cumulus Linux 5.4.0
+- set:
+    interface:
+      eth0:
+        ip:
+          vrf: mgmt
+        type: eth
+    system:
+      config:
+        auto-save:
+          enable: on
+      hostname: spine02

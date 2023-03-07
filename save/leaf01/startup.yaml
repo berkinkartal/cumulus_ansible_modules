@@ -1,0 +1,138 @@
+- header:
+    model: VX
+    nvue-api-version: nvue_v1
+    rev-id: 1.0
+    version: Cumulus Linux 5.4.0
+- set:
+    bridge:
+      domain:
+        br_default:
+          vlan:
+            '10':
+              vni:
+                '10': {}
+            '20':
+              vni:
+                '20': {}
+    evpn:
+      enable: on
+      multihoming:
+        enable: on
+    interface:
+      bond1:
+        bond:
+          lacp-bypass: on
+          member:
+            swp3: {}
+        bridge:
+          domain:
+            br_default:
+              access: 10
+        evpn:
+          multihoming:
+            segment:
+              df-preference: 50000
+              enable: on
+              local-id: 1
+              mac-address: 00:00:00:00:00:AA
+        link:
+          mtu: 9000
+        type: bond
+      bond2:
+        bond:
+          lacp-bypass: on
+          member:
+            swp4: {}
+        bridge:
+          domain:
+            br_default: {}
+        evpn:
+          multihoming:
+            segment:
+              df-preference: 50000
+              enable: on
+              local-id: 2
+              mac-address: 00:00:00:00:00:AA
+        link:
+          mtu: 9000
+        type: bond
+      eth0:
+        ip:
+          vrf: mgmt
+        type: eth
+      lo:
+        ip:
+          address:
+            10.10.10.1/32: {}
+        type: loopback
+      swp1:
+        ip:
+          address:
+            10.10.1.1/31: {}
+        link:
+          mtu: 9000
+        type: swp
+      swp2:
+        link:
+          mtu: 9000
+        type: swp
+      vlan10:
+        ip:
+          address:
+            192.168.1.2/24: {}
+          vrf: RED
+          vrr:
+            address:
+              192.168.1.1/24: {}
+            enable: on
+            mac-address: 00:00:00:00:00:10
+            state:
+              up: {}
+        type: svi
+        vlan: 10
+    nve:
+      vxlan:
+        arp-nd-suppress: on
+        enable: on
+        source:
+          address: 10.10.10.1
+    router:
+      bgp:
+        autonomous-system: 65101
+        enable: on
+        router-id: 10.10.10.1
+      vrr:
+        enable: on
+    service:
+      lldp: {}
+    system:
+      config:
+        auto-save:
+          enable: on
+      global:
+        anycast-mac: 44:38:39:BE:EF:AA
+      hostname: leaf01
+    vrf:
+      RED:
+        evpn:
+          enable: on
+          vni:
+            '4001': {}
+      default:
+        router:
+          bgp:
+            address-family:
+              ipv4-unicast:
+                enable: on
+                network:
+                  10.10.10.1/32: {}
+              l2vpn-evpn:
+                enable: on
+            enable: on
+            neighbor:
+              swp1:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: 65199
+                type: unnumbered
