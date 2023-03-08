@@ -1,10 +1,10 @@
 ---
-- hosts: DCI
+- hosts: spine02
   become: yes
   gather_facts: false
   tasks:
     - name: Restore startup.yaml
-      copy: src=save/{{inventory_hostname}}/startup.yaml dest=/etc/nvue.d/startup.yaml flat=yes
+      copy: src=save/{{inventory_hostname}}/startup.yaml dest=/etc/nvue.d/startup.yaml
 
     - name : Config apply
       command: nv config apply -y
