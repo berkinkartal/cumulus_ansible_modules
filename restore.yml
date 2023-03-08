@@ -1,10 +1,20 @@
 ---
-- hosts: borderleaf04
+- hosts: DCI
   become: yes
   gather_facts: false
   tasks:
-    - name: Restore startup.yaml
+    - name: Restore Switch - startup.yaml
       copy: src=save/{{inventory_hostname}}/startup.yaml dest=/etc/nvue.d/startup.yaml
 
-    - name : Config apply
+    - name : Switch - Config apply
       command: nv config apply startup -y
+
+- hosts: server
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Restore Server - config.yaml
+      copy: src=save/{{inventory_hostname}}/config.yaml dest=/etc/netplan/config.yaml
+
+    - name : Server - Config apply
+      command: sudo netplan apply
