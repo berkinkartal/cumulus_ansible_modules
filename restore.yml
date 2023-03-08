@@ -1,5 +1,5 @@
 ---
-- hosts: spine02
+- hosts: DCI
   become: yes
   gather_facts: false
   tasks:
