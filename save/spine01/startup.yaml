@@ -77,6 +77,12 @@
                     enable: on
                 remote-as: 65102
                 type: unnumbered
+              swp3:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: 65110
+                type: unnumbered
               swp4:
                 address-family:
                   l2vpn-evpn:
