@@ -51,7 +51,7 @@
       config:
         auto-save:
           enable: on
-      hostname: borderleaf03
+      hostname: borderleaf04
     vrf:
       default:
         router:
