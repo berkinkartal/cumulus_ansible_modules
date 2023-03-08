@@ -70,18 +70,19 @@
           mtu: 9000
         type: swp
       swp2:
+        ip:
+          address:
+            10.10.2.11/31: {}
         link:
           mtu: 9000
         type: swp
       vlan10:
         ip:
           address:
-            192.168.1.6/24: {}
             192.168.1.102/24: {}
           vrf: RED
           vrr:
             address:
-              192.168.1.1/24: {}
               192.168.1.100/24: {}
             enable: on
             mac-address: 00:00:00:00:22:10
@@ -130,6 +131,12 @@
             enable: on
             neighbor:
               swp1:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: 65299
+                type: unnumbered
+              swp2:
                 address-family:
                   l2vpn-evpn:
                     enable: on
