@@ -33,10 +33,6 @@ server01
 server02
 server03
 server04
-server05
-server06
-server07
-server08
 
 [DCI:children]
 #fw

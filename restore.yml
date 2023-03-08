@@ -1,5 +1,5 @@
 ---
-- hosts: DCI
+- hosts: borderleaf04
   become: yes
   gather_facts: false
   tasks:
