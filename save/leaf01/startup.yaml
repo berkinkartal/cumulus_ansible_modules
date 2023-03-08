@@ -73,6 +73,9 @@
           mtu: 9000
         type: swp
       swp2:
+        ip:
+          address:
+            10.10.1.3/31: {}
         link:
           mtu: 9000
         type: swp
@@ -131,6 +134,12 @@
             enable: on
             neighbor:
               swp1:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: 65199
+                type: unnumbered
+              swp2:
                 address-family:
                   l2vpn-evpn:
                     enable: on
