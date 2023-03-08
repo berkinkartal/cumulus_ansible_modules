@@ -7,4 +7,4 @@
       copy: src=save/{{inventory_hostname}}/startup.yaml dest=/etc/nvue.d/startup.yaml
 
     - name : Config apply
-      command: nv config apply -y
+      command: nv config apply startup -y
