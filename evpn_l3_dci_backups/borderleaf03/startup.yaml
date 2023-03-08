@@ -1,0 +1,85 @@
+- header:
+    model: VX
+    nvue-api-version: nvue_v1
+    rev-id: 1.0
+    version: Cumulus Linux 5.4.0
+- set:
+    evpn:
+      enable: on
+    interface:
+      eth0:
+        ip:
+          vrf: mgmt
+        type: eth
+      lo:
+        ip:
+          address:
+            10.10.20.10/32: {}
+        type: loopback
+      swp1:
+        ip:
+          address:
+            10.10.2.5/31: {}
+        link:
+          mtu: 9000
+        type: swp
+      swp2:
+        ip:
+          address:
+            10.10.2.13/31: {}
+        link:
+          mtu: 9000
+        type: swp
+      swp3:
+        ip:
+          address:
+            10.10.12.1/31: {}
+        link:
+          mtu: 9000
+        type: swp
+    nve:
+      vxlan:
+        enable: on
+    router:
+      bgp:
+        autonomous-system: 65210
+        enable: on
+        router-id: 10.10.20.10
+    service:
+      lldp: {}
+    system:
+      config:
+        auto-save:
+          enable: on
+      hostname: borderleaf03
+    vrf:
+      default:
+        router:
+          bgp:
+            address-family:
+              ipv4-unicast:
+                enable: off
+                network:
+                  10.10.20.10/32: {}
+              l2vpn-evpn:
+                enable: on
+            enable: on
+            neighbor:
+              swp1:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: 65299
+                type: unnumbered
+              swp2:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: 65299
+                type: unnumbered
+              swp3:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: 65111
+                type: unnumbered
