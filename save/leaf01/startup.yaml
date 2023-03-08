@@ -75,7 +75,7 @@
       swp2:
         ip:
           address:
-            10.10.1.3/31: {}
+            10.10.1.9/31: {}
         link:
           mtu: 9000
         type: swp
