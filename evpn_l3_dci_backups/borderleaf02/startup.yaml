@@ -45,6 +45,18 @@
         autonomous-system: 65111
         enable: on
         router-id: 10.10.10.11
+      policy:
+        route-map:
+          control_t5:
+            rule:
+              '1':
+                action:
+                  permit: {}
+                match:
+                  evpn-route-type: ip-prefix
+              '2':
+                action:
+                  deny: {}
     service:
       lldp: {}
     system:
@@ -53,6 +65,68 @@
           enable: on
       hostname: borderleaf02
     vrf:
+      GREEN:
+        evpn:
+          enable: on
+          vni:
+            '4002': {}
+        router:
+          bgp:
+            address-family:
+              ipv4-unicast:
+                enable: on
+                redistribute:
+                  connected:
+                    enable: on
+                route-export:
+                  to-evpn:
+                    enable: on
+            autonomous-system: 65111
+            enable: on
+            peer-group:
+              underlay:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+            route-import:
+              from-evpn:
+                route-target:
+                  65101:4002: {}
+                  65102:4002: {}
+                  65201:5002: {}
+                  65202:5002: {}
+            router-id: 10.10.10.11
+      RED:
+        evpn:
+          enable: on
+          vni:
+            '4001': {}
+        router:
+          bgp:
+            address-family:
+              ipv4-unicast:
+                enable: on
+                redistribute:
+                  connected:
+                    enable: on
+                route-export:
+                  to-evpn:
+                    enable: on
+            autonomous-system: 65111
+            enable: on
+            peer-group:
+              underlay:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+            route-import:
+              from-evpn:
+                route-target:
+                  65101:4001: {}
+                  65102:4001: {}
+                  65201:5001: {}
+                  65202:5001: {}
+            router-id: 10.10.10.11
       default:
         router:
           bgp:
@@ -66,20 +140,25 @@
             enable: on
             neighbor:
               swp1:
-                address-family:
-                  l2vpn-evpn:
-                    enable: on
-                remote-as: 65199
+                peer-group: underlay
                 type: unnumbered
               swp2:
+                peer-group: underlay
+                type: unnumbered
+              swp3:
+                peer-group: dci_group2
+                type: unnumbered
+            peer-group:
+              dci_group2:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                    policy:
+                      outbound:
+                        route-map: control_t5
+                remote-as: 65210
+              underlay:
                 address-family:
                   l2vpn-evpn:
                     enable: on
                 remote-as: 65199
-                type: unnumbered
-              swp3:
-                address-family:
-                  l2vpn-evpn:
-                    enable: off
-                remote-as: 65210
-                type: unnumbered

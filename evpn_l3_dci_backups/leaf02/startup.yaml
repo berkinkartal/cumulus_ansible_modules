@@ -67,6 +67,9 @@
             10.10.10.2/32: {}
         type: loopback
       swp1:
+        evpn:
+          multihoming:
+            uplink: on
         ip:
           address:
             10.10.1.3/31: {}
@@ -74,6 +77,9 @@
           mtu: 9000
         type: swp
       swp2:
+        evpn:
+          multihoming:
+            uplink: on
         ip:
           address:
             10.10.1.11/31: {}
@@ -152,6 +158,9 @@
             route-import:
               from-evpn:
                 route-target:
+                  65101:4002: {}
+                  65102:4002: {}
+                  65201:5002: {}
                   65202:5002: {}
             router-id: 10.10.10.2
       RED:
@@ -175,6 +184,9 @@
             route-import:
               from-evpn:
                 route-target:
+                  65101:4001: {}
+                  65102:4001: {}
+                  65201:5001: {}
                   65202:5001: {}
             router-id: 10.10.10.2
       default:
@@ -185,19 +197,22 @@
                 enable: on
                 network:
                   10.10.10.2/32: {}
+                redistribute:
+                  connected:
+                    enable: on
               l2vpn-evpn:
                 enable: on
             enable: on
             neighbor:
               swp1:
-                address-family:
-                  l2vpn-evpn:
-                    enable: on
-                remote-as: 65199
+                peer-group: underlay
                 type: unnumbered
               swp2:
+                peer-group: underlay
+                type: unnumbered
+            peer-group:
+              underlay:
                 address-family:
                   l2vpn-evpn:
                     enable: on
                 remote-as: 65199
-                type: unnumbered

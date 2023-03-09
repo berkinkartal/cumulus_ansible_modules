@@ -8,14 +8,7 @@
       domain:
         br_default:
           vlan:
-            '10':
-              vni:
-                '10': {}
-            '20':
-              vni:
-                '20': {}
-            '40':
-              vni: {}
+            '40': {}
             '1010':
               vni:
                 '1010': {}
@@ -75,6 +68,9 @@
             10.10.20.2/32: {}
         type: loopback
       swp1:
+        evpn:
+          multihoming:
+            uplink: on
         ip:
           address:
             10.10.2.3/31: {}
@@ -82,6 +78,9 @@
           mtu: 9000
         type: swp
       swp2:
+        evpn:
+          multihoming:
+            uplink: on
         ip:
           address:
             10.10.2.11/31: {}
@@ -161,6 +160,9 @@
               from-evpn:
                 route-target:
                   65101:4002: {}
+                  65102:4002: {}
+                  65201:5002: {}
+                  65202:5002: {}
             router-id: 10.10.20.2
       RED:
         evpn:
@@ -184,7 +186,10 @@
               from-evpn:
                 route-target:
                   65101:4001: {}
-            router-id: 10.10.20.1
+                  65102:4001: {}
+                  65201:5001: {}
+                  65202:5001: {}
+            router-id: 10.10.20.2
       default:
         router:
           bgp:

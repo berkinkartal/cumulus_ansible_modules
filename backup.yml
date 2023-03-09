@@ -4,11 +4,11 @@
   gather_facts: false
   tasks:
     - name: Fetch startup.yaml
-      fetch: dest=save/{{inventory_hostname}}/startup.yaml src=/etc/nvue.d/startup.yaml flat=yes
+      fetch: dest=evpn_l3_dci_backups/{{inventory_hostname}}/startup.yaml src=/etc/nvue.d/startup.yaml flat=yes
 
 - hosts: server
   become: yes
   gather_facts: false
   tasks:
     - name: Fetch startup.yaml
-      fetch: dest=save/{{inventory_hostname}}/config.yaml src=/etc/netplan/config.yaml flat=yes
+      fetch: dest=evpn_l3_dci_backups/{{inventory_hostname}}/config.yaml src=/etc/netplan/config.yaml flat=yes
