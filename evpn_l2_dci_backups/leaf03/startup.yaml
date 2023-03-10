@@ -14,8 +14,6 @@
             '20':
               vni:
                 '20': {}
-            '40':
-              vni: {}
     evpn:
       enable: on
       multihoming:
@@ -69,6 +67,9 @@
             10.10.20.1/32: {}
         type: loopback
       swp1:
+        evpn:
+          multihoming:
+            uplink: on
         ip:
           address:
             10.10.2.1/31: {}
@@ -76,6 +77,9 @@
           mtu: 9000
         type: swp
       swp2:
+        evpn:
+          multihoming:
+            uplink: on
         ip:
           address:
             10.10.2.9/31: {}
