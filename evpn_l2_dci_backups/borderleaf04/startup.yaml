@@ -66,20 +66,22 @@
             enable: on
             neighbor:
               swp1:
-                address-family:
-                  l2vpn-evpn:
-                    enable: on
-                remote-as: 65299
+                peer-group: underlay
                 type: unnumbered
               swp2:
-                address-family:
-                  l2vpn-evpn:
-                    enable: on
-                remote-as: 65299
+                peer-group: underlay
                 type: unnumbered
               swp3:
+                peer-group: dci_group1
+                type: unnumbered
+            peer-group:
+              dci_group1:
                 address-family:
                   l2vpn-evpn:
                     enable: on
                 remote-as: 65110
-                type: unnumbered
+              underlay:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: 65299
