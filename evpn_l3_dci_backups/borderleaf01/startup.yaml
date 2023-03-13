@@ -91,10 +91,8 @@
             route-import:
               from-evpn:
                 route-target:
-                  65101:4002: {}
-                  65102:4002: {}
-                  65201:5002: {}
-                  65202:5002: {}
+                  ANY:4002: {}
+                  ANY:5002: {}
             router-id: 10.10.10.10
       RED:
         evpn:

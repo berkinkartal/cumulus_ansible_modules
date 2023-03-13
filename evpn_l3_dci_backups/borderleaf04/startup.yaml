@@ -53,6 +53,15 @@
           enable: on
       hostname: borderleaf04
     vrf:
+      GREEN:
+        router:
+          bgp:
+            enable: on
+            route-import:
+              from-evpn:
+                route-target:
+                  ANY:4002: {}
+                  ANY:5002: {}
       RED:
         router:
           bgp:
