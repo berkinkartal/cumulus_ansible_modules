@@ -10,7 +10,7 @@
       command: nv config apply startup -y
 
     - name : Restart  Switch
-      command: sudo reboot
+      command: reboot
 
 - hosts: server
   become: yes

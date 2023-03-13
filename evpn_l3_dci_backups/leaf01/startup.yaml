@@ -184,10 +184,8 @@
             route-import:
               from-evpn:
                 route-target:
-                  65101:4001: {}
-                  65102:4001: {}
-                  65201:5001: {}
-                  65202:5001: {}
+                  ANY:4001: {}
+                  ANY:5001: {}
             router-id: 10.10.10.1
       default:
         router:
