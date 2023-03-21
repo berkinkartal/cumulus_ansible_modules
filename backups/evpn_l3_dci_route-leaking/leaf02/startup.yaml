@@ -1,0 +1,221 @@
+- header:
+    model: VX
+    nvue-api-version: nvue_v1
+    rev-id: 1.0
+    version: Cumulus Linux 5.4.0
+- set:
+    bridge:
+      domain:
+        br_default:
+          vlan:
+            '10':
+              vni:
+                '10': {}
+            '20':
+              vni:
+                '20': {}
+    evpn:
+      enable: on
+      multihoming:
+        enable: on
+    interface:
+      bond1:
+        bond:
+          lacp-bypass: on
+          member:
+            swp3: {}
+        bridge:
+          domain:
+            br_default:
+              access: 10
+        evpn:
+          multihoming:
+            segment:
+              df-preference: 50000
+              enable: on
+              local-id: 1
+              mac-address: 00:00:00:00:00:AA
+        link:
+          mtu: 9000
+        type: bond
+      bond2:
+        bond:
+          lacp-bypass: on
+          member:
+            swp4: {}
+        bridge:
+          domain:
+            br_default:
+              access: 20
+        evpn:
+          multihoming:
+            segment:
+              df-preference: 50000
+              enable: on
+              local-id: 2
+              mac-address: 00:00:00:00:00:AA
+        link:
+          mtu: 9000
+        type: bond
+      eth0:
+        ip:
+          vrf: mgmt
+        type: eth
+      lo:
+        ip:
+          address:
+            10.10.10.2/32: {}
+        type: loopback
+      swp1:
+        evpn:
+          multihoming:
+            uplink: on
+        ip:
+          address:
+            10.10.1.3/31: {}
+        link:
+          mtu: 9000
+        type: swp
+      swp2:
+        evpn:
+          multihoming:
+            uplink: on
+        ip:
+          address:
+            10.10.1.11/31: {}
+        link:
+          mtu: 9000
+        type: swp
+      vlan10:
+        ip:
+          address:
+            192.168.1.3/24: {}
+          vrf: RED
+          vrr:
+            address:
+              192.168.1.1/24: {}
+            enable: on
+            mac-address: 00:00:00:00:00:10
+            state:
+              up: {}
+        type: svi
+        vlan: 10
+      vlan20:
+        ip:
+          address:
+            192.168.2.3/24: {}
+          vrf: GREEN
+          vrr:
+            address:
+              192.168.2.1/24: {}
+            enable: on
+            mac-address: 00:00:00:00:00:20
+            state:
+              up: {}
+        type: svi
+        vlan: 20
+    nve:
+      vxlan:
+        arp-nd-suppress: on
+        enable: on
+        source:
+          address: 10.10.10.2
+    router:
+      bgp:
+        autonomous-system: 65102
+        enable: on
+        router-id: 10.10.10.2
+      vrr:
+        enable: on
+    service:
+      lldp: {}
+    system:
+      config:
+        auto-save:
+          enable: on
+      global:
+        anycast-mac: 44:38:39:ff:00:00
+      hostname: leaf02
+    vrf:
+      GREEN:
+        evpn:
+          enable: on
+          vni:
+            '4002': {}
+        router:
+          bgp:
+            address-family:
+              ipv4-unicast:
+                enable: on
+                redistribute:
+                  connected:
+                    enable: on
+                route-export:
+                  to-evpn:
+                    enable: on
+            autonomous-system: 65102
+            enable: on
+            route-import:
+              from-evpn:
+                route-target:
+                  65210:5001: {}
+                  65210:5002: {}
+                  auto: {}
+            router-id: 10.10.10.2
+      RED:
+        evpn:
+          enable: on
+          vni:
+            '4001': {}
+        router:
+          bgp:
+            address-family:
+              ipv4-unicast:
+                enable: on
+                redistribute:
+                  connected:
+                    enable: on
+                route-export:
+                  to-evpn:
+                    enable: on
+            autonomous-system: 65102
+            enable: on
+            peer-group:
+              underlay:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+            route-import:
+              from-evpn:
+                route-target:
+                  65210:5001: {}
+                  65210:5002: {}
+                  auto: {}
+            router-id: 10.10.10.2
+      default:
+        router:
+          bgp:
+            address-family:
+              ipv4-unicast:
+                enable: on
+                network:
+                  10.10.10.2/32: {}
+                redistribute:
+                  connected:
+                    enable: on
+              l2vpn-evpn:
+                enable: on
+            enable: on
+            neighbor:
+              swp1:
+                peer-group: underlay
+                type: unnumbered
+              swp2:
+                peer-group: underlay
+                type: unnumbered
+            peer-group:
+              underlay:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: 65199
