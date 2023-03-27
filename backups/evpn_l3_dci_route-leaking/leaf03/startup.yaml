@@ -173,7 +173,7 @@
                 route-target:
                   65110:4001: {}
                   65110:4002: {}
-                  auto: {}
+                  65210:5002: {}
             router-id: 10.10.20.1
       RED:
         evpn:
@@ -203,7 +203,7 @@
                 route-target:
                   65110:4001: {}
                   65110:4002: {}
-                  auto: {}
+                  65210:5001: {}
             router-id: 10.10.20.1
       default:
         router:

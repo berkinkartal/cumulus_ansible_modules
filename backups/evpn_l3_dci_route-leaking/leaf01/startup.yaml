@@ -163,9 +163,9 @@
             route-import:
               from-evpn:
                 route-target:
+                  65110:4002: {}
                   65210:5001: {}
                   65210:5002: {}
-                  auto: {}
             router-id: 10.10.10.1
       RED:
         evpn:
@@ -193,9 +193,9 @@
             route-import:
               from-evpn:
                 route-target:
+                  65110:4001: {}
                   65210:5001: {}
                   65210:5002: {}
-                  auto: {}
             router-id: 10.10.10.1
       default:
         router:

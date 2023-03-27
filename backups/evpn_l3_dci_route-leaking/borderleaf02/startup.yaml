@@ -86,7 +86,6 @@
                     enable: on
             autonomous-system: 65110
             enable: on
-            peer-group: {}
             route-import:
               from-evpn:
                 route-target:
@@ -115,7 +114,6 @@
                     enable: on
             autonomous-system: 65110
             enable: on
-            peer-group: {}
             route-import:
               from-evpn:
                 route-target:
