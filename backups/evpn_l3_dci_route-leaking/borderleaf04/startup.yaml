@@ -89,8 +89,8 @@
             route-import:
               from-evpn:
                 route-target:
-                  ANY:4001: {}
-                  ANY:4002: {}
+                  65110:4001: {}
+                  65110:4002: {}
                   ANY:5001: {}
                   ANY:5002: {}
             router-id: 10.10.20.11
@@ -117,8 +117,8 @@
             route-import:
               from-evpn:
                 route-target:
-                  ANY:4001: {}
-                  ANY:4002: {}
+                  65110:4001: {}
+                  65110:4002: {}
                   ANY:5001: {}
                   ANY:5002: {}
             router-id: 10.10.20.11

@@ -85,6 +85,7 @@
               ipv4-unicast:
                 aggregate-route:
                   192.168.1.0/24: {}
+                  192.168.10.0/24: {}
                 enable: on
                 redistribute:
                   connected:
@@ -97,10 +98,10 @@
             route-import:
               from-evpn:
                 route-target:
+                  65210:5001: {}
+                  65210:5002: {}
                   ANY:4001: {}
                   ANY:4002: {}
-                  ANY:5001: {}
-                  ANY:5002: {}
             router-id: 10.10.10.10
       RED:
         evpn:
@@ -113,6 +114,7 @@
               ipv4-unicast:
                 aggregate-route:
                   192.168.2.0/24: {}
+                  192.168.20.0/24: {}
                 enable: on
                 redistribute:
                   connected:
@@ -126,10 +128,10 @@
             route-import:
               from-evpn:
                 route-target:
+                  65210:5001: {}
+                  65210:5002: {}
                   ANY:4001: {}
                   ANY:4002: {}
-                  ANY:5001: {}
-                  ANY:5002: {}
             router-id: 10.10.10.10
       default:
         router:
