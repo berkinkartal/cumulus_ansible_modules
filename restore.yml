@@ -9,8 +9,8 @@
     - name : Switch - Config apply
       command: nv config apply startup -y
 
-    - name : Restart  Switch
-      command: reboot
+      #    - name : Restart  Switch
+      #      command: reboot
 
 - hosts: server
   become: yes

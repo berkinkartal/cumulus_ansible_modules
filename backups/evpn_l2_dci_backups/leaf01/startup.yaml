@@ -18,6 +18,11 @@
       enable: on
       multihoming:
         enable: on
+      vni:
+        '4001':
+          route-target: {}
+        '4002':
+          route-target: {}
     interface:
       bond1:
         bond:
@@ -142,11 +147,33 @@
           enable: on
           vni:
             '4002': {}
+        router:
+          bgp:
+            enable: on
+            route-export:
+              to-evpn:
+                route-target:
+                  65101:4002: {}
+            route-import:
+              from-evpn:
+                route-target:
+                  65101:4002: {}
       RED:
         evpn:
           enable: on
           vni:
             '4001': {}
+        router:
+          bgp:
+            enable: on
+            route-export:
+              to-evpn:
+                route-target:
+                  65101:4001: {}
+            route-import:
+              from-evpn:
+                route-target:
+                  65101:4001: {}
       default:
         router:
           bgp:
