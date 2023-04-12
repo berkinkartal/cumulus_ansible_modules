@@ -17,7 +17,7 @@ In general labs cover three main use cases:
 
 ## AIR lab
 
-- {{<exlink url="https://air.nvidia.com/78798265-2a47-432a-8b69-a7f00ec7a823/Simulation" text="NVDIA AIR Lab with generic DCI topology">}}
+- [NVDIA AIR Lab with generic DCI topology](https://air.nvidia.com/78798265-2a47-432a-8b69-a7f00ec7a823/Simulation)
 - Connectivity via AIR web GUI or SSH console (internet exposed worker url and TCP port for SSH connection can be found inside AIR simulation)
 - oob=mgmt-server access credentials : ubuntu/Nvidia1!
 - All switches can be connected from oob-management-server using SSH public key authentication
