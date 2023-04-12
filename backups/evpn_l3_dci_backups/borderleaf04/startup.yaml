@@ -42,9 +42,21 @@
         enable: on
     router:
       bgp:
-        autonomous-system: 65211
+        autonomous-system: 65210
         enable: on
         router-id: 10.10.20.11
+      policy:
+        route-map:
+          control_t5:
+            rule:
+              '1':
+                action:
+                  permit: {}
+                match:
+                  evpn-route-type: ip-prefix
+              '2':
+                action:
+                  deny: {}
     service:
       lldp: {}
     system:
@@ -54,31 +66,74 @@
       hostname: borderleaf04
     vrf:
       GREEN:
+        evpn:
+          enable: on
+          vni:
+            '5002': {}
         router:
           bgp:
+            address-family:
+              ipv4-unicast:
+                enable: on
+                redistribute:
+                  connected:
+                    enable: on
+                route-export:
+                  to-evpn:
+                    enable: on
+            autonomous-system: 65210
             enable: on
+            peer-group:
+              underlay:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
             route-import:
               from-evpn:
                 route-target:
                   ANY:4002: {}
                   ANY:5002: {}
+            router-id: 10.10.20.11
       RED:
+        evpn:
+          enable: on
+          vni:
+            '5001': {}
         router:
           bgp:
+            address-family:
+              ipv4-unicast:
+                enable: on
+                redistribute:
+                  connected:
+                    enable: on
+                route-export:
+                  to-evpn:
+                    enable: on
+            autonomous-system: 65210
             enable: on
+            peer-group:
+              underlay:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
             route-import:
               from-evpn:
                 route-target:
                   ANY:4001: {}
                   ANY:5001: {}
+            router-id: 10.10.20.11
       default:
         router:
           bgp:
             address-family:
               ipv4-unicast:
-                enable: off
+                enable: on
                 network:
                   10.10.20.11/32: {}
+                redistribute:
+                  connected:
+                    enable: on
               l2vpn-evpn:
                 enable: on
             enable: on
@@ -97,6 +152,9 @@
                 address-family:
                   l2vpn-evpn:
                     enable: on
+                    policy:
+                      outbound:
+                        route-map: control_t5
                 remote-as: 65110
               underlay:
                 address-family:

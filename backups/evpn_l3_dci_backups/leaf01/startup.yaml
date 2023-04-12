@@ -33,7 +33,7 @@
             segment:
               df-preference: 50000
               enable: on
-              local-id: 1
+              identifier: 00:00:00:00:00:00:aa:00:00:01
               mac-address: 00:00:00:00:00:AA
         link:
           mtu: 9000
@@ -52,7 +52,7 @@
             segment:
               df-preference: 50000
               enable: on
-              local-id: 2
+              identifier: 00:00:00:00:00:00:aa:00:00:02
               mac-address: 00:00:00:00:00:AA
         link:
           mtu: 9000

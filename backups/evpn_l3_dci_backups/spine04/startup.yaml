@@ -87,5 +87,5 @@
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65211
+                remote-as: 65210
                 type: unnumbered

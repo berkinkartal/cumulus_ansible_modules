@@ -128,9 +128,12 @@
           bgp:
             address-family:
               ipv4-unicast:
-                enable: off
+                enable: on
                 network:
                   10.10.10.10/32: {}
+                redistribute:
+                  connected:
+                    enable: on
               l2vpn-evpn:
                 enable: on
             enable: on
@@ -152,7 +155,7 @@
                     policy:
                       outbound:
                         route-map: control_t5
-                remote-as: 65211
+                remote-as: 65210
               underlay:
                 address-family:
                   l2vpn-evpn:

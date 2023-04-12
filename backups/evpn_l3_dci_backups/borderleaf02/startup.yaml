@@ -42,7 +42,7 @@
         enable: on
     router:
       bgp:
-        autonomous-system: 65111
+        autonomous-system: 65110
         enable: on
         router-id: 10.10.10.11
       policy:
@@ -81,7 +81,7 @@
                 route-export:
                   to-evpn:
                     enable: on
-            autonomous-system: 65111
+            autonomous-system: 65110
             enable: on
             peer-group:
               underlay:
@@ -110,7 +110,7 @@
                 route-export:
                   to-evpn:
                     enable: on
-            autonomous-system: 65111
+            autonomous-system: 65110
             enable: on
             peer-group:
               underlay:
@@ -128,7 +128,7 @@
           bgp:
             address-family:
               ipv4-unicast:
-                enable: off
+                enable: on
                 network:
                   10.10.10.11/32: {}
               l2vpn-evpn:

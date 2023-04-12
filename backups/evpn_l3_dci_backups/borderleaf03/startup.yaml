@@ -128,7 +128,7 @@
           bgp:
             address-family:
               ipv4-unicast:
-                enable: off
+                enable: on
                 network:
                   10.10.20.10/32: {}
               l2vpn-evpn:
@@ -152,7 +152,7 @@
                     policy:
                       outbound:
                         route-map: control_t5
-                remote-as: 65111
+                remote-as: 65110
               underlay:
                 address-family:
                   l2vpn-evpn:

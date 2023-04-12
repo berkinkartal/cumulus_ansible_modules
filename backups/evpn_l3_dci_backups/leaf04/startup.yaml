@@ -8,7 +8,6 @@
       domain:
         br_default:
           vlan:
-            '40': {}
             '1010':
               vni:
                 '1010': {}
@@ -194,6 +193,9 @@
                 enable: on
                 network:
                   10.10.20.2/32: {}
+                redistribute:
+                  connected:
+                    enable: on
               l2vpn-evpn:
                 enable: on
             enable: on
