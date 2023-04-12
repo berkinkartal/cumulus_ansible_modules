@@ -1,1 +1,1 @@
-sudo ansible-playbook -i inventories/files/hosts cleanup/main.yaml
+sudo ansible-playbook -i inventories/backup/hosts cleanup/main.yaml
