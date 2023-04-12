@@ -13,8 +13,9 @@ Help()
    echo "options:"
    echo "h     Print this Help."
    echo "t     Select topology | 1 : Layer2 stretch | 2 : Layer3 VRF stretch | 3 : Layer3 VRF stretch with route leaking"
-   echo "r     Restore selected topology"
-   echo "b     Backup for selected topology"
+   echo "r     Restore custom config from saved use case 1|2|3"
+   echo "R     Restore selected use case 1|2|3 from Reference topology"
+   echo "b     Backup custom config into use case 1|2|3"
    echo "v     Print software version and exit."
    echo
 }
@@ -22,6 +23,11 @@ Help()
 Restore()
 {
 echo "Restore function for $topo_folder"
+}
+
+Restore_reference()
+{
+echo "Restore reference config for $topo_folder"
 }
 
 Backup()
@@ -54,7 +60,7 @@ return 0
 
 if [ $# -eq "$NO_ARGS" ]    # Script invoked with no command-line args?
 then
-  echo "Usage: `basename $0` options (-h|t|v|r|b)"
+  echo "Usage: `basename $0` options (-h|t|v|r|R|b)"
 	Help
 	exit $E_OPTERROR          # Exit and explain usage.
                             # Usage: scriptname -options
@@ -62,7 +68,7 @@ then
 fi  
 
 
-while getopts "t:vrbh" flag
+while getopts "t:vrRbh" flag
 do
 	case "${flag}" in
 		t) Topo_check ${OPTARG};;
@@ -73,6 +79,8 @@ do
 			exit;;
 		r) Restore
 			;;
+		R) Restore_reference
+			;;
 		b) Backup
 			;;
 		*) echo "Unimplemented option chosen."
@@ -81,22 +89,5 @@ do
 	esac
 done
 
-#echo "Your topology argument:  $topology";
-#if [ $topology -eq "1" ] || [ $topology -eq "2" ] || [ $topology -eq "3" ]
-#then
-#	case "$topology" in
-#		1) topo_folder="evpn_l2_dci_backups"
-#			echo "$topo_folder"
-#			;;
-#		2) topo_folder="evpn_l3_dci_backups"
-#			echo "$topo_folder"	
-#			;;
-#		3) topo_folder="evpn_l3_dci_route-leaking"
-#			echo "$topo_folder"	
-#			;;
-#	esac
-#else
-#	echo "Invalid topology"
-#fi
 
 exit 0
