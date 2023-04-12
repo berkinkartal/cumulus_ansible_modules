@@ -1,8 +1,8 @@
 ---
 title: Data Center Interconnect Reference Guide Labs
 author: Berkin Kartal
-weight: 323
-toc: 4
+date: 12/04/2023
+version: 1.0
 ---
 
 This document aims at helping the user to be able to connect and use AIR labs created for DCI Reference Guide document
@@ -22,18 +22,35 @@ In general labs cover three main use cases:
 - oob=mgmt-server access credentials : ubuntu/Nvidia1!
 - All switches can be connected from oob-management-server using SSH public key authentication
 - Linux servers can be connected with (ubuntu/nvidia) credentials
-- {{<exlink url="https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html" text="Install Ansible on the server/laptop">}}
 
-## Ansible Modules
 
-The two examples below primarily use these four core Ansible modules:
+## Ansible playbooks in repo
 
-- {{<exlink url="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/fetch_module.html" text="Fetch">}}
-- {{<exlink url="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html" text="Copy">}}
-- {{<exlink url="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html" text="Command">}}
-- {{<exlink url="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html" text="Service">}}
+Repository "cumulus_ansible_modules" is cloned to the home folder (/home/ubuntu/) of oob-mgmt-server VM and consists of the following scripts & playbooks:
 
-## Example Fetch
+- backup.sh invoking backup.yml
+- restore.sh invoking restore.yml
+- cleanup.sh invoking cleanup/main.yaml
+
+Topology related information, diagram in svg and in png format, topology dot file and json file are located in 'topology/' folder
+| File Name                    | Description                        |
+| ---------------------------- | ---------------------------------- |
+| topology/DCI_Scenario-I.dot  | AIR topology file                  |
+| topology/DCI_Scenario-I.json | AIR json file                      |
+| topology/DCI_Scenario-I.svg  | AIR generated topology diagram     |
+| topology/DCI_Scenario-I.png  | png format topology diagram        |
+| topology/dci1.png            | simple hand drawn topology         |
+
+
+
+Saved reference configuration is under 'backups/' folder
+| File Name                         | Description                        |
+| --------------------------------- | ---------------------------------- |
+| backups/evpn_l2_dci_backups       | Layer2 stretch topology configs    |
+| backups/evpn_l3_dci_backups       | Layer3 VRF stretcg topology configs    |
+| backups/evpn_l3_dci_route-leaking | LLayer3 VRF stretcg topology with route leaking configs    |
+
+## How to save 
 
 On the server is a folder with one file called `fetch.yml`.
 
