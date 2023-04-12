@@ -27,6 +27,7 @@ echo "Restore function for $topo_folder"
 Backup()
 {
 echo "Backup function for $topo_folder"
+ansible-playbook -i inventories/backup/hosts --extra-vars my_variable=$topo_folder backup.yml
 }
 
 Topo_check()
