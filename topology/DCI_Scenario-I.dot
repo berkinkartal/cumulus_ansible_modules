@@ -1,0 +1,71 @@
+graph "DCI_Scenario-I" {
+  "oob-mgmt-server"  [function="oob-server" cpu="2" memory="2048"]
+  "oob-mgmt-switch"  [function="oob-switch" mgmt_ip="192.168.200.251"]
+  "spine01" [ function="spine" memory="1024" os="cumulus-vx-5.4.0" cpu="1" mgmt_ip="192.168.200.2"]
+  "spine02" [ function="spine" memory="1024" os="cumulus-vx-5.4.0" cpu="1" mgmt_ip="192.168.200.3"]
+  "spine03" [ function="spine" memory="1024" os="cumulus-vx-5.4.0" cpu="1" mgmt_ip="192.168.200.4"]
+  "spine04" [ function="spine" memory="1024" os="cumulus-vx-5.4.0" cpu="1" mgmt_ip="192.168.200.5"]
+  "leaf01" [ function="leaf" memory="1024" os="cumulus-vx-5.4.0" cpu="1" mgmt_ip="192.168.200.6"]
+  "leaf02" [ function="leaf" memory="1024" os="cumulus-vx-5.4.0" cpu="1" mgmt_ip="192.168.200.7"]
+  "borderleaf01" [ function="leaf" memory="1024" os="cumulus-vx-5.4.0" cpu="1" mgmt_ip="192.168.200.10"]
+  "borderleaf02" [ function="leaf" memory="1024" os="cumulus-vx-5.4.0" cpu="1" mgmt_ip="192.168.200.11"]
+  "borderleaf03" [ function="leaf" memory="1024" os="cumulus-vx-5.4.0" cpu="1" mgmt_ip="192.168.200.12"]
+  "borderleaf04" [ function="leaf" memory="1024" os="cumulus-vx-5.4.0" cpu="1" mgmt_ip="192.168.200.13"]
+  "leaf03" [ function="leaf" memory="1024" os="cumulus-vx-5.4.0" cpu="1" mgmt_ip="192.168.200.8"]
+  "leaf04" [ function="leaf" memory="1024" os="cumulus-vx-5.4.0" cpu="1" mgmt_ip="192.168.200.9"]
+  "server01" [ memory="1024" os="generic/ubuntu1804" cpu="1" mgmt_ip="192.168.200.20"]
+  "server02" [ memory="1024" os="generic/ubuntu1804" cpu="1" mgmt_ip="192.168.200.21"]
+  "server03" [ memory="1024" os="generic/ubuntu1804" cpu="1" mgmt_ip="192.168.200.22"]
+  "server04" [ memory="1024" os="generic/ubuntu1804" cpu="1" mgmt_ip="192.168.200.23"]
+    "spine01":"swp1" -- "leaf01":"swp1"
+    "leaf01":"swp2" -- "spine02":"swp1"
+    "leaf02":"swp1" -- "spine01":"swp2"
+    "leaf02":"swp2" -- "spine02":"swp2"
+    "borderleaf01":"swp1" -- "spine01":"swp3"
+    "borderleaf01":"swp2" -- "spine02":"swp3"
+    "borderleaf02":"swp1" -- "spine01":"swp4"
+    "borderleaf02":"swp2" -- "spine02":"swp4"
+    "leaf03":"swp1" -- "spine03":"swp1"
+    "leaf03":"swp2" -- "spine04":"swp1"
+    "leaf04":"swp1" -- "spine03":"swp2"
+    "leaf04":"swp2" -- "spine04":"swp2"
+    "borderleaf03":"swp1" -- "spine03":"swp3"
+    "borderleaf03":"swp2" -- "spine04":"swp3"
+    "borderleaf04":"swp1" -- "spine03":"swp4"
+    "borderleaf04":"swp2" -- "spine04":"swp4"
+    "borderleaf02":"swp3" -- "borderleaf03":"swp3"
+    "borderleaf01":"swp3" -- "borderleaf04":"swp3"
+    "server01":"eth1" -- "leaf01":"swp3"
+    "server01":"eth2" -- "leaf02":"swp3"
+    "server02":"eth1" -- "leaf01":"swp4"
+    "server02":"eth2" -- "leaf02":"swp4"
+    "server03":"eth1" -- "leaf03":"swp3"
+    "server03":"eth2" -- "leaf04":"swp3"
+    "server04":"eth1" -- "leaf03":"swp4"
+    "server04":"eth2" -- "leaf04":"swp4"
+
+  # Internal Air connectivity for uncabled ports
+  "air-internal" [function="fake"]
+    "borderleaf01":"swp4" -- "air-internal":"eth1"
+    "borderleaf02":"swp4" -- "air-internal":"eth2"
+    "borderleaf03":"swp4" -- "air-internal":"eth3"
+    "borderleaf04":"swp4" -- "air-internal":"eth4"
+
+   "oob-mgmt-server":"eth1" -- "oob-mgmt-switch":"swp1"
+   "server01":"eth0" -- "oob-mgmt-switch":"swp2" [left_mac="44:38:39:22:AA:01"]
+   "server02":"eth0" -- "oob-mgmt-switch":"swp3" [left_mac="44:38:39:22:AA:02"]
+   "server03":"eth0" -- "oob-mgmt-switch":"swp4" [left_mac="44:38:39:22:AA:03"]
+   "server04":"eth0" -- "oob-mgmt-switch":"swp5" [left_mac="44:38:39:22:AA:04"]
+   "leaf01":"eth0" -- "oob-mgmt-switch":"swp6" [left_mac="44:38:39:22:BB:01"]
+   "leaf02":"eth0" -- "oob-mgmt-switch":"swp7" [left_mac="44:38:39:22:BB:02"]
+   "leaf03":"eth0" -- "oob-mgmt-switch":"swp8" [left_mac="44:38:39:22:BB:03"]
+   "leaf04":"eth0" -- "oob-mgmt-switch":"swp9" [left_mac="44:38:39:22:BB:04"]
+   "spine01":"eth0" -- "oob-mgmt-switch":"swp10" [left_mac="44:38:39:22:CC:01"]
+   "spine02":"eth0" -- "oob-mgmt-switch":"swp11" [left_mac="44:38:39:22:CC:02"]
+   "spine03":"eth0" -- "oob-mgmt-switch":"swp12" [left_mac="44:38:39:22:CC:03"]
+   "spine04":"eth0" -- "oob-mgmt-switch":"swp13" [left_mac="44:38:39:22:CC:04"]
+   "borderleaf01":"eth0" -- "oob-mgmt-switch":"swp14" [left_mac="44:38:39:22:DD:01"]
+   "borderleaf02":"eth0" -- "oob-mgmt-switch":"swp15" [left_mac="44:38:39:22:DD:02"]
+   "borderleaf03":"eth0" -- "oob-mgmt-switch":"swp16" [left_mac="44:38:39:22:DD:03"]
+   "borderleaf04":"eth0" -- "oob-mgmt-switch":"swp17" [left_mac="44:38:39:22:DD:04"]
+}
