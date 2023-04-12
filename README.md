@@ -13,7 +13,7 @@ In general labs cover three main use cases:
 - Layer-3 routed VRF extension over EVPN/VXLAN fabric with Type-5 prefixes
 - Layer-3 routed VRF extension over EVPN/VXLAN fabric with Type-5 prefixes and leaking VRF routes
 
-{{<img src="/images/knowledge-base/Ansible-fetch-copy.png" width="600px">}}
+{{<img src="/topology/DCI_Scenario-I.png" width="600px">}}
 
 ## AIR lab
 
