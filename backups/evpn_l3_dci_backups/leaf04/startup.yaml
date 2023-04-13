@@ -31,7 +31,7 @@
         evpn:
           multihoming:
             segment:
-              df-preference: 50000
+              df-preference: 10000
               enable: on
               local-id: 1
               mac-address: 00:00:00:00:00:BB
@@ -50,7 +50,7 @@
         evpn:
           multihoming:
             segment:
-              df-preference: 50000
+              df-preference: 10000
               enable: on
               local-id: 2
               mac-address: 00:00:00:00:00:BB

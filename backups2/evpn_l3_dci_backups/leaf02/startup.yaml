@@ -31,7 +31,7 @@
         evpn:
           multihoming:
             segment:
-              df-preference: 50000
+              df-preference: 10000
               enable: on
               identifier: 00:00:00:00:00:00:aa:00:00:01
         link:
@@ -49,7 +49,7 @@
         evpn:
           multihoming:
             segment:
-              df-preference: 50000
+              df-preference: 10000
               enable: on
               identifier: 00:00:00:00:00:00:aa:00:00:02
         link:
