@@ -19,7 +19,8 @@ In general labs cover three main use cases:
 
 - [NVDIA AIR Lab with generic DCI topology](https://air.nvidia.com/78798265-2a47-432a-8b69-a7f00ec7a823/Simulation)
 - Connectivity via AIR web GUI or SSH console (internet exposed worker url and TCP port for SSH connection can be found inside AIR simulation)
-- oob=mgmt-server access credentials : ubuntu/Nvidia1!
+- In order to connect to oob-mgmt-server, please open the AIR lab url and check for worker url and port
+- oob-mgmt-server access credentials : ubuntu/Nvidia1!
 - All switches can be connected from oob-management-server using SSH public key authentication
 - Linux servers can be connected with (ubuntu/nvidia) credentials
 
@@ -50,7 +51,7 @@ Saved reference configuration is under 'backups/' folder
 | backups/evpn_l3_dci_backups       | Layer3 VRF stretcg topology configs    |
 | backups/evpn_l3_dci_route-leaking | LLayer3 VRF stretcg topology with route leaking configs    |
 
-## How to save 
+## How to restore from a saved lab config 
 
 On the server is a folder with one file called `fetch.yml`.
 
