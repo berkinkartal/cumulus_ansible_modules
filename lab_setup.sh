@@ -18,6 +18,7 @@ Help()
    echo "r     Restore custom config from saved use case 1|2|3"
    echo "R     Restore selected use case 1|2|3 from Reference topology"
    echo "b     Backup custom config into use case 1|2|3"
+   echo "C     Clean all switch configs"
    echo "v     Print software version and exit."
    echo
 }
@@ -46,6 +47,12 @@ echo "Save config function for reference config $ref_backup_dir$topo_folder"
 ansible-playbook -i inventories/backup/hosts --extra-vars my_variable=$ref_backup_dir$topo_folder backup.yml
 }
 
+Cleanup()
+{
+echo "Clean up all switch configs"
+ansible-playbook -i inventories/backup/hosts cleanup/main.yaml
+}
+
 Topo_check()
 {
 #echo "Your topology argument:  $topology";
@@ -70,7 +77,7 @@ return 0
 
 if [ $# -eq "$NO_ARGS" ]    # Script invoked with no command-line args?
 then
-  echo "Usage: `basename $0` options (-h|t|v|r|R|S|b)"
+  echo "Usage: `basename $0` options (-h|t|v|r|R|S|C|b)"
 	Help
 	exit $E_OPTERROR          # Exit and explain usage.
                             # Usage: scriptname -options
@@ -78,7 +85,7 @@ then
 fi  
 
 
-while getopts "t:vrRSbh" flag
+while getopts "t:vrRSCbh" flag
 do
 	case "${flag}" in
 		t) Topo_check ${OPTARG};;
@@ -94,6 +101,8 @@ do
 		b) Backup
 			;;
                 S) Save_reference
+                        ;;
+                C) Cleanup
                         ;;
 		*) echo "Unimplemented option chosen."
 			Help
