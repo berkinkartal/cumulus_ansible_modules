@@ -41,11 +41,6 @@ spine
 border
 #server
 
-[cumulus-nodes:children]
-leaf
-spine
-border
-
 #[nodes:children]
 #cumulus-nodes
 #host

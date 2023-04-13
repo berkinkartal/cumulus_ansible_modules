@@ -1,4 +1,4 @@
-- hosts: cumulus-nodes
+- hosts: DCI
   name: startup
   become: true
   user: cumulus
