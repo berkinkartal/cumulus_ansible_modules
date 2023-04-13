@@ -3,6 +3,8 @@
 NO_ARGS=0
 E_OPTERROR=85
 topo_folder=""
+ref_backup_dir="backups/"
+custom_backup_dir="backups2/"
 
 Help()
 {
@@ -22,18 +24,18 @@ Help()
 
 Restore()
 {
-echo "Restore function for $topo_folder"
+echo "Restore custom config from $custom_backup_dir$topo_folder"
 }
 
 Restore_reference()
 {
-echo "Restore reference config for $topo_folder"
+echo "Restore reference config from $ref_backup_dir$topo_folder"
 }
 
 Backup()
 {
-echo "Backup function for $topo_folder"
-ansible-playbook -i inventories/backup/hosts --extra-vars my_variable=$topo_folder backup.yml
+echo "Backup function for $custom_backup_dir$topo_folder"
+ansible-playbook -i inventories/backup/hosts --extra-vars my_variable=$custom_backup_dir$topo_folder backup.yml
 }
 
 Topo_check()
