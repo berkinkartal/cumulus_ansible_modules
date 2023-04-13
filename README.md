@@ -31,7 +31,7 @@ Repository "cumulus_ansible_modules" is cloned to the home folder (/home/ubuntu/
 
 - "lab_setup.sh" : a bash script in the repository which call necessary ansible playbooks with required arguments in order to save/backup and restore existing configurations
 - all configs are stored in the repo directory structure, so it's easy to revert back to previously prepared config or save your existing config
-- "cleanup.sh" : cleans up entire configuration on all switches in this AIR lab
+- There's a cleanup function implemented in the script which wipes everything but the hostname of the switch
 
 Topology related information, diagram in svg and in png format, topology dot file and json file are located in 'topology/' folder
 | File Name                    | Description                        |
@@ -99,100 +99,42 @@ Following example restores switch and server configs <Layer3 VRF stretch topolog
 ./lab_setup.sh -t 3 -r
 ```
 
+## How to save / backup config from existing lab to oob-mgmt-server
 
 
-    user@server ~/consulting/fetch $ ls
-    fetch.yml
-
-The content of the file is very simple:
-
-    ---
-    - hosts: leaf1
-      become: yes
-      tasks:
-        - name: Fetch ports.conf
-          fetch: dest=save/{{ansible_hostname}}/startup.yaml src=/etc/nvue.d/startup.yaml flat=yes
+If you'd like to save your custom config changes to oob-mgmt-server and pull the config for later use:
+| Argument  | Description                                           |
+| --------- | ----------------------------------------------------- |
+| -b        | Backup custom config from AIR lab to Backups2 folder  |
 
 
+### Examples
 
-To run the playbook, run the `ansible-playbook` command:
+Following example backs up switch and server configs for <Layer2 stretch topology use case> into repo
 
-    user@server ~/consulting/fetch $ ansible-playbook fetch.yml
+```
+./lab_setup.sh -t 1 -b
+```
 
-    PLAY [leaf1] ******************************************************************
+Following example backs up switch and server configs for <Layer3 VRF stretch topology use case> into repo
 
-    GATHERING FACTS ***************************************************************
-    ok: [leaf1]
-
-    TASK: [Fetch startup.yaml] ******************************************************
-    changed: [leaf1]
-
-    PLAY RECAP ********************************************************************
-    leaf1                      : ok=5    changed=3    unreachable=0    failed=0
-
-The playbook copies startup.yaml file used as Cumulus Linux NVUE startup configuration to the server:
-
-| File Name               | Description                        |
-| ----------------------- | ---------------------------------- |
-| /etc/nvue.d/startup.yaml | Configuration file for NVUE       |
+```
+./lab_setup.sh -t 2 -R
+```
 
 
-For more information on which files to back up and what Cumulus Linux uses, read [Upgrading Cumulus Linux]({{<ref "/cumulus-linux-54/Installation-Management/Upgrading-Cumulus-Linux#back-up-and-restore-configuration-with-nvue" >}}).
-
-The playbook copies the files to a directory called `save`:
-
-    user@server ~/consulting/fetch $ ls
-    fetch.yml  save
-
-The playbook puts the files into a directory based on the hostname. This particular example shows the playbook ran only on one switch named leaf1:
-
-    user@server ~/consulting/fetch/save $ ls
-    leaf1
-
-The playbook stores all the files in the `leaf1` directory:
-
-    user@server ~/consulting/fetch/save/leaf1 $ ls
-    startup.yaml
-
-## Example Copy
-
-On the server, Ansible added a file called `copy.yml` to the directory; the file has this content:
-
-    ---
-    - hosts: leaf1
-      become: yes
-      tasks:
-        - name: Restore startup.yaml
-          copy: src=save/{{ansible_hostname}}/startup.yaml dest=/etc/nvue.d/
-       
-        - name : Switch - Config apply
-          command: nv config apply startup -y
-
-This file just pushes back the already saved startup.yaml file, then applies the configuration from startup.yaml file and this restarts the related processes and daemons in the background.  Instead of issuing a `service=networking` command, the `ifreload -a` command ran directly.
-
-    user@server ~/consulting/fetch $ ansible-playbook copy.yml
-
-    PLAY [leaf1] ******************************************************************
-
-    GATHERING FACTS ***************************************************************
-    ok: [leaf1]
-
-    TASK: [Restore startup.yaml] *******************************************************
-    ok: [leaf1]
-
-        TASK: [Switch - Config apply] *********************************************************
-    changed: [leaf1]
+## How to clean up all switch configs in AIR
 
 
-    PLAY RECAP ********************************************************************
-               to retry, use: --limit @/home/user/copy.retry
+If you'd like to start the lab from scratch and configure everything yourself, it's possible to wipe out all switch configs from the script:use:
+| Argument  | Description                                           |
+| --------- | ----------------------------------------------------- |
+| -C        | Clean up all switch configs from AIR lab              |
 
-    leaf1                      : ok=8    changed=4    unreachable=0    failed=0
 
-With the startup.yaml file pushed back to the switch, it now operates on the previous snapshot.
+### Example
 
-You could base the `save` directory on the time of day rather than a generic folder called `save` by using:
+```
+./lab_setup.sh -C
+```
 
-    {{ansible_date_time.time}}
-
-You can find more information on which facts Ansible gathers by reading {{<link url="Gathering-Ansible-Facts-on-Cumulus-Linux" text="this article">}}.
