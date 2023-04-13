@@ -25,17 +25,25 @@ Help()
 Restore()
 {
 echo "Restore custom config from $custom_backup_dir$topo_folder"
+ansible-playbook -i inventories/backup/hosts --extra-vars my_variable=$custom_backup_dir$topo_folder restore.yml
 }
 
 Restore_reference()
 {
 echo "Restore reference config from $ref_backup_dir$topo_folder"
+ansible-playbook -i inventories/backup/hosts --extra-vars my_variable=$ref_backup_dir$topo_folder restore.yml
 }
 
 Backup()
 {
 echo "Backup function for $custom_backup_dir$topo_folder"
 ansible-playbook -i inventories/backup/hosts --extra-vars my_variable=$custom_backup_dir$topo_folder backup.yml
+}
+
+Save_reference()
+{
+echo "Save config function for reference config $ref_backup_dir$topo_folder"
+ansible-playbook -i inventories/backup/hosts --extra-vars my_variable=$ref_backup_dir$topo_folder backup.yml
 }
 
 Topo_check()
@@ -62,7 +70,7 @@ return 0
 
 if [ $# -eq "$NO_ARGS" ]    # Script invoked with no command-line args?
 then
-  echo "Usage: `basename $0` options (-h|t|v|r|R|b)"
+  echo "Usage: `basename $0` options (-h|t|v|r|R|S|b)"
 	Help
 	exit $E_OPTERROR          # Exit and explain usage.
                             # Usage: scriptname -options
@@ -85,6 +93,8 @@ do
 			;;
 		b) Backup
 			;;
+                S) Save_reference
+                        ;;
 		*) echo "Unimplemented option chosen."
 			Help
 			exit;;

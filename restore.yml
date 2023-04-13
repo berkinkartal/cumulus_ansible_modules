@@ -4,7 +4,7 @@
   gather_facts: false
   tasks:
     - name: Restore Switch - startup.yaml
-      copy: src=backups/evpn_l3_dci_backups/{{inventory_hostname}}/startup.yaml dest=/etc/nvue.d/startup.yaml
+      copy: src={{my_variable}}/{{inventory_hostname}}/startup.yaml dest=/etc/nvue.d/startup.yaml
 
     - name : Switch - Config apply
       command: nv config apply startup -y
@@ -17,7 +17,7 @@
   gather_facts: false
   tasks:
     - name: Restore Server - config.yaml
-      copy: src=backups/evpn_l3_dci_backups/{{inventory_hostname}}/config.yaml dest=/etc/netplan/config.yaml
+      copy: src={{my_variable}}/{{inventory_hostname}}/config.yaml dest=/etc/netplan/config.yaml
 
     - name : Server - Config apply
       command: netplan apply
