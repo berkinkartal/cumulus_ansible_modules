@@ -1,0 +1,162 @@
+- header:
+    model: VX
+    nvue-api-version: nvue_v1
+    rev-id: 1.0
+    version: Cumulus Linux 5.4.0
+- set:
+    evpn:
+      enable: on
+    interface:
+      eth0:
+        ip:
+          vrf: mgmt
+        type: eth
+      lo:
+        ip:
+          address:
+            10.10.10.11/32: {}
+        type: loopback
+      swp1:
+        ip:
+          address:
+            10.10.1.7/31: {}
+        link:
+          mtu: 9000
+        type: swp
+      swp2:
+        ip:
+          address:
+            10.10.1.15/31: {}
+        link:
+          mtu: 9000
+        type: swp
+      swp3:
+        ip:
+          address:
+            10.10.12.0/31: {}
+        link:
+          mtu: 9000
+        type: swp
+    nve:
+      vxlan:
+        enable: on
+    router:
+      bgp:
+        autonomous-system: 65110
+        enable: on
+        router-id: 10.10.10.11
+      policy:
+        community-list: {}
+        route-map:
+          control_t5:
+            rule:
+              '1':
+                action:
+                  permit: {}
+                match:
+                  evpn-route-type: ip-prefix
+              '3':
+                action:
+                  deny: {}
+    service:
+      lldp: {}
+    system:
+      config:
+        auto-save:
+          enable: on
+      hostname: borderleaf02
+    vrf:
+      GREEN:
+        evpn:
+          enable: on
+          vni:
+            '4002': {}
+        router:
+          bgp:
+            address-family:
+              ipv4-unicast:
+                aggregate-route:
+                  192.168.1.0/24: {}
+                  192.168.10.0/24: {}
+                enable: on
+                redistribute:
+                  connected:
+                    enable: on
+                route-export:
+                  to-evpn:
+                    enable: on
+            autonomous-system: 65110
+            enable: on
+            route-import:
+              from-evpn:
+                route-target:
+                  65210:5001: {}
+                  65210:5002: {}
+                  ANY:4001: {}
+                  ANY:4002: {}
+            router-id: 10.10.10.11
+      RED:
+        evpn:
+          enable: on
+          vni:
+            '4001': {}
+        router:
+          bgp:
+            address-family:
+              ipv4-unicast:
+                aggregate-route:
+                  192.168.2.0/24: {}
+                  192.168.20.0/24: {}
+                enable: on
+                redistribute:
+                  connected:
+                    enable: on
+                route-export:
+                  to-evpn:
+                    enable: on
+            autonomous-system: 65110
+            enable: on
+            route-import:
+              from-evpn:
+                route-target:
+                  65210:5001: {}
+                  65210:5002: {}
+                  ANY:4001: {}
+                  ANY:4002: {}
+            router-id: 10.10.10.11
+      default:
+        router:
+          bgp:
+            address-family:
+              ipv4-unicast:
+                enable: on
+                network:
+                  10.10.10.11/32: {}
+              l2vpn-evpn:
+                enable: on
+            enable: on
+            neighbor:
+              swp1:
+                peer-group: underlay
+                type: unnumbered
+              swp2:
+                peer-group: underlay
+                type: unnumbered
+              swp3:
+                peer-group: dci_group2
+                type: unnumbered
+            peer-group:
+              dci_group2:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                    policy:
+                      outbound:
+                        route-map: control_t5
+                remote-as: 65210
+              underlay:
+                address-family:
+                  ipv4-unicast: {}
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: 65199
