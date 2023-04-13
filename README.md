@@ -29,9 +29,9 @@ In general labs cover three main use cases:
 
 Repository "cumulus_ansible_modules" is cloned to the home folder (/home/ubuntu/) of oob-mgmt-server VM and consists of the following scripts & playbooks:
 
-- backup.sh invoking backup.yml
-- restore.sh invoking restore.yml
-- cleanup.sh invoking cleanup/main.yaml
+- "lab_setup.sh" : a bash script in the repository which call necessary ansible playbooks with required arguments in order to save/backup and restore existing configurations
+- all configs are stored in the repo directory structure, so it's easy to revert back to previously prepared config or save your existing config
+- "cleanup.sh" : cleans up entire configuration on all switches in this AIR lab
 
 Topology related information, diagram in svg and in png format, topology dot file and json file are located in 'topology/' folder
 | File Name                    | Description                        |
@@ -40,7 +40,7 @@ Topology related information, diagram in svg and in png format, topology dot fil
 | topology/DCI_Scenario-I.json | AIR json file                      |
 | topology/DCI_Scenario-I.svg  | AIR generated topology diagram     |
 | topology/DCI_Scenario-I.png  | png format topology diagram        |
-| topology/dci1.png            | simple hand drawn topology         |
+| topology/dci1.png            | Simple hand drawn topology         |
 
 
 
@@ -49,11 +49,57 @@ Saved reference configuration is under 'backups/' folder
 | --------------------------------- | ---------------------------------- |
 | backups/evpn_l2_dci_backups       | Layer2 stretch topology configs    |
 | backups/evpn_l3_dci_backups       | Layer3 VRF stretcg topology configs    |
-| backups/evpn_l3_dci_route-leaking | LLayer3 VRF stretcg topology with route leaking configs    |
+| backups/evpn_l3_dci_route-leaking | Layer3 VRF stretch topology with route leaking configs    |
+
+
+Users can save their own  configuration is under 'backups2/' folder when a custom change needs to be made or a previously prepared custom config must be loaded which is different than reference configuration
+| File Name                         | Description                        |
+| --------------------------------- | ---------------------------------- |
+| backups2/evpn_l2_dci_backups       | Layer2 stretch topology configs    |
+| backups2/evpn_l3_dci_backups       | Layer3 VRF stretch topology configs    |
+| backups2/evpn_l3_dci_route-leaking | Layer3 VRF stretch topology with route leaking configs    |
 
 ## How to restore from a saved lab config 
 
-On the server is a folder with one file called `fetch.yml`.
+The script <lab_setup.sh> should be provided with command line arguments what will select corresponding use case and desired restore action (either from custom saved config or from predefined reference config)
+
+These are the use cases covered in this lab:
+
+| Use Case ID | Use Case Name              | Description                                                |
+| ------------| -------------------------- | ---------------------------------------------------------- |
+| 1           | evpn_l2_dci_backups        | Layer2 stretch topology use case                           |
+| 2           | evpn_l3_dci_backups        | Layer3 VRF stretch topology use case                       |
+| 3           | evpn_l3_dci_route-leaking  | Layer3 VRF stretch topology with route leaking use case   |
+
+Based on the use case, user must select the corresponding "Use case ID" (1 | 2 | 3) in order to restore the right config on simulated environment.
+
+Additonally the correct restore action must be selected as a command line argument:
+| Argument  | Description                                   |
+| --------- | --------------------------------------------- |
+| -r        | restore custom config from Backups2 folder    |
+| -R        | Restore reference config from Backups folder  |
+
+### Examples
+
+Following example restores <Layer2 stretch topology use case> from reference config
+
+'''
+./lab_setup.sh -t 1 -R
+'''
+
+Following example restores <Layer3 VRF stretch topology use case> from reference config
+
+'''
+./lab_setup.sh -t 2 -R
+'''
+
+Following example restores <Layer3 VRF stretch topology with route leaking use case> from custom config store (under backups2 folder)
+
+'''
+./lab_setup.sh -t 3 -r
+'''
+
+
 
     user@server ~/consulting/fetch $ ls
     fetch.yml
