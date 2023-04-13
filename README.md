@@ -29,6 +29,11 @@ In general labs cover three main use cases:
 
 Repository "cumulus_ansible_modules" is cloned to the home folder (/home/ubuntu/) of oob-mgmt-server VM and consists of the following scripts & playbooks:
 
+- In order to run the scripting, the user should be in /home/ubuntu/cumulus_ansible_modules folder, which is the root for the repo
+```
+ubuntu@oob-mgmt-server:~$ cd cumulus_ansible_modules/
+ubuntu@oob-mgmt-server:~/cumulus_ansible_modules$
+```
 - "lab_setup.sh" : a bash script in the repository which call necessary ansible playbooks with required arguments in order to save/backup and restore existing configurations
 - all configs are stored in the repo directory structure, so it's easy to revert back to previously prepared config or save your existing config
 - There's a cleanup function implemented in the script which wipes everything but the hostname of the switch
