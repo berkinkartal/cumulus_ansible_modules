@@ -78,7 +78,7 @@ then
 fi  
 
 
-while getopts "t:vrRbh" flag
+while getopts "t:vrRSbh" flag
 do
 	case "${flag}" in
 		t) Topo_check ${OPTARG};;
