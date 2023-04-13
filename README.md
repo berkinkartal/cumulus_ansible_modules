@@ -81,19 +81,19 @@ Additonally the correct restore action must be selected as a command line argume
 
 ### Examples
 
-Following example restores <Layer2 stretch topology use case> from reference config
+Following example restores switch and server configs <Layer2 stretch topology use case> from reference config
 
 ```
 ./lab_setup.sh -t 1 -R
 ```
 
-Following example restores <Layer3 VRF stretch topology use case> from reference config
+Following example restores switch and server configs <Layer3 VRF stretch topology use case> from reference config
 
 ```
 ./lab_setup.sh -t 2 -R
 ```
 
-Following example restores <Layer3 VRF stretch topology with route leaking use case> from custom config store (under backups2 folder)
+Following example restores switch and server configs <Layer3 VRF stretch topology with route leaking use case> from custom config store (under backups2 folder)
 
 ```
 ./lab_setup.sh -t 3 -r
