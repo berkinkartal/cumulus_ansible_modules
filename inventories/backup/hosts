@@ -41,5 +41,15 @@ spine
 border
 #server
 
+[cumulus-nodes:children]
+leaf
+spine
+border
+
+#[nodes:children]
+#cumulus-nodes
+#host
+#fw
+
 #[netq]
 #netq-ts
