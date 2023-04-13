@@ -18,8 +18,8 @@ In general labs cover three main use cases:
 ## Related reading material
 
 
-Before doing any further reading on this lab guide, please make sure that you read and digest the following reference guide which is the foundation of all this lab:
-DCI reference guide :   [DCI-v1_draft.docx] (https://nvidia-my.sharepoint.com/:w:/p/berkink/EfGN74tRbLVFgA6mOJ-OEHABr_GdBoS58FsQFpt7nk6FFw) 
+Before doing any further reading on this lab guide, please make sure that you read and digest the following reference guide which is the foundation of all this lab.
+DCI reference guide :   [DCI-v1_draft.docx](https://nvidia-my.sharepoint.com/:w:/p/berkink/EfGN74tRbLVFgA6mOJ-OEHABr_GdBoS58FsQFpt7nk6FFw) 
 
 
 ## AIR lab
