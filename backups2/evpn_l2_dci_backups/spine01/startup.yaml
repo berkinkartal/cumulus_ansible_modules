@@ -1,0 +1,91 @@
+- header:
+    model: VX
+    nvue-api-version: nvue_v1
+    rev-id: 1.0
+    version: Cumulus Linux 5.4.0
+- set:
+    interface:
+      eth0:
+        ip:
+          vrf: mgmt
+        type: eth
+      lo:
+        ip:
+          address:
+            10.10.10.101/32: {}
+        type: loopback
+      swp1:
+        ip:
+          address:
+            10.10.1.0/31: {}
+        link:
+          mtu: 9000
+        type: swp
+      swp2:
+        ip:
+          address:
+            10.10.1.2/31: {}
+        link:
+          mtu: 9000
+        type: swp
+      swp3:
+        ip:
+          address:
+            10.10.1.4/31: {}
+        link:
+          mtu: 9000
+        type: swp
+      swp4:
+        ip:
+          address:
+            10.10.1.6/31: {}
+        link:
+          mtu: 9000
+        type: swp
+    router:
+      bgp:
+        autonomous-system: 65199
+        enable: on
+        router-id: 10.10.10.101
+    system:
+      config:
+        auto-save:
+          enable: on
+      hostname: spine01
+    vrf:
+      default:
+        router:
+          bgp:
+            address-family:
+              ipv4-unicast:
+                enable: on
+                network:
+                  10.10.10.101/32: {}
+              l2vpn-evpn:
+                enable: on
+            enable: on
+            neighbor:
+              swp1:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: 65101
+                type: unnumbered
+              swp2:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: 65102
+                type: unnumbered
+              swp3:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: 65110
+                type: unnumbered
+              swp4:
+                address-family:
+                  l2vpn-evpn:
+                    enable: on
+                remote-as: 65111
+                type: unnumbered
