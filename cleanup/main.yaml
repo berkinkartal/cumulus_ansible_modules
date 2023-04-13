@@ -8,7 +8,7 @@
       copy:
         src: "{{ inventory_hostname }}.yaml"
         dest: /etc/nvue.d/startup.yaml
-    # aktivieren
+    # activate
     - name: activate changes for all cumulus nodes
       shell:  nv config apply startup -y
       
@@ -34,3 +34,12 @@
 #        name: nginx
 #        state: stopped
 #      when: nginx_exists.rc == 0
+- hosts: server
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Restore Server - config.yaml
+      copy: src=server_default_net_config.yaml dest=/etc/netplan/config.yaml
+
+    - name : Server - Config apply
+      command: netplan apply
