@@ -15,6 +15,13 @@ In general labs cover three main use cases:
 
 <img src="/topology/DCI_Scenario-I.png" width="800px">
 
+## Related reading material
+
+```
+Before doing any further reading on this lab guide, please make sure that you read and digest the following reference guide to completement all this info:
+DCI reference guide :   [DCI-v1_draft.docx](https://nvidia-my.sharepoint.com/:w:/p/berkink/EfGN74tRbLVFgA6mOJ-OEHABr_GdBoS58FsQFpt7nk6FFw) 
+```
+
 ## AIR lab
 
 - [NVDIA AIR Lab with generic DCI topology](https://air.nvidia.com/78798265-2a47-432a-8b69-a7f00ec7a823/Simulation)
@@ -86,19 +93,19 @@ Additonally the correct restore action must be selected as a command line argume
 
 ### Examples
 
-Following example restores switch and server configs <Layer2 stretch topology use case> from reference config
+Following example restores switch and server configs `Layer2 stretch topology use case` from reference config
 
 ```
 ./lab_setup.sh -t 1 -R
 ```
 
-Following example restores switch and server configs <Layer3 VRF stretch topology use case> from reference config
+Following example restores switch and server configs `Layer3 VRF stretch topology use case` from reference config
 
 ```
 ./lab_setup.sh -t 2 -R
 ```
 
-Following example restores switch and server configs <Layer3 VRF stretch topology with route leaking use case> from custom config store (under backups2 folder)
+Following example restores switch and server configs `Layer3 VRF stretch topology with route leaking use case` from custom config store (under backups2 folder)
 
 ```
 ./lab_setup.sh -t 3 -r
@@ -115,13 +122,13 @@ If you'd like to save your custom config changes to oob-mgmt-server and pull the
 
 ### Examples
 
-Following example backs up switch and server configs for <Layer2 stretch topology use case> into repo
+Following example backs up switch and server configs for `Layer2 stretch topology use case` into repo
 
 ```
 ./lab_setup.sh -t 1 -b
 ```
 
-Following example backs up switch and server configs for <Layer3 VRF stretch topology use case> into repo
+Following example backs up switch and server configs for `Layer3 VRF stretch topology use case` into repo
 
 ```
 ./lab_setup.sh -t 2 -R
