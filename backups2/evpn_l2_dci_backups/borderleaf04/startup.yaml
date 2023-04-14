@@ -17,32 +17,17 @@
             10.10.20.11/32: {}
         type: loopback
       swp1:
-        ip:
-          address:
-            10.10.2.7/31: {}
-        link:
-          mtu: 9000
         type: swp
       swp2:
-        ip:
-          address:
-            10.10.2.15/31: {}
-        link:
-          mtu: 9000
         type: swp
       swp3:
-        ip:
-          address:
-            10.10.12.3/31: {}
-        link:
-          mtu: 9000
         type: swp
     nve:
       vxlan:
         enable: on
     router:
       bgp:
-        autonomous-system: 65211
+        autonomous-system: 65210
         enable: on
         router-id: 10.10.20.11
     service:
@@ -51,6 +36,9 @@
       config:
         auto-save:
           enable: on
+      global:
+        anycast-id: 20
+        fabric-id: 20
       hostname: borderleaf04
     vrf:
       default:
@@ -58,7 +46,7 @@
           bgp:
             address-family:
               ipv4-unicast:
-                enable: off
+                enable: on
                 network:
                   10.10.20.11/32: {}
               l2vpn-evpn:
@@ -79,9 +67,9 @@
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65110
+                remote-as: external
               underlay:
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65299
+                remote-as: external
