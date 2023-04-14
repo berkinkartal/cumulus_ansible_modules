@@ -18,6 +18,9 @@
       enable: on
       multihoming:
         enable: on
+      vni:
+        '4001': {}
+        '4002': {}
     interface:
       bond1:
         bond:
@@ -33,10 +36,8 @@
             segment:
               df-preference: 50000
               enable: on
-              identifier: 00:00:00:00:00:00:aa:00:00:01
+              local-id: 1
               mac-address: 00:00:00:00:00:AA
-        link:
-          mtu: 9000
         type: bond
       bond2:
         bond:
@@ -52,10 +53,8 @@
             segment:
               df-preference: 50000
               enable: on
-              identifier: 00:00:00:00:00:00:aa:00:00:02
+              local-id: 2
               mac-address: 00:00:00:00:00:AA
-        link:
-          mtu: 9000
         type: bond
       eth0:
         ip:
@@ -70,21 +69,11 @@
         evpn:
           multihoming:
             uplink: on
-        ip:
-          address:
-            10.10.1.1/31: {}
-        link:
-          mtu: 9000
         type: swp
       swp2:
         evpn:
           multihoming:
             uplink: on
-        ip:
-          address:
-            10.10.1.9/31: {}
-        link:
-          mtu: 9000
         type: swp
       vlan10:
         ip:
@@ -95,7 +84,6 @@
             address:
               192.168.1.1/24: {}
             enable: on
-            mac-address: 00:00:00:00:00:10
             state:
               up: {}
         type: svi
@@ -109,7 +97,6 @@
             address:
               192.168.2.1/24: {}
             enable: on
-            mac-address: 00:00:00:00:00:20
             state:
               up: {}
         type: svi
@@ -134,7 +121,8 @@
         auto-save:
           enable: on
       global:
-        anycast-mac: 44:38:39:ff:00:00
+        anycast-id: 10
+        fabric-id: 10
       hostname: leaf01
     vrf:
       GREEN:
@@ -211,4 +199,4 @@
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65199
+                remote-as: external

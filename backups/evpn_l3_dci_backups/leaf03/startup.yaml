@@ -18,6 +18,9 @@
       enable: on
       multihoming:
         enable: on
+      vni:
+        '5001': {}
+        '5002': {}
     interface:
       bond1:
         bond:
@@ -35,8 +38,6 @@
               enable: on
               local-id: 1
               mac-address: 00:00:00:00:00:BB
-        link:
-          mtu: 9000
         type: bond
       bond2:
         bond:
@@ -54,8 +55,6 @@
               enable: on
               local-id: 2
               mac-address: 00:00:00:00:00:BB
-        link:
-          mtu: 9000
         type: bond
       eth0:
         ip:
@@ -70,21 +69,11 @@
         evpn:
           multihoming:
             uplink: on
-        ip:
-          address:
-            10.10.2.1/31: {}
-        link:
-          mtu: 9000
         type: swp
       swp2:
         evpn:
           multihoming:
             uplink: on
-        ip:
-          address:
-            10.10.2.9/31: {}
-        link:
-          mtu: 9000
         type: swp
       vlan1010:
         ip:
@@ -95,7 +84,6 @@
             address:
               192.168.10.100/24: {}
             enable: on
-            mac-address: 00:00:00:00:22:10
             state:
               up: {}
         type: svi
@@ -109,7 +97,6 @@
             address:
               192.168.20.100/24: {}
             enable: on
-            mac-address: 00:00:00:00:22:20
             state:
               up: {}
         type: svi
@@ -134,7 +121,8 @@
         auto-save:
           enable: on
       global:
-        anycast-mac: 44:38:39:BE:EF:BB
+        anycast-id: 20
+        fabric-id: 20
       hostname: leaf03
     vrf:
       GREEN:
@@ -204,11 +192,11 @@
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65299
+                remote-as: external
                 type: unnumbered
               swp2:
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65299
+                remote-as: external
                 type: unnumbered

@@ -15,32 +15,12 @@
             10.10.20.103/32: {}
         type: loopback
       swp1:
-        ip:
-          address:
-            10.10.2.0/31: {}
-        link:
-          mtu: 9000
         type: swp
       swp2:
-        ip:
-          address:
-            10.10.2.2/31: {}
-        link:
-          mtu: 9000
         type: swp
       swp3:
-        ip:
-          address:
-            10.10.2.4/31: {}
-        link:
-          mtu: 9000
         type: swp
       swp4:
-        ip:
-          address:
-            10.10.2.6/31: {}
-        link:
-          mtu: 9000
         type: swp
     router:
       bgp:
@@ -69,23 +49,23 @@
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65201
+                remote-as: external
                 type: unnumbered
               swp2:
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65202
+                remote-as: external
                 type: unnumbered
               swp3:
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65210
+                remote-as: external
                 type: unnumbered
               swp4:
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65210
+                remote-as: external
                 type: unnumbered
