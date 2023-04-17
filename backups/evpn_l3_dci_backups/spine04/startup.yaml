@@ -15,32 +15,12 @@
             10.10.20.104/32: {}
         type: loopback
       swp1:
-        ip:
-          address:
-            10.10.2.8/31: {}
-        link:
-          mtu: 9000
         type: swp
       swp2:
-        ip:
-          address:
-            10.10.2.10/31: {}
-        link:
-          mtu: 9000
         type: swp
       swp3:
-        ip:
-          address:
-            10.10.2.12/31: {}
-        link:
-          mtu: 9000
         type: swp
       swp4:
-        ip:
-          address:
-            10.10.2.14/31: {}
-        link:
-          mtu: 9000
         type: swp
     router:
       bgp:
@@ -51,6 +31,9 @@
       config:
         auto-save:
           enable: on
+      global:
+        anycast-id: 20
+        fabric-id: 20
       hostname: spine04
     vrf:
       default:
@@ -69,23 +52,23 @@
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65201
+                remote-as: external
                 type: unnumbered
               swp2:
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65202
+                remote-as: external
                 type: unnumbered
               swp3:
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65210
+                remote-as: external
                 type: unnumbered
               swp4:
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65210
+                remote-as: external
                 type: unnumbered

@@ -17,25 +17,10 @@
             10.10.10.11/32: {}
         type: loopback
       swp1:
-        ip:
-          address:
-            10.10.1.7/31: {}
-        link:
-          mtu: 9000
         type: swp
       swp2:
-        ip:
-          address:
-            10.10.1.15/31: {}
-        link:
-          mtu: 9000
         type: swp
       swp3:
-        ip:
-          address:
-            10.10.12.0/31: {}
-        link:
-          mtu: 9000
         type: swp
     nve:
       vxlan:
@@ -64,6 +49,9 @@
       config:
         auto-save:
           enable: on
+      global:
+        anycast-id: 10
+        fabric-id: 10
       hostname: borderleaf02
     vrf:
       GREEN:
@@ -153,10 +141,10 @@
                     policy:
                       outbound:
                         route-map: control_t5
-                remote-as: 65210
+                remote-as: external
               underlay:
                 address-family:
                   ipv4-unicast: {}
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65199
+                remote-as: external

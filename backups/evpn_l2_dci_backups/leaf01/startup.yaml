@@ -19,10 +19,8 @@
       multihoming:
         enable: on
       vni:
-        '4001':
-          route-target: {}
-        '4002':
-          route-target: {}
+        '4001': {}
+        '4002': {}
     interface:
       bond1:
         bond:
@@ -40,8 +38,6 @@
               enable: on
               local-id: 1
               mac-address: 00:00:00:00:00:AA
-        link:
-          mtu: 9000
         type: bond
       bond2:
         bond:
@@ -59,8 +55,6 @@
               enable: on
               local-id: 2
               mac-address: 00:00:00:00:00:AA
-        link:
-          mtu: 9000
         type: bond
       eth0:
         ip:
@@ -75,21 +69,11 @@
         evpn:
           multihoming:
             uplink: on
-        ip:
-          address:
-            10.10.1.1/31: {}
-        link:
-          mtu: 9000
         type: swp
       swp2:
         evpn:
           multihoming:
             uplink: on
-        ip:
-          address:
-            10.10.1.9/31: {}
-        link:
-          mtu: 9000
         type: swp
       vlan10:
         ip:
@@ -100,7 +84,6 @@
             address:
               192.168.1.1/24: {}
             enable: on
-            mac-address: 00:00:00:00:00:10
             state:
               up: {}
         type: svi
@@ -114,7 +97,6 @@
             address:
               192.168.2.1/24: {}
             enable: on
-            mac-address: 00:00:00:00:00:20
             state:
               up: {}
         type: svi
@@ -139,7 +121,8 @@
         auto-save:
           enable: on
       global:
-        anycast-mac: 44:38:39:BE:EF:AA
+        anycast-id: 10
+        fabric-id: 10
       hostname: leaf01
     vrf:
       GREEN:
@@ -153,7 +136,7 @@
             route-export:
               to-evpn:
                 route-target:
-                  65101:4002: {}
+                  auto: {}
             route-import:
               from-evpn:
                 route-target:
@@ -169,7 +152,7 @@
             route-export:
               to-evpn:
                 route-target:
-                  65101:4001: {}
+                  auto: {}
             route-import:
               from-evpn:
                 route-target:
@@ -190,11 +173,11 @@
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65199
+                remote-as: external
                 type: unnumbered
               swp2:
                 address-family:
                   l2vpn-evpn:
                     enable: on
-                remote-as: 65199
+                remote-as: external
                 type: unnumbered
