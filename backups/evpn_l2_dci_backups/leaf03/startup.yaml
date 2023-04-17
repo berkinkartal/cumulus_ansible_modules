@@ -124,6 +124,8 @@
         anycast-id: 20
         fabric-id: 20
       hostname: leaf03
+      message:
+        post-login: DCI ref guide - Layer2 stretch topology use case
     vrf:
       GREEN:
         evpn:

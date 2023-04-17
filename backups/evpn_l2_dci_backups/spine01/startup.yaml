@@ -35,6 +35,8 @@
         anycast-id: 10
         fabric-id: 10
       hostname: spine01
+      message:
+        post-login: DCI ref guide - Layer2 stretch topology use case
     vrf:
       default:
         router:

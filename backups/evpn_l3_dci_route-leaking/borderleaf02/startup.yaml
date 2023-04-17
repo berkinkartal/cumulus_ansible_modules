@@ -53,6 +53,8 @@
         anycast-id: 10
         fabric-id: 10
       hostname: borderleaf02
+      message:
+        post-login: DCI ref guide - Layer3 VRF stretch topology with route leaking use case
     vrf:
       GREEN:
         evpn:
