@@ -60,7 +60,7 @@ Saved reference configuration is under 'backups/' folder
 | File Name                         | Description                        |
 | --------------------------------- | ---------------------------------- |
 | backups/evpn_l2_dci_backups       | Layer2 stretch topology configs    |
-| backups/evpn_l3_dci_backups       | Layer3 VRF stretcg topology configs    |
+| backups/evpn_l3_dci_backups       | Layer3 VRF stretch topology configs    |
 | backups/evpn_l3_dci_route-leaking | Layer3 VRF stretch topology with route leaking configs    |
 
 
