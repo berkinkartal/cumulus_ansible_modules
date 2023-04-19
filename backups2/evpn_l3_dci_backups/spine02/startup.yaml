@@ -32,6 +32,8 @@
         auto-save:
           enable: on
       hostname: spine02
+      message:
+        post-login: DCI ref guide - Layer3 VRF stretch topology use case
     vrf:
       default:
         router:

@@ -40,6 +40,8 @@
         anycast-id: 20
         fabric-id: 20
       hostname: borderleaf03
+      message:
+        post-login: DCI ref guide - Layer2 stretch topology use case
     vrf:
       default:
         router:

@@ -18,9 +18,7 @@
       enable: on
       multihoming:
         enable: on
-      vni:
-        '5001': {}
-        '5002': {}
+      vni: {}
     interface:
       bond1:
         bond:
