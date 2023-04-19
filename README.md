@@ -77,7 +77,7 @@ All the configuration backup and restore operations in this lab is scripted and 
 Here're the following functions implemented in this script:
 | Function                         | Description                                                                        | Command line argument  |
 | -------------------------------- | ---------------------------------------------------------------------------------- | ---------------------- |
-| Restore from Reference Config    | Load configuration based on a selected use case '(1\|2\|3)' from Reference configs   | '-R'                     |
+| Restore from Reference Config    | Load configuration based on a selected use case (1\|2\|3) from Reference configs   | '-R'                     |
 | Restore from customized Config   | Load configuration based on a selected use case '1-2-3' from customized configs  | '-r'                     |
 | Backup as customized Config      | Backup customized configuration for a selected use case '1-2-3'                  | '-b'                     |
 | Select use case                  | Select a use case for Backup/Restore/Test operations                               | '-t [1\|2\|3]'             |
