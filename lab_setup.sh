@@ -3,6 +3,7 @@
 NO_ARGS=0
 E_OPTERROR=85
 topo_folder=""
+test_usecase=""
 ref_backup_dir="backups/"
 custom_backup_dir="backups2/"
 
@@ -18,6 +19,7 @@ Help()
    echo "r     Restore custom config from saved use case 1|2|3"
    echo "R     Restore selected use case 1|2|3 from Reference topology"
    echo "b     Backup custom config into use case 1|2|3"
+   echo "p     Run tests for use case 1|2|3"
    echo "C     Clean all switch configs"
    echo "v     Print software version and exit."
    echo
@@ -60,12 +62,15 @@ if [ $1 -eq "1" ] || [ $1 -eq "2" ] || [ $1 -eq "3" ]
 then
         case "$1" in
                 1) topo_folder="evpn_l2_dci_backups"
+                        test_usecase=1
 #                        echo "$topo_folder"
                         ;;
                 2) topo_folder="evpn_l3_dci_backups"
+                        test_usecase=2
 #                        echo "$topo_folder"
                         ;;
                 3) topo_folder="evpn_l3_dci_route-leaking"
+                        test_usecase=3
 #                        echo "$topo_folder"
                         ;;
         esac
@@ -75,9 +80,32 @@ fi
 return 0
 }
 
+
+Run_tests()
+{
+#echo "Your topology argument:  $topology";
+if [ $test_usecase -eq "1" ] || [ $test_usecase -eq "2" ] || [ $test_usecase -eq "3" ]
+then
+        case "$test_usecase" in
+                1) echo "Running tests for evpn_l2_dci_backups"
+
+                        ;;
+                2) echo "Running tests for evpn_l3_dci_backups"
+
+                        ;;
+                3) echo "Running tests for evpn_l3_dci_route-leaking"
+
+                        ;;
+        esac
+else
+        echo "Invalid Test topology"
+fi
+return 0
+}
+
 if [ $# -eq "$NO_ARGS" ]    # Script invoked with no command-line args?
 then
-  echo "Usage: `basename $0` options (-h|t|v|r|R|S|C|b)"
+  echo "Usage: `basename $0` options (-h|t|v|r|R|S|C|p|b)"
 	Help
 	exit $E_OPTERROR          # Exit and explain usage.
                             # Usage: scriptname -options
@@ -85,7 +113,7 @@ then
 fi  
 
 
-while getopts "t:vrRSCbh" flag
+while getopts "t:vrRSCpbh" flag
 do
 	case "${flag}" in
 		t) Topo_check ${OPTARG};;
@@ -101,6 +129,8 @@ do
 		b) Backup
 			;;
                 S) Save_reference
+                        ;;
+                p) echo "$test_usecase"
                         ;;
                 C) Cleanup
                         ;;
