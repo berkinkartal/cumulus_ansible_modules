@@ -130,7 +130,7 @@ do
 			;;
                 S) Save_reference
                         ;;
-                p) echo "$test_usecase"
+                p) Run_tests
                         ;;
                 C) Cleanup
                         ;;
