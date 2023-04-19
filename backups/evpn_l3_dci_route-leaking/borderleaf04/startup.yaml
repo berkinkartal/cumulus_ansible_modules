@@ -54,7 +54,8 @@
         fabric-id: 20
       hostname: borderleaf04
       message:
-        post-login: DCI ref guide - Layer3 VRF stretch topology with route leaking use case
+        post-login: DCI ref guide - Layer3 VRF stretch topology with route leaking
+          use case
     vrf:
       GREEN:
         evpn:

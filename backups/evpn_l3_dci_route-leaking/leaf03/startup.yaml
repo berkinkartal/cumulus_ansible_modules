@@ -122,7 +122,8 @@
         fabric-id: 20
       hostname: leaf03
       message:
-        post-login: DCI ref guide - Layer3 VRF stretch topology with route leaking use case
+        post-login: DCI ref guide - Layer3 VRF stretch topology with route leaking
+          use case
     vrf:
       GREEN:
         evpn:
@@ -150,8 +151,9 @@
             route-import:
               from-evpn:
                 route-target:
-                  65110:4001: {}
-                  65110:4002: {}
+                  ANY:4001: {}
+                  ANY:4002: {}
+                  ANY:5001: {}
                   ANY:5002: {}
             router-id: 10.10.20.1
       RED:
@@ -180,9 +182,10 @@
             route-import:
               from-evpn:
                 route-target:
-                  65110:4001: {}
-                  65110:4002: {}
+                  ANY:4001: {}
+                  ANY:4002: {}
                   ANY:5001: {}
+                  ANY:5002: {}
             router-id: 10.10.20.1
       default:
         router:
