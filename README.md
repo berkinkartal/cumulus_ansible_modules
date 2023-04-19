@@ -1,8 +1,8 @@
 ---
 title: Data Center Interconnect Reference Guide Labs
 author: Berkin Kartal
-date: 12/04/2023
-version: 1.0
+date: 19/04/2023
+version: 1.1
 ---
 
 This document aims at helping the user to be able to connect and use AIR labs created for DCI Reference Guide document
@@ -71,9 +71,22 @@ Users can save their own  configuration is under 'backups2/' folder when a custo
 | backups2/evpn_l3_dci_backups       | Layer3 VRF stretch topology configs    |
 | backups2/evpn_l3_dci_route-leaking | Layer3 VRF stretch topology with route leaking configs    |
 
+
+## Scripting functions
+All the configuration backup and restore operations in this lab is scripted and there's a quick healthcheck function added into the main 'lab_setup.sh' bash script.
+Here're the following functions implemented in this script:
+| Function                         | Description                                                                      | Command line argument  |
+| -------------------------------- | -------------------------------------------------------------------------------- | ---------------------- |
+| Restore from Reference Config    | Load configuration based on a selected use case (1|2|3) from Reference configs   | -R                     |
+| Restore from customized Config   | Load configuration based on a selected use case (1|2|3) from customized configs  | -r                     |
+| Backup as customized Config      | Backup customized configuration for a selected use case (1|2|3)                  | -b                     |
+| Select use case                  | Select a use case for Backup/Restore/Test operations                             | -t <1|2|3>             |
+| Clean up all configs             | Clean up all configs with a minimum default configuration                        | -C                     |
+| Run end to end connectivity tests| Run ping tests from server to server based on a selected use case (1|2|3)        | -p                     |
+
 ## How to restore from a saved lab config 
 
-The script <lab_setup.sh> should be provided with command line arguments what will select corresponding use case and desired restore action (either from custom saved config or from predefined reference config)
+The script 'lab_setup.sh' should be provided with command line arguments what will select corresponding use case and desired restore action (either from custom saved config or from predefined reference config)
 
 These are the use cases covered in this lab:
 
@@ -149,4 +162,19 @@ If you'd like to start the lab from scratch and configure everything yourself, i
 ```
 ./lab_setup.sh -C
 ```
+## How to run end to end tests
 
+If you'd like to run a simple end to end ping test between servers attached to the fabric, there're four servers attached to the topology (please see the diagram for server01, server02, server03 and server04). Based on the selected use case (1|2|3) topology these servers have particular connecitivity in between each other. For example in use case #1 (L2 stretch), server01 and server03 are in the same broadcast domand and in the same IP subnet. Therefore they're L2 adjacent to each other and should see each others' MAC in their ARP cache, same for server02 and server04. However they cannot communicate cross VRF (server01 <==> server02 or server01 <==> server04>). Details of each use cases' connetivity options are explained in the DCI reference guide (linked top of this file).
+
+
+### Examples
+
+Following example runs pre-defined test commands for use case #1
+```
+./lab_setup.sh -t 1 -p
+```
+
+Following example runs pre-defined test commands for use case #1
+```
+./lab_setup.sh -t 2 -p
+```
