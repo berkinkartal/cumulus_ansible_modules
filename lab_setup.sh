@@ -88,13 +88,43 @@ if [ $test_usecase -eq "1" ] || [ $test_usecase -eq "2" ] || [ $test_usecase -eq
 then
         case "$test_usecase" in
                 1) echo "Running tests for evpn_l2_dci_backups"
+                        # ping from server01 to server03
+                        ansible server01 -a 'ping -I 192.168.1.10 -c 4 192.168.1.110'
+                        # Display ARP table on server01
+                        ansible server01 -a 'arp -an'
+                        # ping from server02 to server04
+                        ansible server02 -a 'ping -I 192.168.2.10 -c 4 192.168.2.110'
+                        # Display ARP table on server02
+                        ansible server02 -a 'arp -an'
 
                         ;;
                 2) echo "Running tests for evpn_l3_dci_backups"
-
+                        # ping from server01 to server03
+                        ansible server01 -a 'ping -I 192.168.1.10 -c 4 192.168.10.110'
+                        # Display ARP table on server01
+                        ansible server01 -a 'arp -an'
+                        # ping from server02 to server04
+                        ansible server02 -a 'ping -I 192.168.2.10 -c 4 192.168.20.110'
+                        # Display ARP table on server02
+                        ansible server02 -a 'arp -an'
                         ;;
                 3) echo "Running tests for evpn_l3_dci_route-leaking"
-
+                        # ping from server01 to server03
+                        ansible server01 -a 'ping -I 192.168.1.10 -c 4 192.168.10.110'
+                        # Display ARP table on server01
+                        ansible server01 -a 'arp -an'
+                        # ping from server02 to server04
+                        ansible server02 -a 'ping -I 192.168.2.10 -c 4 192.168.20.110'
+                        # Display ARP table on server02
+                        ansible server02 -a 'arp -an'
+                        # ping from server01 to server02
+                        ansible server01 -a 'ping -I 192.168.1.10 -c 4 192.168.2.10'
+                        # Display ARP table on server01
+                        ansible server01 -a 'arp -an'
+                        # ping from server02 to server03
+                        ansible server02 -a 'ping -I 192.168.2.10 -c 4 192.168.10.110'
+                        # Display ARP table on server02
+                        ansible server02 -a 'arp -an'
                         ;;
         esac
 else
