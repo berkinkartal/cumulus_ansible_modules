@@ -191,3 +191,51 @@ Following example runs pre-defined test commands for use case #1
 ```
 ./lab_setup.sh -t 2 -p
 ```
+
+Following example runs pre-defined test commands for use case #3 and shows the full output:
+```
+ubuntu@oob-mgmt-server:~/cumulus_ansible_modules$ ./lab_setup.sh -t 3 -p
+Running tests for evpn_l3_dci_route-leaking
+server01 | CHANGED | rc=0 >>
+PING 192.168.10.110 (192.168.10.110) from 192.168.1.10 : 56(84) bytes of data.
+64 bytes from 192.168.10.110: icmp_seq=1 ttl=61 time=3.91 ms
+64 bytes from 192.168.10.110: icmp_seq=2 ttl=61 time=3.14 ms
+64 bytes from 192.168.10.110: icmp_seq=3 ttl=61 time=3.12 ms
+64 bytes from 192.168.10.110: icmp_seq=4 ttl=61 time=3.49 ms
+
+--- 192.168.10.110 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3003ms
+rtt min/avg/max/mdev = 3.124/3.419/3.914/0.324 ms
+server02 | CHANGED | rc=0 >>
+PING 192.168.20.110 (192.168.20.110) from 192.168.2.10 : 56(84) bytes of data.
+64 bytes from 192.168.20.110: icmp_seq=1 ttl=61 time=3.06 ms
+64 bytes from 192.168.20.110: icmp_seq=2 ttl=61 time=2.51 ms
+64 bytes from 192.168.20.110: icmp_seq=3 ttl=61 time=2.96 ms
+64 bytes from 192.168.20.110: icmp_seq=4 ttl=61 time=2.88 ms
+
+--- 192.168.20.110 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3004ms
+rtt min/avg/max/mdev = 2.510/2.855/3.064/0.213 ms
+server01 | CHANGED | rc=0 >>
+PING 192.168.2.10 (192.168.2.10) from 192.168.1.10 : 56(84) bytes of data.
+64 bytes from 192.168.2.10: icmp_seq=1 ttl=61 time=3.33 ms
+64 bytes from 192.168.2.10: icmp_seq=2 ttl=61 time=2.74 ms
+64 bytes from 192.168.2.10: icmp_seq=3 ttl=61 time=2.74 ms
+64 bytes from 192.168.2.10: icmp_seq=4 ttl=61 time=2.86 ms
+
+--- 192.168.2.10 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3005ms
+rtt min/avg/max/mdev = 2.741/2.922/3.332/0.247 ms
+server02 | CHANGED | rc=0 >>
+PING 192.168.10.110 (192.168.10.110) from 192.168.2.10 : 56(84) bytes of data.
+64 bytes from 192.168.10.110: icmp_seq=1 ttl=61 time=2.78 ms
+64 bytes from 192.168.10.110: icmp_seq=2 ttl=61 time=3.08 ms
+64 bytes from 192.168.10.110: icmp_seq=3 ttl=61 time=3.14 ms
+64 bytes from 192.168.10.110: icmp_seq=4 ttl=61 time=3.17 ms
+
+--- 192.168.10.110 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3004ms
+rtt min/avg/max/mdev = 2.780/3.045/3.170/0.160 ms
+ubuntu@oob-mgmt-server:~/cumulus_ansible_modules$
+
+```
