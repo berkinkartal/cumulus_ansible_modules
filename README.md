@@ -80,7 +80,7 @@ Here're the following functions implemented in this script:
 | Restore from Reference Config    | Load configuration based on a selected use case '1-2-3' from Reference configs   | '-R'                     |
 | Restore from customized Config   | Load configuration based on a selected use case '1-2-3' from customized configs  | '-r'                     |
 | Backup as customized Config      | Backup customized configuration for a selected use case '1-2-3'                  | '-b'                     |
-| Select use case                  | Select a use case for Backup/Restore/Test operations                               | '-t <1|2|3>'             |
+| Select use case                  | Select a use case for Backup/Restore/Test operations                               | '-t [1|2|3]'             |
 | Clean up all configs             | Clean up all configs with a minimum default configuration                          | '-C'                     |
 | Run end to end connectivity tests| Run ping tests from server to server based on a selected use case '1-2-3'        | '-p'                     |
 
