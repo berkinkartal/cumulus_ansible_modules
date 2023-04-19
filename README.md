@@ -74,7 +74,7 @@ Users can save their own  configuration is under 'backups2/' folder when a custo
 
 ## Scripting functions
 All the configuration backup and restore operations in this lab is scripted and there's a quick healthcheck function added into the main 'lab_setup.sh' bash script.
-Here're the list of functions implemented in this script:
+Here's the list of functions implemented in this script:
 | Function                         | Description                                                                                                         | Command line argument |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------- |
 | Restore from Reference Config    | Load configuration based on a selected use case (1\|2\|3) from Reference configs, must be used with '-t' argument   | -R                    |
