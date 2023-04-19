@@ -5,6 +5,18 @@ date: 19/04/2023
 version: 1.1
 ---
 
+# Table of Contents
+[Topology Diagram]
+[Related reading material](https://github.com/berkinkartal/cumulus_ansible_modules/blob/main/README.md#related-reading-material)
+[AIR lab](https://github.com/berkinkartal/cumulus_ansible_modules/blob/main/README.md#air-lab)
+[Ansible playbooks in repo](https://github.com/berkinkartal/cumulus_ansible_modules/blob/main/README.md#ansible-playbooks-in-repo)
+[Scripting functions](https://github.com/berkinkartal/cumulus_ansible_modules/blob/main/README.md#scripting-functions)
+[How to restore from a saved lab config ](https://github.com/berkinkartal/cumulus_ansible_modules/blob/main/README.md#how-to-restore-from-a-saved-lab-config)
+[How to save / backup config from existing lab to oob-mgmt-server](https://github.com/berkinkartal/cumulus_ansible_modules/blob/main/README.md#how-to-save--backup-config-from-existing-lab-to-oob-mgmt-server)
+[How to clean up all switch configs in AIR](https://github.com/berkinkartal/cumulus_ansible_modules/blob/main/README.md#how-to-clean-up-all-switch-configs-in-air)
+[How to run end to end tests](https://github.com/berkinkartal/cumulus_ansible_modules/blob/main/README.md#how-to-run-end-to-end-tests)
+
+
 This document aims at helping the user to be able to connect and use AIR labs created for DCI Reference Guide document
 
 In general labs cover three main use cases:
@@ -13,6 +25,7 @@ In general labs cover three main use cases:
 - Layer-3 routed VRF extension over EVPN/VXLAN fabric with Type-5 prefixes
 - Layer-3 routed VRF extension over EVPN/VXLAN fabric with Type-5 prefixes and leaking VRF routes
 
+## Topology Diagram
 <img src="/topology/DCI_Scenario-I.png" width="800px">
 
 ## Related reading material
