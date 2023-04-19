@@ -198,44 +198,119 @@ ubuntu@oob-mgmt-server:~/cumulus_ansible_modules$ ./lab_setup.sh -t 3 -p
 Running tests for evpn_l3_dci_route-leaking
 server01 | CHANGED | rc=0 >>
 PING 192.168.10.110 (192.168.10.110) from 192.168.1.10 : 56(84) bytes of data.
-64 bytes from 192.168.10.110: icmp_seq=1 ttl=61 time=3.91 ms
-64 bytes from 192.168.10.110: icmp_seq=2 ttl=61 time=3.14 ms
-64 bytes from 192.168.10.110: icmp_seq=3 ttl=61 time=3.12 ms
-64 bytes from 192.168.10.110: icmp_seq=4 ttl=61 time=3.49 ms
+64 bytes from 192.168.10.110: icmp_seq=1 ttl=61 time=3.31 ms
+64 bytes from 192.168.10.110: icmp_seq=2 ttl=61 time=2.90 ms
+64 bytes from 192.168.10.110: icmp_seq=3 ttl=61 time=3.29 ms
+64 bytes from 192.168.10.110: icmp_seq=4 ttl=61 time=3.41 ms
 
 --- 192.168.10.110 ping statistics ---
-4 packets transmitted, 4 received, 0% packet loss, time 3003ms
-rtt min/avg/max/mdev = 3.124/3.419/3.914/0.324 ms
+4 packets transmitted, 4 received, 0% packet loss, time 3004ms
+rtt min/avg/max/mdev = 2.901/3.229/3.414/0.203 ms
+leaf01 | CHANGED | rc=0 >>
+show ip route vrf RED
+======================
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric, Z - FRR,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+VRF RED:
+K>* 0.0.0.0/0 [255/8192] unreachable (ICMP unreachable), 02:52:43
+C * 192.168.1.0/24 [0/1024] is directly connected, vlan10-v0, 02:52:43
+C>* 192.168.1.0/24 is directly connected, vlan10, 02:52:43
+B>* 192.168.2.0/24 [20/0] via 10.10.10.10, vlan220_l3 onlink, weight 1, 02:33:13
+  *                       via 10.10.10.11, vlan220_l3 onlink, weight 1, 02:33:13
+B>* 192.168.10.0/24 [20/0] via 10.10.20.10, vxlan99 (vrf default) onlink, label 5002, weight 1, 02:33:13
+  *                        via 10.10.20.11, vxlan99 (vrf default) onlink, label 5002, weight 1, 02:33:13
+B>* 192.168.20.0/24 [20/0] via 10.10.20.10, vxlan99 (vrf default) onlink, label 5001, weight 1, 02:27:53
+  *                        via 10.10.20.11, vxlan99 (vrf default) onlink, label 5001, weight 1, 02:27:53
+
+
+
+show ipv6 route vrf RED
+========================
+Codes: K - kernel route, C - connected, S - static, R - RIPng,
+       O - OSPFv3, I - IS-IS, B - BGP, N - NHRP, T - Table,
+       v - VNC, V - VNC-Direct, A - Babel, D - SHARP, F - PBR,
+       f - OpenFabric, Z - FRR,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+VRF RED:
+K>* ::/0 [255/8192] unreachable (ICMP unreachable), 02:52:43
+C * fe80::/64 is directly connected, vlan220_l3, 02:52:43
+C * fe80::/64 is directly connected, vlan10-v0, 02:52:43
+C>* fe80::/64 is directly connected, vlan10, 02:52:43
 server02 | CHANGED | rc=0 >>
 PING 192.168.20.110 (192.168.20.110) from 192.168.2.10 : 56(84) bytes of data.
-64 bytes from 192.168.20.110: icmp_seq=1 ttl=61 time=3.06 ms
-64 bytes from 192.168.20.110: icmp_seq=2 ttl=61 time=2.51 ms
-64 bytes from 192.168.20.110: icmp_seq=3 ttl=61 time=2.96 ms
-64 bytes from 192.168.20.110: icmp_seq=4 ttl=61 time=2.88 ms
+64 bytes from 192.168.20.110: icmp_seq=1 ttl=61 time=3.32 ms
+64 bytes from 192.168.20.110: icmp_seq=2 ttl=61 time=2.60 ms
+64 bytes from 192.168.20.110: icmp_seq=3 ttl=61 time=3.33 ms
+64 bytes from 192.168.20.110: icmp_seq=4 ttl=61 time=3.08 ms
 
 --- 192.168.20.110 ping statistics ---
-4 packets transmitted, 4 received, 0% packet loss, time 3004ms
-rtt min/avg/max/mdev = 2.510/2.855/3.064/0.213 ms
+4 packets transmitted, 4 received, 0% packet loss, time 3005ms
+rtt min/avg/max/mdev = 2.607/3.087/3.338/0.294 ms
 server01 | CHANGED | rc=0 >>
 PING 192.168.2.10 (192.168.2.10) from 192.168.1.10 : 56(84) bytes of data.
-64 bytes from 192.168.2.10: icmp_seq=1 ttl=61 time=3.33 ms
-64 bytes from 192.168.2.10: icmp_seq=2 ttl=61 time=2.74 ms
-64 bytes from 192.168.2.10: icmp_seq=3 ttl=61 time=2.74 ms
-64 bytes from 192.168.2.10: icmp_seq=4 ttl=61 time=2.86 ms
+64 bytes from 192.168.2.10: icmp_seq=1 ttl=61 time=2.78 ms
+64 bytes from 192.168.2.10: icmp_seq=2 ttl=61 time=2.90 ms
+64 bytes from 192.168.2.10: icmp_seq=3 ttl=61 time=2.68 ms
+64 bytes from 192.168.2.10: icmp_seq=4 ttl=61 time=2.85 ms
 
 --- 192.168.2.10 ping statistics ---
 4 packets transmitted, 4 received, 0% packet loss, time 3005ms
-rtt min/avg/max/mdev = 2.741/2.922/3.332/0.247 ms
+rtt min/avg/max/mdev = 2.681/2.807/2.909/0.093 ms
+leaf03 | CHANGED | rc=0 >>
+show ip route vrf RED
+======================
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric, Z - FRR,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+VRF RED:
+K>* 0.0.0.0/0 [255/8192] unreachable (ICMP unreachable), 2d04h34m
+B>* 192.168.1.0/24 [20/0] via 10.10.10.10, vxlan99 (vrf default) onlink, label 4002, weight 1, 02:30:04
+  *                       via 10.10.10.11, vxlan99 (vrf default) onlink, label 4002, weight 1, 02:30:04
+B>* 192.168.2.0/24 [20/0] via 10.10.10.10, vxlan99 (vrf default) onlink, label 4001, weight 1, 02:30:04
+  *                       via 10.10.10.11, vxlan99 (vrf default) onlink, label 4001, weight 1, 02:30:04
+C * 192.168.10.0/24 [0/1024] is directly connected, vlan1010-v0, 03:27:19
+C>* 192.168.10.0/24 is directly connected, vlan1010, 03:27:19
+B>* 192.168.20.0/24 [20/0] via 10.10.20.10, vlan220_l3 onlink, weight 1, 02:28:04
+  *                        via 10.10.20.11, vlan220_l3 onlink, weight 1, 02:28:04
+
+
+
+show ipv6 route vrf RED
+========================
+Codes: K - kernel route, C - connected, S - static, R - RIPng,
+       O - OSPFv3, I - IS-IS, B - BGP, N - NHRP, T - Table,
+       v - VNC, V - VNC-Direct, A - Babel, D - SHARP, F - PBR,
+       f - OpenFabric, Z - FRR,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+VRF RED:
+K>* ::/0 [255/8192] unreachable (ICMP unreachable), 2d04h34m
+C * fe80::/64 is directly connected, vlan1010, 03:27:18
+C * fe80::/64 is directly connected, vlan1010-v0, 03:27:19
+C>* fe80::/64 is directly connected, vlan220_l3, 2d04h34m
 server02 | CHANGED | rc=0 >>
 PING 192.168.10.110 (192.168.10.110) from 192.168.2.10 : 56(84) bytes of data.
-64 bytes from 192.168.10.110: icmp_seq=1 ttl=61 time=2.78 ms
-64 bytes from 192.168.10.110: icmp_seq=2 ttl=61 time=3.08 ms
-64 bytes from 192.168.10.110: icmp_seq=3 ttl=61 time=3.14 ms
-64 bytes from 192.168.10.110: icmp_seq=4 ttl=61 time=3.17 ms
+64 bytes from 192.168.10.110: icmp_seq=1 ttl=61 time=2.91 ms
+64 bytes from 192.168.10.110: icmp_seq=2 ttl=61 time=3.09 ms
+64 bytes from 192.168.10.110: icmp_seq=3 ttl=61 time=3.38 ms
+64 bytes from 192.168.10.110: icmp_seq=4 ttl=61 time=3.44 ms
 
 --- 192.168.10.110 ping statistics ---
 4 packets transmitted, 4 received, 0% packet loss, time 3004ms
-rtt min/avg/max/mdev = 2.780/3.045/3.170/0.160 ms
+rtt min/avg/max/mdev = 2.918/3.208/3.442/0.223 ms
 ubuntu@oob-mgmt-server:~/cumulus_ansible_modules$
+
 
 ```
