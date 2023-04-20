@@ -5,9 +5,12 @@
   tasks:
     - name: Restore Switch - startup.yaml
       copy: src={{my_variable}}/{{inventory_hostname}}/startup.yaml dest=/etc/nvue.d/startup.yaml
+    
+    - name: Config replace
+      command: nv config replace /etc/nvue.d/startup.yaml
 
     - name : Switch - Config apply
-      command: nv config apply startup -y
+      command: nv config apply -y
 
       #    - name : Restart  Switch
       #      command: reboot
