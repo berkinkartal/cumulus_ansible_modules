@@ -10,8 +10,11 @@
       command: nv config replace /etc/nvue.d/startup.yaml
 
     - name : Switch - Config apply
-      command: nv config apply -y
+      command: nv config apply startup -y
 
+      #    - name : Restart FRR process just in case
+      # command : service frr restart
+    
       #    - name : Restart  Switch
       #      command: reboot
 
